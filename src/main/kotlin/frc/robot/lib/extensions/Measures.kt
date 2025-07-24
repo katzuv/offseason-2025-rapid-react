@@ -44,48 +44,30 @@ import kotlin.math.PI
  */
 
 // Length
-val m: DistanceUnit
-    get() = Units.Meters
-val meters: DistanceUnit
-    get() = Units.Meters
-val cm: DistanceUnit
-    get() = Units.Centimeters
-val centimeters: DistanceUnit
-    get() = Units.Centimeters
-val mm: DistanceUnit
-    get() = Units.Millimeters
-val millimeters: DistanceUnit
-    get() = Units.Millimeters
+val m: DistanceUnit = Units.Meters
+val meters: DistanceUnit = Units.Meters
+val cm: DistanceUnit = Units.Centimeters
+val centimeters: DistanceUnit = Units.Centimeters
+val mm: DistanceUnit = Units.Millimeters
+val millimeters: DistanceUnit = Units.Millimeters
 
 // Angle
-val deg: AngleUnit
-    get() = Units.Degrees
-val degrees: AngleUnit
-    get() = Units.Degrees
-val rad: AngleUnit
-    get() = Units.Radians
-val radians: AngleUnit
-    get() = Units.Radians
-val rot: AngleUnit
-    get() = Units.Rotations
-val rotations: AngleUnit
-    get() = Units.Rotations
+val deg: AngleUnit = Units.Degrees
+val degrees: AngleUnit = Units.Degrees
+val rad: AngleUnit = Units.Radians
+val radians: AngleUnit = Units.Radians
+val rot: AngleUnit = Units.Rotations
+val rotations: AngleUnit = Units.Rotations
 
 // Time
-val sec: TimeUnit
-    get() = Units.Seconds
-val seconds: TimeUnit
-    get() = Units.Seconds
+val sec: TimeUnit = Units.Seconds
+val seconds: TimeUnit = Units.Seconds
 
 // Other
-val percent: DimensionlessUnit
-    get() = Units.Percent
-val amps: CurrentUnit
-    get() = Units.Amps
-val volts: VoltageUnit
-    get() = Units.Volts
-val kg2m: MomentOfInertiaUnit
-    get() = Units.KilogramSquareMeters
+val percent: DimensionlessUnit = Units.Percent
+val amps: CurrentUnit = Units.Amps
+val volts: VoltageUnit = Units.Volts
+val kg2m: MomentOfInertiaUnit = Units.KilogramSquareMeters
 
 fun LinearVelocity.toAngular(
     diameter: Distance,
