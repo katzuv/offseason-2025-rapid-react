@@ -161,7 +161,7 @@ val Number.rad: Angle
 val Number.radians: Angle
     get() = toUnit(Units.Radians::of)
 
-fun Angle.toRotation2d(): Rotation2d = Rotation2d(`in`(Units.Radians))
+fun Angle.toRotation2d(): Rotation2d = Rotation2d(this[rad])
 
 operator fun Angle.get(unit: AngleUnit): Double = this.`in`(unit)
 
