@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package frc.robot.lib.extensions
 
 import edu.wpi.first.math.geometry.Rotation2d
