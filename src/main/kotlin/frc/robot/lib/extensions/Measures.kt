@@ -102,8 +102,8 @@ operator fun Distance.div(time: TimeUnit): LinearVelocity = this / time.one()
 
 operator fun Distance.div(divisor: Number): Distance = this / divisor.toDouble()
 
-operator fun Voltage.div(time: TimeUnit): Velocity<VoltageUnit> =
-    this / time.one()
+operator fun Voltage.div(timeUnit: TimeUnit): Velocity<VoltageUnit> =
+    this / timeUnit.one()
 
 // Factories
 
