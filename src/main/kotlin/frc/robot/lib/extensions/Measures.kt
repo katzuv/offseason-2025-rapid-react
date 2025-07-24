@@ -105,6 +105,9 @@ operator fun Distance.div(divisor: Number): Distance = this / divisor.toDouble()
 operator fun Voltage.div(timeUnit: TimeUnit): Velocity<VoltageUnit> =
     this / timeUnit.one()
 
+operator fun VoltageUnit.div(time: TimeUnit): VelocityUnit<VoltageUnit> =
+    this / time
+
 // Factories
 
 // Helper function for conversion
@@ -185,6 +188,8 @@ val Number.amps: Current
 operator fun Current.get(unit: CurrentUnit): Double = this.`in`(unit)
 
 operator fun Voltage.get(unit: VoltageUnit): Double = this.`in`(unit)
+
+operator fun Velocity<VoltageUnit>.get(unit: VelocityUnit<VoltageUnit>): Double = this.`in`(unit)
 
 val Number.volts: Voltage
     get() = toUnit(Units.Volts::of)
