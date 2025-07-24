@@ -44,47 +44,47 @@ import kotlin.math.PI
  */
 
 // Length
-val m
+val m: DistanceUnit
     get() = Units.Meters
-val meters
+val meters: DistanceUnit
     get() = Units.Meters
-val cm
+val cm: DistanceUnit
     get() = Units.Centimeters
-val centimeters
+val centimeters: DistanceUnit
     get() = Units.Centimeters
-val mm
+val mm: DistanceUnit
     get() = Units.Millimeters
-val millimeters
+val millimeters: DistanceUnit
     get() = Units.Millimeters
 
 // Angle
-val deg
+val deg: AngleUnit
     get() = Units.Degrees
-val degrees
+val degrees: AngleUnit
     get() = Units.Degrees
-val rad
+val rad: AngleUnit
     get() = Units.Radians
-val radians
+val radians: AngleUnit
     get() = Units.Radians
-val rot
+val rot: AngleUnit
     get() = Units.Rotations
-val rotations
+val rotations: AngleUnit
     get() = Units.Rotations
 
 // Time
-val sec
+val sec: TimeUnit
     get() = Units.Seconds
-val seconds
+val seconds: TimeUnit
     get() = Units.Seconds
 
 // Other
-val percent
+val percent: DimensionlessUnit
     get() = Units.Percent
-val amps
+val amps: CurrentUnit
     get() = Units.Amps
-val volts
+val volts: VoltageUnit
     get() = Units.Volts
-val kg2m
+val kg2m: MomentOfInertiaUnit
     get() = Units.KilogramSquareMeters
 
 fun LinearVelocity.toAngular(
