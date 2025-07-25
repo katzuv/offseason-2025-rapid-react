@@ -7,7 +7,6 @@ import edu.wpi.first.units.measure.Voltage
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
-import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.lib.extensions.div
@@ -17,19 +16,18 @@ import frc.robot.lib.extensions.volts
 import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 
-private val TIME_BETWEEN_ROUTINES = 1.sec
-
 /**
  * Extension function that creates a [SysIdCommand] for any subsystem that
  * implements [SysIdable] and [SubsystemBase].
- *
- * @param forwardRoutineConfig configuration for the forward routine.
- * @param backwardRoutineConfig configuration for the backward routine.
+ * @param rampRate Ramp rate to apply during the backward motion test.
+ * @param stepVoltage Step voltage to apply during the step test.
+ * @param timeout Maximum duration the routine is allowed to run.
  *
  * @return A [SysIdCommand] instance.
  */
-fun <T> T.sysId(): SysIdCommand<T> where T : SysIdable, T : SubsystemBase =
-    SysIdCommand(this)
+fun <T> T.sysId(
+    rampRate: Velocity<VoltageUnit>, stepVoltage: Voltage, timeout: Time
+): Command where T : SysIdable, T : SubsystemBase = SysIdCommand(this, rampRate, stepVoltage, timeout).command()
 
 /**
  * Interface that allows a subsystem to be characterized via SysId. Must provide
@@ -48,116 +46,49 @@ interface SysIdable {
 }
 
 /**
- * Helper that generates a WPILib [Command] to run SysId routines
- * (forward/backward/quasistatic).
+ * A WPILib [Command] to run SysId characterization routine.
  *
- * @param T The subsystem type, which must implement [SysIdable] and extend
+ * @param T The subsystem which must implement [SysIdable] and extend
  * [SubsystemBase].
- * @property subsystem The target subsystem being characterized.
- * @property forwardRoutineConfig configuration for the forward routine.
- * @property backwardRoutineConfig configuration for the backward routine.
+ * @param rampRate Ramp rate to apply during the backward motion test.
+ * @param stepVoltage Step voltage to apply during the step test.
+ * @param timeout Maximum duration the routine is allowed to run.
  */
-class SysIdCommand<T> internal constructor(private val subsystem: T) where
-T : SysIdable,
-T : SubsystemBase {
+class SysIdCommand<T>
+internal constructor(
+    private val subsystem: T, rampRate: Velocity<VoltageUnit>, stepVoltage: Voltage, timeout: Time
+) where T : SysIdable, T : SubsystemBase {
+    private val loggingPath = "Tuning/SysId/${subsystem.name}"
+    private val rampRateTunableNumber = LoggedNetworkNumber(
+        "$loggingPath/Ramp rate [V/s]", rampRate[volts / sec]
+    )
+    private val stepVoltageTunableNumber = LoggedNetworkNumber("$loggingPath/Step voltage", stepVoltage[volts])
+    private val timeoutTunableNumber = LoggedNetworkNumber("$loggingPath/Timeout", timeout[sec])
 
-    private val name = subsystem.name
-
-    private lateinit var forwardRoutine: () -> SysIdRoutine
-    private lateinit var backwardRoutine: () -> SysIdRoutine
-    private lateinit var forwardRoutineConfig: LoggedSysIdRoutineConfig
-    private lateinit var backwardRoutineConfig: LoggedSysIdRoutineConfig
-
-    /**
-     * Configures the forward routine for the system identification command.
-     *
-     * This function sets the [forwardRoutineConfig] with the provided ramp
-     * rate, step voltage, and timeout, and returns the command instance for
-     * chaining.
-     *
-     * @param rampRate The ramp rate to apply during the forward motion test,
-     * typically in volts per second.
-     * @param stepVoltage The constant voltage to apply during the step test.
-     * @param timeout The maximum duration to allow the routine to run.
-     * @return The current [SysIdCommand] instance for method chaining.
-     */
-    fun withForwardRoutineConfig(
-        rampRate: Velocity<VoltageUnit>,
-        stepVoltage: Voltage,
-        timeout: Time
-    ): SysIdCommand<T> {
-        forwardRoutineConfig =
-            LoggedSysIdRoutineConfig(
-                rampRate,
-                stepVoltage,
-                timeout,
-                SysIdRoutine.Direction.kForward
-            )
-        forwardRoutine = createRoutine(forwardRoutineConfig)
-        return this
-    }
+    private val waitBetweenRuns = Commands.waitTime(1.sec)
 
     /**
-     * Configures the backward routine for the system identification command.
-     *
-     * This function sets the [backwardRoutineConfig] with the provided ramp
-     * rate, step voltage, and timeout, and returns the command instance for
-     * chaining.
-     *
-     * @param rampRate The ramp rate to apply during the backward motion test,
-     * typically in volts per second.
-     * @param stepVoltage The constant voltage to apply during the step test.
-     * @param timeout The maximum duration to allow the routine to run.
-     * @return The current [SysIdCommand] instance for method chaining.
+     * Creates the [SysIdRoutine] object with configuration values from tunable
+     * numbers. Defaults to arguments passed in the constructor.
      */
-    fun withBackwardRoutineConfig(
-        rampRate: Velocity<VoltageUnit>,
-        stepVoltage: Voltage,
-        timeout: Time
-    ): SysIdCommand<T> {
-        backwardRoutineConfig =
-            LoggedSysIdRoutineConfig(
-                rampRate,
-                stepVoltage,
-                timeout,
-                SysIdRoutine.Direction.kReverse
+    private fun createRoutine() = SysIdRoutine(
+        SysIdRoutine.Config(
+            rampRateTunableNumber.get().volts / sec,
+            stepVoltageTunableNumber.get().volts,
+            timeoutTunableNumber.get().sec,
+        ) { state: SysIdRoutineLog.State ->
+            Logger.recordOutput(
+                "SysId/${subsystem.name}/state", state.toString()
             )
-        backwardRoutine = createRoutine(backwardRoutineConfig)
-        return this
-    }
-
-    /**
-     * Creates the [SysIdRoutine] object with the provided configuration.
-     *
-     * @param routineConfig A configuration for the routine.
-     */
-    private fun createRoutine(routineConfig: LoggedSysIdRoutineConfig) = {
-        SysIdRoutine(
-            SysIdRoutine.Config(
-                routineConfig.loggedRampRate.get().volts / sec,
-                routineConfig.loggedStepVoltage.get().volts,
-                routineConfig.loggedTimeout.get().sec,
-            ) { state: SysIdRoutineLog.State ->
-                Logger.recordOutput("SysId/$name/state", state.toString())
-            },
-            SysIdRoutine.Mechanism(
-                subsystem.setVoltageConsumer,
-                null,
-                subsystem
-            )
+        }, SysIdRoutine.Mechanism(
+            // `log` is `null` because data is already logged by AdvantageKit.
+            subsystem.setVoltageConsumer, null, subsystem
         )
-    }
-
-    /** Initializes the internal SysId routines from the stored constants. */
-    private fun createRoutineCommands(): Command =
-        InstantCommand({
-            forwardRoutine = createRoutine(forwardRoutineConfig)
-            backwardRoutine = createRoutine(backwardRoutineConfig)
-        })
+    )
 
     /**
      * Builds the full characterization command sequence:
-     * 1. Initializes routines
+     * 1. Initializes routine
      * 2. Runs forward dynamic
      * 3. Runs backward dynamic
      * 4. Runs forward quasistatic
@@ -165,63 +96,19 @@ T : SubsystemBase {
      *
      * Waits `TIME_BETWEEN_ROUTINES` between each step.
      *
-     * @return The full [Command] sequence.
+     * @return Full [Command] sequence.
      */
-    fun command(): Command {
-        return subsystem
-            .defer {
-                Commands.sequence(
-                    createRoutineCommands(),
-                    forwardRoutine
-                        .invoke()
-                        .dynamic(SysIdRoutine.Direction.kForward),
-                    Commands.waitTime(TIME_BETWEEN_ROUTINES),
-                    backwardRoutine
-                        .invoke()
-                        .dynamic(SysIdRoutine.Direction.kReverse),
-                    Commands.waitTime(TIME_BETWEEN_ROUTINES),
-                    forwardRoutine
-                        .invoke()
-                        .quasistatic(SysIdRoutine.Direction.kForward),
-                    Commands.waitTime(TIME_BETWEEN_ROUTINES),
-                    backwardRoutine
-                        .invoke()
-                        .quasistatic(SysIdRoutine.Direction.kReverse)
-                )
-            }
-            .withName("$name/characterize")
-    }
-
-    /**
-     * Holds the constants used for configuring a [SysIdRoutine], with tunable
-     * logging support.
-     *
-     * @param rampRate The ramp rate for quasistatic tests.
-     * @param stepVoltage The voltage step size for dynamic tests.
-     * @param timeout The timeout after which the routine will stop.
-     */
-    inner class LoggedSysIdRoutineConfig(
-        private val rampRate: Velocity<VoltageUnit>,
-        private val stepVoltage: Voltage,
-        private val timeout: Time,
-        direction: SysIdRoutine.Direction
-    ) {
-
-        val loggingPath = "/Tuning/SysId/$name/${direction.name}"
-
-        /** Logged ramp rate value in volts/sec, tunable via NetworkTables. */
-        val loggedRampRate =
-            LoggedNetworkNumber(
-                "$loggingPath/rampRate",
-                rampRate.`in`(volts.per(sec))
-            )
-
-        /** Logged step voltage in volts, tunable via NetworkTables. */
-        val loggedStepVoltage =
-            LoggedNetworkNumber("$loggingPath/stepVoltage", stepVoltage[volts])
-
-        /** Logged timeout duration in seconds, tunable via NetworkTables. */
-        val loggedTimeout =
-            LoggedNetworkNumber("$loggingPath/timeout", timeout[sec])
-    }
+    fun command(): Command = subsystem.defer {
+        val routine = createRoutine()
+        Commands.sequence(
+            Commands.print("${rampRateTunableNumber.get()} ${stepVoltageTunableNumber.get()} ${timeoutTunableNumber.get()}"),
+            routine.dynamic(SysIdRoutine.Direction.kForward),
+            waitBetweenRuns,
+            routine.dynamic(SysIdRoutine.Direction.kReverse),
+            waitBetweenRuns,
+            routine.quasistatic(SysIdRoutine.Direction.kForward),
+            waitBetweenRuns,
+            routine.quasistatic(SysIdRoutine.Direction.kReverse)
+        )
+    }.withName("${subsystem.name}/Characterize")
 }
