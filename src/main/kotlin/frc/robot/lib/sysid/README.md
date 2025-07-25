@@ -22,11 +22,11 @@ class Wrist : SubsystemBase(), SysIdable {
 Use the `sysId()` extension function to generate a `SysIdCommand` and configure it with forward and backward routines.
 
 ```kotlin
-val sysIdCommand = wrist
-    .sysId()
-    .withForwardRoutineConfig(/* ... */)
-    .withBackwardRoutineConfig(/* ... */)
-    .command()
+val sysIdCommand = wrist.sysId(
+    rampRate = 10.volts / sec,
+    stepVoltage = 1.volts,
+    timeout = 1.sec
+)
 ```
 ---
 

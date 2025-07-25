@@ -72,47 +72,37 @@ val kg2m: MomentOfInertiaUnit = Units.KilogramSquareMeters
 fun LinearVelocity.toAngular(
     diameter: Distance,
     gearRatio: Double,
-): AngularVelocity =
-    timesConversionFactor(
-        Units.RotationsPerSecond.per(Units.MetersPerSecond)
-            .of(1.0 / (diameter[m] * gearRatio * PI))
-    )
+): AngularVelocity = timesConversionFactor(
+    Units.RotationsPerSecond.per(Units.MetersPerSecond).of(1.0 / (diameter[m] * gearRatio * PI))
+)
 
-fun Distance.toAngle(diameter: Distance, gearRatio: Double): Angle =
-    timesConversionFactor(
-        Units.Rotations.per(Units.Meters)
-            .of(1.0 / (diameter[m] * gearRatio * PI))
-    )
+fun Distance.toAngle(diameter: Distance, gearRatio: Double): Angle = timesConversionFactor(
+    Units.Rotations.per(Units.Meters).of(1.0 / (diameter[m] * gearRatio * PI))
+)
 
-fun Angle.toDistance(diameter: Distance, gearRatio: Double): Distance =
-    timesConversionFactor(
-        Units.Meters.per(Units.Rotations).of(diameter[m] * gearRatio * PI)
-    )
+fun Angle.toDistance(diameter: Distance, gearRatio: Double): Distance = timesConversionFactor(
+    Units.Meters.per(Units.Rotations).of(diameter[m] * gearRatio * PI)
+)
 
 fun AngularVelocity.toLinear(
     diameter: Distance,
     gearRatio: Double,
-): LinearVelocity =
-    timesConversionFactor(
-        Units.MetersPerSecond.per(Units.RotationsPerSecond)
-            .of(diameter[m] * gearRatio * PI)
-    )
+): LinearVelocity = timesConversionFactor(
+    Units.MetersPerSecond.per(Units.RotationsPerSecond).of(diameter[m] * gearRatio * PI)
+)
 
 operator fun Distance.div(time: TimeUnit): LinearVelocity = this / time.one()
 
 operator fun Distance.div(divisor: Number): Distance = this / divisor.toDouble()
 
-operator fun Voltage.div(timeUnit: TimeUnit): Velocity<VoltageUnit> =
-    this / timeUnit.one()
+operator fun Voltage.div(timeUnit: TimeUnit): Velocity<VoltageUnit> = this / timeUnit.one()
 
-operator fun VoltageUnit.div(time: TimeUnit): VelocityUnit<VoltageUnit> =
-    this / time
+operator fun VoltageUnit.div(time: TimeUnit): VelocityUnit<VoltageUnit> = this / time
 
 // Factories
 
 // Helper function for conversion
-inline fun <N : Number, R> N.toUnit(converter: (Double) -> R) =
-    converter(toDouble())
+inline fun <N : Number, R> N.toUnit(converter: (Double) -> R) = converter(toDouble())
 
 // Distance
 val Number.m: Distance
@@ -179,8 +169,7 @@ operator fun Time.get(unit: TimeUnit): Double = this.`in`(unit)
 val Number.percent: Dimensionless
     get() = toUnit(Units.Percent::of)
 
-operator fun Dimensionless.get(unit: DimensionlessUnit): Double =
-    this.`in`(unit)
+operator fun Dimensionless.get(unit: DimensionlessUnit): Double = this.`in`(unit)
 
 val Number.amps: Current
     get() = toUnit(Units.Amps::of)
@@ -191,13 +180,13 @@ operator fun Voltage.get(unit: VoltageUnit): Double = this.`in`(unit)
 
 operator fun Velocity<VoltageUnit>.get(unit: VelocityUnit<VoltageUnit>): Double = this.`in`(unit)
 
+operator fun MomentOfInertia.get(unit: MomentOfInertiaUnit): Double = this.`in`(unit)
+
 val Number.volts: Voltage
     get() = toUnit(Units.Volts::of)
 
 val Number.kg2m: MomentOfInertia
     get() = toUnit(Units.KilogramSquareMeters::of)
+
 val Number.kilogramSquareMeters: MomentOfInertia
     get() = toUnit(Units.KilogramSquareMeters::of)
-
-operator fun MomentOfInertia.get(unit: MomentOfInertiaUnit): Double =
-    this.`in`(unit)
