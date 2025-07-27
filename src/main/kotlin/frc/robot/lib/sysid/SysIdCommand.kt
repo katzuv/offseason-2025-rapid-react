@@ -59,7 +59,7 @@ class SysIdCommand<T>
 internal constructor(
     private val subsystem: T, rampRate: Velocity<VoltageUnit>, stepVoltage: Voltage, timeout: Time
 ) where T : SysIdable, T : SubsystemBase {
-    private val loggingPath = "Tuning/SysId/${subsystem.name}"
+    private val loggingPath = "/Tuning/SysId/${subsystem.name}"
     private val rampRateTunableNumber =
         LoggedNetworkNumber("$loggingPath/Ramp rate [Quasistatic] [V per sec]", rampRate[volts / sec])
     private val stepVoltageTunableNumber =
