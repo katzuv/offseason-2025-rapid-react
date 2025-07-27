@@ -7,6 +7,7 @@ import edu.wpi.first.units.measure.Voltage
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
+import edu.wpi.first.wpilibj2.command.Commands.waitTime
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.lib.extensions.div
@@ -65,7 +66,7 @@ internal constructor(
     private val stepVoltageTunableNumber = LoggedNetworkNumber("$loggingPath/Step voltage", stepVoltage[volts])
     private val timeoutTunableNumber = LoggedNetworkNumber("$loggingPath/Timeout", timeout[sec])
 
-    private val waitBetweenRuns = Commands.waitTime(1.sec)
+    private val waitBetweenRuns = 1.sec
 
     /**
      * Creates the [SysIdRoutine] object with configuration values from tunable
@@ -103,11 +104,11 @@ internal constructor(
         Commands.sequence(
             Commands.print("${rampRateTunableNumber.get()} ${stepVoltageTunableNumber.get()} ${timeoutTunableNumber.get()}"),
             routine.dynamic(SysIdRoutine.Direction.kForward),
-            waitBetweenRuns,
+            waitTime(waitBetweenRuns),
             routine.dynamic(SysIdRoutine.Direction.kReverse),
-            waitBetweenRuns,
+            waitTime(waitBetweenRuns),
             routine.quasistatic(SysIdRoutine.Direction.kForward),
-            waitBetweenRuns,
+            waitTime(waitBetweenRuns),
             routine.quasistatic(SysIdRoutine.Direction.kReverse)
         )
     }.withName("${subsystem.name}/Characterize")
