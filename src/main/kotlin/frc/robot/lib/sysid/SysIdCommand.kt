@@ -20,8 +20,8 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 /**
  * Extension function that creates a [SysIdCommand] for any subsystem that
  * implements [SysIdable] and [SubsystemBase].
- * @param rampRate Ramp rate to apply during the backward motion test.
- * @param stepVoltage Step voltage to apply during the step test.
+ * @param rampRate Ramp rate to apply during the quasistatic motion test.
+ * @param stepVoltage Step voltage to apply during the dynamic test.
  * @param timeout Maximum duration the routine is allowed to run.
  *
  * @return A [SysIdCommand] instance.
@@ -51,8 +51,8 @@ interface SysIdable {
  *
  * @param T The subsystem which must implement [SysIdable] and extend
  * [SubsystemBase].
- * @param rampRate Ramp rate to apply during the backward motion test.
- * @param stepVoltage Step voltage to apply during the step test.
+ * @param rampRate Ramp rate to apply during the quasistatic motion test.
+ * @param stepVoltage Step voltage to apply during the dynamic test.
  * @param timeout Maximum duration the routine is allowed to run.
  */
 class SysIdCommand<T>
@@ -60,10 +60,10 @@ internal constructor(
     private val subsystem: T, rampRate: Velocity<VoltageUnit>, stepVoltage: Voltage, timeout: Time
 ) where T : SysIdable, T : SubsystemBase {
     private val loggingPath = "Tuning/SysId/${subsystem.name}"
-    private val rampRateTunableNumber = LoggedNetworkNumber(
-        "$loggingPath/Ramp rate [V per sec]", rampRate[volts / sec]
-    )
-    private val stepVoltageTunableNumber = LoggedNetworkNumber("$loggingPath/Step voltage", stepVoltage[volts])
+    private val rampRateTunableNumber =
+        LoggedNetworkNumber("$loggingPath/Ramp rate [Quasistatic] [V per sec]", rampRate[volts / sec])
+    private val stepVoltageTunableNumber =
+        LoggedNetworkNumber("$loggingPath/Step voltage [Dynamic]", stepVoltage[volts])
     private val timeoutTunableNumber = LoggedNetworkNumber("$loggingPath/Timeout", timeout[sec])
 
     private val waitBetweenRuns = 1.sec
