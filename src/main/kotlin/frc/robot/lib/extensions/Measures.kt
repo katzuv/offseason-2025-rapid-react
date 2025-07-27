@@ -99,6 +99,8 @@ operator fun VoltageUnit.div(timeUnit: TimeUnit): VelocityUnit<VoltageUnit> = th
 
 operator fun Voltage.div(timeUnit: TimeUnit): Velocity<VoltageUnit> = this / timeUnit.one()
 
+@Suppress("RemoveRedundantQualifierName") // Emphasizing this is not Kotlin's [Unit].
+operator fun <U : edu.wpi.first.units.Unit> Measure<U>.get(unit: U) = this.`in`(unit)
 // Factories
 
 // Helper function for conversion
@@ -117,8 +119,6 @@ val Number.mm: Distance
     get() = toUnit(Units.Millimeters::of)
 val Number.millimeters: Distance
     get() = toUnit(Units.Millimeters::of)
-
-operator fun Distance.get(unit: DistanceUnit): Double = this.`in`(unit)
 
 // Linear velocity
 val Number.mps: LinearVelocity
@@ -139,8 +139,6 @@ val Number.radians: Angle
     get() = toUnit(Units.Radians::of)
 
 fun Angle.toRotation2d(): Rotation2d = Rotation2d(this[rad])
-
-operator fun Angle.get(unit: AngleUnit): Double = this.`in`(unit)
 
 // Angular velocity
 val Number.deg_ps: AngularVelocity
@@ -164,23 +162,11 @@ val Number.sec: Time
 val Number.seconds: Time
     get() = toUnit(Units.Seconds::of)
 
-operator fun Time.get(unit: TimeUnit): Double = this.`in`(unit)
-
 val Number.percent: Dimensionless
     get() = toUnit(Units.Percent::of)
 
-operator fun Dimensionless.get(unit: DimensionlessUnit): Double = this.`in`(unit)
-
 val Number.amps: Current
     get() = toUnit(Units.Amps::of)
-
-operator fun Current.get(unit: CurrentUnit): Double = this.`in`(unit)
-
-operator fun Voltage.get(unit: VoltageUnit): Double = this.`in`(unit)
-
-operator fun Velocity<VoltageUnit>.get(unit: VelocityUnit<VoltageUnit>): Double = this.`in`(unit)
-
-operator fun MomentOfInertia.get(unit: MomentOfInertiaUnit): Double = this.`in`(unit)
 
 val Number.volts: Voltage
     get() = toUnit(Units.Volts::of)
