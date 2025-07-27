@@ -102,7 +102,6 @@ internal constructor(
     fun command(): Command = subsystem.defer {
         val routine = createRoutine()
         Commands.sequence(
-            Commands.print("${rampRateTunableNumber.get()} ${stepVoltageTunableNumber.get()} ${timeoutTunableNumber.get()}"),
             routine.dynamic(SysIdRoutine.Direction.kForward),
             waitTime(waitBetweenRuns),
             routine.dynamic(SysIdRoutine.Direction.kReverse),
