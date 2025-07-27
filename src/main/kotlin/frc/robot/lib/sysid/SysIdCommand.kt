@@ -61,7 +61,7 @@ internal constructor(
 ) where T : SysIdable, T : SubsystemBase {
     private val loggingPath = "Tuning/SysId/${subsystem.name}"
     private val rampRateTunableNumber = LoggedNetworkNumber(
-        "$loggingPath/Ramp rate [V/s]", rampRate[volts / sec]
+        "$loggingPath/Ramp rate [V per sec]", rampRate[volts / sec]
     )
     private val stepVoltageTunableNumber = LoggedNetworkNumber("$loggingPath/Step voltage", stepVoltage[volts])
     private val timeoutTunableNumber = LoggedNetworkNumber("$loggingPath/Timeout", timeout[sec])
