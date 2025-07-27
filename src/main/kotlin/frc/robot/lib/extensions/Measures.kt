@@ -93,7 +93,8 @@ fun AngularVelocity.toLinear(
 
 operator fun Distance.div(time: TimeUnit): LinearVelocity = this / time.one()
 
-operator fun Distance.div(divisor: Number): Distance = this / divisor.toDouble()
+@Suppress("RemoveRedundantQualifierName") // Emphasizing this is not Kotlin's [Unit].
+operator fun <U : edu.wpi.first.units.Unit> Measure<U>.div(divisor: Number): Measure<U> = this / divisor.toDouble()
 
 operator fun VoltageUnit.div(timeUnit: TimeUnit): VelocityUnit<VoltageUnit> = this.per(timeUnit)
 
