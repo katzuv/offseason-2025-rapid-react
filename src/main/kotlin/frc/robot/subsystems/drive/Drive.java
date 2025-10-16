@@ -160,9 +160,11 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                     TunerConstants.driveGains.kV,
                     TunerConstants.driveGains.kA,
                     TunerConstants.driveGains.kG,
-                    RotationsPerSecond.zero(),
-                    RotationsPerSecondPerSecond.zero(),
-                    RotationsPerSecondPerSecond.per(Second).zero());
+                    RotationsPerSecond.zero().in(RotationsPerSecond),
+                    RotationsPerSecondPerSecond.zero().in(RotationsPerSecondPerSecond),
+                    RotationsPerSecondPerSecond.per(Second)
+                            .zero()
+                            .in(RotationsPerSecondPerSecond.per(Second)));
 
     private final TunableGains turnGains =
             new TunableGains(
@@ -175,12 +177,9 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                     TunerConstants.turnGains.kV,
                     TunerConstants.turnGains.kA,
                     TunerConstants.turnGains.kG,
-                    RadiansPerSecond.of(
-                            TunerConstants.motionMagicSteerGains.MotionMagicCruiseVelocity),
-                    RadiansPerSecondPerSecond.of(
-                            TunerConstants.motionMagicSteerGains.MotionMagicAcceleration),
-                    RotationsPerSecondPerSecond.per(Second)
-                            .of(TunerConstants.motionMagicSteerGains.MotionMagicJerk));
+                    TunerConstants.motionMagicSteerGains.MotionMagicCruiseVelocity,
+                    TunerConstants.motionMagicSteerGains.MotionMagicAcceleration,
+                    TunerConstants.motionMagicSteerGains.MotionMagicJerk);
 
     private final SwerveDrivePoseEstimator poseEstimator =
             new SwerveDrivePoseEstimator(

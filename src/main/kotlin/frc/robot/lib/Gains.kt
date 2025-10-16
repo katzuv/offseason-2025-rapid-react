@@ -2,9 +2,6 @@ package frc.robot.lib
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs
 import com.ctre.phoenix6.configs.Slot0Configs
-import edu.wpi.first.units.measure.AngularAcceleration
-import edu.wpi.first.units.measure.AngularVelocity
-import frc.robot.lib.extensions.*
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 
 /**
@@ -13,18 +10,18 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
  *
  * @param name The name of the gain set. This is used as part of the network
  * table path.
- * @param kP The proportional gain. If null, this gain will not be tunable.
- * @param kI The integral gain. If null, this gain will not be tunable.
- * @param kD The derivative gain. If null, this gain will not be tunable.
- * @param kS The static gain. If null, this gain will not be tunable.
- * @param kV The velocity gain. If null, this gain will not be tunable.
- * @param kA The acceleration gain. If null, this gain will not be tunable.
- * @param kG The gravity gain. If null, this gain will not be tunable.
- * @param cruiseVelocity The cruise velocity for Motion Magic. If null, this
+ * @param kP Proportional gain. If null, this gain will not be tunable.
+ * @param kI Integral gain. If null, this gain will not be tunable.
+ * @param kD Derivative gain. If null, this gain will not be tunable.
+ * @param kS Static gain. If null, this gain will not be tunable.
+ * @param kV Velocity gain. If null, this gain will not be tunable.
+ * @param kA Acceleration gain. If null, this gain will not be tunable.
+ * @param kG Gravity gain. If null, this gain will not be tunable.
+ * @param cruiseVelocity The cruise velocity in m/s or rad/s. If null, this
  * parameter will not be tunable.
- * @param acceleration The acceleration for Motion Magic. If null, this
+ * @param acceleration The acceleration in m/s² or rad/s². If null, this
  * parameter will not be tunable.
- * @param jerk The jerk for Motion Magic. If null, this parameter will not be
+ * @param jerk The jerk in m/s³ or rad/s³. If null, this parameter will not be
  * tunable.
  * @param key An optional key to further distinguish the network table path. By
  * default, this is the name of the file that instantiated the class.
@@ -40,9 +37,9 @@ class TunableGains(
     kV: Double? = null,
     kA: Double? = null,
     kG: Double? = null,
-    cruiseVelocity: AngularVelocity? = null,
-    acceleration: AngularAcceleration? = null,
-    jerk: AngularJerk? = null,
+    cruiseVelocity: Double? = null,
+    acceleration: Double? = null,
+    jerk: Double? = null,
 ) {
     private val path = "/Tuning/$key/$name"
     val kPTunable = kP?.let { LoggedNetworkNumber("$path/kP", it) }
@@ -53,15 +50,10 @@ class TunableGains(
     val kATunable = kA?.let { LoggedNetworkNumber("$path/kA", it) }
     val kGTunable = kG?.let { LoggedNetworkNumber("$path/kG", it) }
     val cruiseVelocityTunable =
-        cruiseVelocity?.let {
-            LoggedNetworkNumber("$path/Cruise velocity", it[rps])
-        }
+        cruiseVelocity?.let { LoggedNetworkNumber("$path/Cruise velocity", it) }
     val accelerationTunable =
-        acceleration?.let {
-            LoggedNetworkNumber("$path/Acceleration", it[rps_squared])
-        }
-    val jerkTunable =
-        jerk?.let { LoggedNetworkNumber("$path/Jerk", it[rps_tripled]) }
+        acceleration?.let { LoggedNetworkNumber("$path/Acceleration", it) }
+    val jerkTunable = jerk?.let { LoggedNetworkNumber("$path/Jerk", it) }
 
     // If you call this, you probably should have a tunable for that.
     val kP
