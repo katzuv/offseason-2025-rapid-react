@@ -43,17 +43,16 @@ class TunableGains(
 ) {
     private val path = "/Tuning/$key/$name"
 
-    private fun getTunable(name: String, gain: Any?): LoggedNetworkNumber? {
-        if (gain == null || gain is LoggedNetworkNumber) {
-            return gain
+    private fun getTunable(name: String, gain: Any?) =
+        when (gain) {
+            is LoggedNetworkNumber,
+            null -> gain
+            !is Number ->
+                throw IllegalArgumentException(
+                    "gain must be a double or a tunable, not $gain"
+                )
+            else -> LoggedNetworkNumber("$path/$name", gain as Double)
         }
-        if (gain !is Number) {
-            throw IllegalArgumentException(
-                "gain must be a double or a tunable, not $gain"
-            )
-        }
-        return LoggedNetworkNumber("$path/$name", gain as Double)
-    }
 
     val kPTunable = getTunable("kP", kP)
     val kITunable = getTunable("kI", kI)
