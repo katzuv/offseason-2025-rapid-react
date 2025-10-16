@@ -1,7 +1,5 @@
 package frc.robot.lib;
 
-import static frc.robot.ConstantsKt.LOOP_TIME;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -11,6 +9,8 @@ import edu.wpi.first.units.measure.Angle;
 
 import java.util.Comparator;
 import java.util.List;
+
+import static frc.robot.ConstantsKt.LOOP_TIME;
 
 public class Utils {
     public static final double EPSILON = 1e-9;

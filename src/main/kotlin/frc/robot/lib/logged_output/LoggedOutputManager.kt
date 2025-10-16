@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import frc.robot.lib.extensions.log
 import frc.robot.lib.extensions.toPrimitiveTypeJava
 import frc.robot.lib.ifNotNull
+import org.littletonrobotics.junction.Logger
+import org.littletonrobotics.junction.mechanism.LoggedMechanism2d
 import java.util.function.*
 import kotlin.reflect.KFunction
 import kotlin.reflect.KProperty0
 import kotlin.reflect.jvm.javaGetter
 import kotlin.reflect.jvm.javaMethod
-import org.littletonrobotics.junction.Logger
-import org.littletonrobotics.junction.mechanism.LoggedMechanism2d
 
 object LoggedOutputManager : SubsystemBase() {
     private val callbacks = mutableListOf<Runnable>()

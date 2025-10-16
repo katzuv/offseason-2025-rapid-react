@@ -13,8 +13,6 @@
 
 package frc.robot.subsystems.drive.ModuleIOs;
 
-import static frc.robot.lib.PhoenixUtil.tryUntilOk;
-
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -41,6 +39,8 @@ import frc.robot.subsystems.drive.PhoenixOdometryThread;
 import frc.robot.subsystems.drive.TunerConstants;
 
 import java.util.Queue;
+
+import static frc.robot.lib.PhoenixUtil.tryUntilOk;
 
 /**
  * Module IO implementation for Talon FX drive motor controller, Talon FX turn motor controller, and

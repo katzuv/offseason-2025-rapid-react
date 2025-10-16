@@ -2,14 +2,10 @@ package frc.robot.robotstate
 
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.button.Trigger
-import frc.robot.applyLeds
-import frc.robot.drive
-import frc.robot.hopper
-import frc.robot.lib.extensions.*
+import frc.robot.*
+import frc.robot.lib.extensions.and
+import frc.robot.lib.extensions.not
 import frc.robot.lib.onTrue
-import frc.robot.robotRelativeBallPoses
-import frc.robot.roller
-import frc.robot.turret
 import org.team5987.annotation.LoggedOutput
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)

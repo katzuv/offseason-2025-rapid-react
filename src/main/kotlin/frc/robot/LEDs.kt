@@ -1,6 +1,8 @@
 package frc.robot
 
-import edu.wpi.first.wpilibj.*
+import edu.wpi.first.wpilibj.AddressableLED
+import edu.wpi.first.wpilibj.AddressableLEDBuffer
+import edu.wpi.first.wpilibj.LEDPattern
 import edu.wpi.first.wpilibj.LEDPattern.gradient
 import edu.wpi.first.wpilibj.LEDPattern.solid
 import edu.wpi.first.wpilibj.util.Color

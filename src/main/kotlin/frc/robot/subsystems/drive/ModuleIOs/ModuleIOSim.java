@@ -13,18 +13,17 @@
 
 package frc.robot.subsystems.drive.ModuleIOs;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.lib.PhoenixUtil;
 import frc.robot.subsystems.drive.TunerConstants;
+import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
+import org.ironmaple.simulation.motorsims.SimulatedMotorController;
 
 import java.util.Arrays;
 
-import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
-import org.ironmaple.simulation.motorsims.SimulatedMotorController;
+import static edu.wpi.first.units.Units.*;
 
 /**
  * Physics sim implementation of module IO. The sim models are configured using a set of module

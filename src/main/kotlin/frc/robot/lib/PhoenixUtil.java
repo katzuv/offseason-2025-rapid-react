@@ -13,9 +13,6 @@
 
 package frc.robot.lib;
 
-import static edu.wpi.first.units.Units.*;
-import static edu.wpi.first.units.Units.Seconds;
-
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -27,12 +24,13 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
-
-import java.util.function.Supplier;
-
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.motorsims.SimulatedBattery;
 import org.ironmaple.simulation.motorsims.SimulatedMotorController;
+
+import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.*;
 
 public final class PhoenixUtil {
     /**

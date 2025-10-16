@@ -8,11 +8,7 @@ import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
 import edu.wpi.first.wpilibj.Filesystem
 import frc.robot.lib.Gains
-import frc.robot.lib.extensions.amps
-import frc.robot.lib.extensions.get
-import frc.robot.lib.extensions.mm
-import frc.robot.lib.extensions.rps
-import frc.robot.lib.extensions.sec
+import frc.robot.lib.extensions.*
 import frc.robot.lib.math.interpolation.InterpolatingDoubleMap
 import frc.robot.lib.shooting.ShootingTableReader
 
