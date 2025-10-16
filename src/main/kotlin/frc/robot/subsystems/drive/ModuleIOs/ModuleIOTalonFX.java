@@ -35,7 +35,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
-import frc.robot.lib.LoggedNetworkGains;
+import frc.robot.lib.TunableGains;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.PhoenixOdometryThread;
 import frc.robot.subsystems.drive.TunerConstants;
@@ -189,10 +189,10 @@ public class ModuleIOTalonFX implements ModuleIO {
     }
 
     @Override
-    public void updateGains(LoggedNetworkGains turnGains, LoggedNetworkGains driveGains) {
-        turnTalon.getConfigurator().apply(turnGains.toSlotConfig());
-        turnTalon.getConfigurator().apply(turnGains.toMotionMagicConfig());
-        driveTalon.getConfigurator().apply(driveGains.toSlotConfig());
+    public void updateGains(TunableGains turnGains, TunableGains driveGains) {
+        turnTalon.getConfigurator().apply(turnGains.getSlot0Config());
+        turnTalon.getConfigurator().apply(turnGains.getMotionMagicConfig());
+        driveTalon.getConfigurator().apply(driveGains.getSlot0Config());
     }
 
     @Override

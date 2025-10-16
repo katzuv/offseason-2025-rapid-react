@@ -51,7 +51,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.ConstantsKt;
 import frc.robot.Mode;
 import frc.robot.lib.LocalADStarAK;
-import frc.robot.lib.LoggedNetworkGains;
+import frc.robot.lib.TunableGains;
 import frc.robot.lib.sysid.SysIdable;
 import frc.robot.subsystems.drive.ModuleIOs.Module;
 import frc.robot.subsystems.drive.ModuleIOs.ModuleIO;
@@ -149,8 +149,9 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                 new SwerveModulePosition()
             };
 
-    private final LoggedNetworkGains driveGains =
-            new LoggedNetworkGains(
+    private final TunableGains driveGains =
+            new TunableGains(
+                    "Drive",
                     "Drive",
                     TunerConstants.driveGains.kP,
                     TunerConstants.driveGains.kI,
@@ -160,13 +161,13 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                     TunerConstants.driveGains.kA,
                     TunerConstants.driveGains.kG,
                     RotationsPerSecond.zero(),
-                    RotationsPerSecond.per(Second).zero(),
-                    0.0,
-                    "Drive");
+                    RotationsPerSecondPerSecond.zero(),
+                    RotationsPerSecondPerSecond.per(Second).zero());
 
-    private final LoggedNetworkGains turnGains =
-            new LoggedNetworkGains(
+    private final TunableGains turnGains =
+            new TunableGains(
                     "Turn",
+                    "Drive",
                     TunerConstants.turnGains.kP,
                     TunerConstants.turnGains.kI,
                     TunerConstants.turnGains.kD,
@@ -178,8 +179,8 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                             TunerConstants.motionMagicSteerGains.MotionMagicCruiseVelocity),
                     RadiansPerSecondPerSecond.of(
                             TunerConstants.motionMagicSteerGains.MotionMagicAcceleration),
-                    TunerConstants.motionMagicSteerGains.MotionMagicJerk,
-                    "Drive");
+                    RotationsPerSecondPerSecond.per(Second)
+                            .of(TunerConstants.motionMagicSteerGains.MotionMagicJerk));
 
     private final SwerveDrivePoseEstimator poseEstimator =
             new SwerveDrivePoseEstimator(

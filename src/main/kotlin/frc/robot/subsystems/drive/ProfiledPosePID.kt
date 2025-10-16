@@ -5,19 +5,16 @@ import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints
 import edu.wpi.first.wpilibj2.command.button.Trigger
-import frc.robot.lib.LoggedNetworkGains
+import frc.robot.lib.TunableGains
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 import org.team5987.annotation.LoggedOutput
 
 private const val LOGGING_PREFIX = "AutoAlignment"
 
-private val xGains = LoggedNetworkGains("x Gains", 4.0)
-private val yGains =
-    LoggedNetworkGains(
-        "y Gains",
-    )
+private val xGains = TunableGains("x Gains", kP = 4.0)
+private val yGains = TunableGains("y Gains")
 
-private val thetaGains = LoggedNetworkGains("ϴ Gains", 6.0)
+private val thetaGains = TunableGains("ϴ Gains", kP = 6.0)
 private val linearMaxVelocity =
     LoggedNetworkNumber("$LOGGING_PREFIX/linearMaxVelocity", 4.69)
 private val linearMaxAcceleration =
@@ -40,28 +37,18 @@ private val rotationalLimits
 
 @LoggedOutput("X controller", LOGGING_PREFIX)
 var xController =
-    ProfiledPIDController(
-        xGains.kP.get(),
-        xGains.kI.get(),
-        xGains.kD.get(),
-        linearLimits
-    )
+    ProfiledPIDController(xGains.kP, xGains.kI, xGains.kD, linearLimits)
 
 @LoggedOutput("Y controller", LOGGING_PREFIX)
 var yController =
-    ProfiledPIDController(
-        yGains.kP.get(),
-        yGains.kI.get(),
-        yGains.kD.get(),
-        linearLimits
-    )
+    ProfiledPIDController(yGains.kP, yGains.kI, yGains.kD, linearLimits)
 
 @LoggedOutput("ϴ controller", LOGGING_PREFIX)
 var thetaController =
     ProfiledPIDController(
-            thetaGains.kP.get(),
-            thetaGains.kI.get(),
-            thetaGains.kD.get(),
+            thetaGains.kP,
+            thetaGains.kI,
+            thetaGains.kD,
             rotationalLimits
         )
         .apply { enableContinuousInput(-Math.PI, Math.PI) }
@@ -79,7 +66,7 @@ fun updateProfiledPIDGains() {
             thetaController to thetaGains
         )
         .forEach { (controller, gains) ->
-            controller.setPID(gains.kP.get(), gains.kI.get(), gains.kD.get())
+            controller.setPID(gains.kP, gains.kI, gains.kD)
         }
 }
 
