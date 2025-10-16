@@ -54,16 +54,16 @@ class TunableGains(
             else -> LoggedNetworkNumber("$path/$name", gain as Double)
         }
 
-    val kPTunable = getTunable("kP", kP)
-    val kITunable = getTunable("kI", kI)
-    val kDTunable = getTunable("kD", kD)
-    val kSTunable = getTunable("kS", kS)
-    val kVTunable = getTunable("kV", kV)
-    val kATunable = getTunable("kA", kA)
-    val kGTunable = getTunable("kG", kG)
-    val cruiseVelocityTunable = getTunable("Cruise Velocity", cruiseVelocity)
-    val accelerationTunable = getTunable("Acceleration", acceleration)
-    val jerkTunable = getTunable("Jerk", jerk)
+    private val kPTunable = getTunable("kP", kP)
+    private val kITunable = getTunable("kI", kI)
+    private val kDTunable = getTunable("kD", kD)
+    private val kSTunable = getTunable("kS", kS)
+    private val kVTunable = getTunable("kV", kV)
+    private val kATunable = getTunable("kA", kA)
+    private val kGTunable = getTunable("kG", kG)
+    private val cruiseVelocityTunable = getTunable("Cruise Velocity", cruiseVelocity)
+    private val accelerationTunable = getTunable("Acceleration", acceleration)
+    private val jerkTunable = getTunable("Jerk", jerk)
 
     // If you call this, you probably should have a tunable for that.
     val kP
