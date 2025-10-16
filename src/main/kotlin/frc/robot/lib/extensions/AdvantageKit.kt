@@ -151,12 +151,6 @@ fun PIDController.log(loggingName: String) {
 fun ProfiledPIDController.log(loggingName: String) {
 
     mapOf(
-            "aa p" to p,
-            "aa i" to i,
-            "aa d" to d,
-            "aa maxVelocity" to constraints.maxVelocity,
-            "aa maxAcceleration" to constraints.maxAcceleration,
-            "aa *******" to "*******",
             "goal" to goal.position,
             "positionSetpoint" to setpoint.position,
             "error" to positionError,
@@ -165,6 +159,8 @@ fun ProfiledPIDController.log(loggingName: String) {
             "goalVelocity" to goal.velocity,
             "positionTolerance" to positionTolerance,
             "velocityTolerance" to velocityTolerance,
+            "maxVelocity" to constraints.maxVelocity,
+            "maxAcceleration" to constraints.maxAcceleration,
             "atGoal" to atSetpoint(),
             "atSetpoint" to atGoal()
         )
