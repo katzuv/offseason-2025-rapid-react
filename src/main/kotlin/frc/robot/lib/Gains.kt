@@ -2,6 +2,7 @@ package frc.robot.lib
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs
 import com.ctre.phoenix6.configs.Slot0Configs
+import edu.wpi.first.math.controller.PIDController
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 
 /**
@@ -105,4 +106,12 @@ class TunableGains(
                 accelerationTunable?.let { MotionMagicAcceleration = it.get() }
                 jerkTunable?.let { MotionMagicJerk = it.get() }
             }
+
+    val pidController: PIDController by lazy {
+        PIDController(
+            kPTunable?.get() ?: 0.0,
+            kITunable?.get() ?: 0.0,
+            kDTunable?.get() ?: 0.0,
+        )
+    }
 }
