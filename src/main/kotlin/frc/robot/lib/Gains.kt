@@ -146,6 +146,7 @@ var PIDController.gains: TunableGains
         try {
             d = gains.kD
         } catch (_: NullPointerException) {}
+        reset()
     }
 
 var ProfiledPIDController.gains: TunableGains
@@ -172,4 +173,5 @@ var ProfiledPIDController.gains: TunableGains
                 gains.cruiseVelocity,
                 gains.acceleration
             )
+        reset(this.goal)
     }
