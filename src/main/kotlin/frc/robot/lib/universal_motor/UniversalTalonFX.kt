@@ -7,6 +7,7 @@ import edu.wpi.first.units.measure.Distance
 import edu.wpi.first.units.measure.MomentOfInertia
 import frc.robot.CURRENT_MODE
 import frc.robot.Mode
+import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.kg2m
 import frc.robot.lib.extensions.m
@@ -34,6 +35,7 @@ class UniversalTalonFX(
     momentOfInertia: MomentOfInertia = 0.003.kg2m,
     gearRatio: Double = 1.0,
     linearSystemWheelDiameter: Distance = 0.m,
+    absoluteEncoderOffset: Angle = 0.deg
 ) {
     private val motorIO: MotorIO =
         if (CURRENT_MODE == Mode.REAL)
@@ -42,7 +44,8 @@ class UniversalTalonFX(
                 canbus,
                 config,
                 gearRatio,
-                linearSystemWheelDiameter
+                linearSystemWheelDiameter,
+                absoluteEncoderOffset
             )
         else {
             MotorIOSim(
@@ -61,7 +64,7 @@ class UniversalTalonFX(
      */
     fun setControl(control: ControlRequest) = motorIO.setRequest(control)
 
-    fun reset(angle: Angle) = motorIO.resetInternalEncoder(angle)
+    fun reset(angle: Angle = 0.deg) = motorIO.resetInternalEncoder(angle)
 
     fun updateInputs() = motorIO.updateInputs()
 }

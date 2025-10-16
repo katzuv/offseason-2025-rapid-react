@@ -1,6 +1,7 @@
 package frc.robot.lib.motors;
 
 import com.ctre.phoenix6.controls.*;
+import com.ctre.phoenix6.controls.compound.*;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
@@ -138,6 +139,7 @@ public class TalonFXSim extends SimMotor {
 
     public void setControl(ControlRequest request) {
         if (request instanceof DutyCycleOut reqDutyCycleOut) setControl(reqDutyCycleOut);
+        else if (request instanceof Follower) return; // TODO: Add support for follower requests.
         else if (request instanceof TorqueCurrentFOC reqTorqueCurrentFOC)
             setControl(reqTorqueCurrentFOC);
         else if (request instanceof VoltageOut reqVoltageOut) setControl(reqVoltageOut);
@@ -166,7 +168,6 @@ public class TalonFXSim extends SimMotor {
                 MotionMagicVelocityTorqueCurrentFOC
                 reqMotionMagicVelocityTorqueCurrentFOC)
             setControl(reqMotionMagicVelocityTorqueCurrentFOC);
-        else throw new IllegalArgumentException("Unsupported control request: " + request);
     }
 
     public AngularVelocity getVelocity() {

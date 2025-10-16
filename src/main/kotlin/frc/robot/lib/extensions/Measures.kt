@@ -69,6 +69,21 @@ val amps: CurrentUnit = Units.Amps
 val volts: VoltageUnit = Units.Volts
 val kg2m: MomentOfInertiaUnit = Units.KilogramSquareMeters
 
+val rps_squared
+    get() = Units.RotationsPerSecond.per(sec)
+
+val rad_ps
+    get() = Units.RadiansPerSecond
+val rad_ps_ps
+    get() = Units.RadiansPerSecondPerSecond
+val mps
+    get() = Units.MetersPerSecond
+
+val mps_ps
+    get() = Units.MetersPerSecondPerSecond
+val deg_ps_ps
+    get() = Units.DegreesPerSecondPerSecond
+
 fun LinearVelocity.toAngular(
     diameter: Distance,
     gearRatio: Double,
@@ -102,6 +117,7 @@ operator fun Voltage.div(timeUnit: TimeUnit): Velocity<VoltageUnit> = this / tim
 
 @Suppress("RemoveRedundantQualifierName") // Emphasizing this is not Kotlin's [Unit].
 operator fun <U : edu.wpi.first.units.Unit> Measure<U>.get(unit: U) = this.`in`(unit)
+
 // Factories
 
 // Helper function for conversion
@@ -139,7 +155,7 @@ val Number.rad: Angle
 val Number.radians: Angle
     get() = toUnit(Units.Radians::of)
 
-fun Angle.toRotation2d(): Rotation2d = Rotation2d(this[rad])
+fun Angle.toRotation2d(): Rotation2d = Rotation2d(`in`(Units.Radians))
 
 // Angular velocity
 val Number.deg_ps: AngularVelocity
@@ -156,6 +172,18 @@ val Number.rad_ps: AngularVelocity
     get() = toUnit(Units.RadiansPerSecond::of)
 val Number.radiansPerSecond: AngularVelocity
     get() = toUnit(Units.RadiansPerSecond::of)
+
+// Linear acceleration
+val Number.mps_ps: LinearAcceleration
+    get() = toUnit(Units.MetersPerSecondPerSecond::of)
+
+// Angular acceleration
+val Number.deg_ps_ps: AngularAcceleration
+    get() = toUnit(Units.DegreesPerSecondPerSecond::of)
+
+//
+val Number.rps_squared: AngularAcceleration
+    get() = toUnit(Units.RotationsPerSecond::of).per(Units.Second)
 
 // Other
 val Number.sec: Time

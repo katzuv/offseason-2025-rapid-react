@@ -13,7 +13,8 @@ import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
 
 val TOLERANCE = 2.deg
-
+val MAX_ANGLE = 135.deg
+val MIN_ANGLE = (-135).deg
 const val HALL_EFFECT_SENSOR_PORT = 0
 const val MOTOR_ID = 7
 val GAINS = Gains(1.0, kV = 1.0, kA = 1.0)

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.WrapperCommand
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
+import edu.wpi.first.wpilibj2.command.button.Trigger
 import kotlin.math.hypot
 import org.littletonrobotics.junction.LogTable
 
@@ -80,4 +81,14 @@ fun CommandXboxController.setRumble(strength: Double) {
 
 fun CommandXboxController.rumbleCommand(): Command {
     return Commands.startEnd({ this.setRumble(1.0) }, { this.setRumble(0.0) })
+}
+
+fun Any?.ifNotNull(action: (it: Any) -> Unit) {
+    if (this != null) {
+        action(this)
+    }
+}
+
+fun Trigger.onTrue(vararg commands: Command) {
+    commands.forEach { this.onTrue(it) }
 }
