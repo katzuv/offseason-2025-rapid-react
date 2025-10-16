@@ -45,19 +45,13 @@ import kotlin.math.PI
 
 // Length
 val m: DistanceUnit = Units.Meters
-val meters: DistanceUnit = Units.Meters
 val cm: DistanceUnit = Units.Centimeters
-val centimeters: DistanceUnit = Units.Centimeters
 val mm: DistanceUnit = Units.Millimeters
-val millimeters: DistanceUnit = Units.Millimeters
 
 // Angle
 val deg: AngleUnit = Units.Degrees
-val degrees: AngleUnit = Units.Degrees
 val rad: AngleUnit = Units.Radians
-val radians: AngleUnit = Units.Radians
 val rot: AngleUnit = Units.Rotations
-val rotations: AngleUnit = Units.Rotations
 
 // Time
 val sec: TimeUnit = Units.Seconds
@@ -126,15 +120,9 @@ inline fun <N : Number, R> N.toUnit(converter: (Double) -> R) = converter(toDoub
 // Distance
 val Number.m: Distance
     get() = toUnit(Units.Meters::of)
-val Number.meters: Distance
-    get() = toUnit(Units.Meters::of)
 val Number.cm: Distance
     get() = toUnit(Units.Centimeters::of)
-val Number.centimeters: Distance
-    get() = toUnit(Units.Centimeters::of)
 val Number.mm: Distance
-    get() = toUnit(Units.Millimeters::of)
-val Number.millimeters: Distance
     get() = toUnit(Units.Millimeters::of)
 
 // Linear velocity
@@ -144,15 +132,9 @@ val Number.mps: LinearVelocity
 // Angle
 val Number.deg: Angle
     get() = toUnit(Units.Degrees::of)
-val Number.degrees: Angle
-    get() = toUnit(Units.Degrees::of)
 val Number.rot: Angle
     get() = toUnit(Units.Rotations::of)
-val Number.rotations: Angle
-    get() = toUnit(Units.Rotations::of)
 val Number.rad: Angle
-    get() = toUnit(Units.Radians::of)
-val Number.radians: Angle
     get() = toUnit(Units.Radians::of)
 
 fun Angle.toRotation2d(): Rotation2d = Rotation2d(`in`(Units.Radians))
@@ -160,17 +142,11 @@ fun Angle.toRotation2d(): Rotation2d = Rotation2d(`in`(Units.Radians))
 // Angular velocity
 val Number.deg_ps: AngularVelocity
     get() = toUnit(Units.DegreesPerSecond::of)
-val Number.degreesPerSecond: AngularVelocity
-    get() = toUnit(Units.DegreesPerSecond::of)
 val Number.rot_ps: AngularVelocity
-    get() = toUnit(Units.RotationsPerSecond::of)
-val Number.rotationsPerSecond: AngularVelocity
     get() = toUnit(Units.RotationsPerSecond::of)
 val Number.rps: AngularVelocity
     get() = toUnit(Units.RotationsPerSecond::of)
 val Number.rad_ps: AngularVelocity
-    get() = toUnit(Units.RadiansPerSecond::of)
-val Number.radiansPerSecond: AngularVelocity
     get() = toUnit(Units.RadiansPerSecond::of)
 
 // Linear acceleration
@@ -201,7 +177,4 @@ val Number.volts: Voltage
     get() = toUnit(Units.Volts::of)
 
 val Number.kg2m: MomentOfInertia
-    get() = toUnit(Units.KilogramSquareMeters::of)
-
-val Number.kilogramSquareMeters: MomentOfInertia
     get() = toUnit(Units.KilogramSquareMeters::of)
