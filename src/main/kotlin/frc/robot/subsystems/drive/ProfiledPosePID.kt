@@ -67,6 +67,7 @@ fun updateProfiledPIDGains() {
         )
         .forEach { (controller, gains) ->
             controller.setPID(gains.kP, gains.kI, gains.kD)
+            controller.reset(controller.goal)
         }
 }
 
