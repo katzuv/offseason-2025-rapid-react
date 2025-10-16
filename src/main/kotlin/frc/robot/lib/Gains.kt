@@ -3,6 +3,8 @@ package frc.robot.lib
 import com.ctre.phoenix6.configs.MotionMagicConfigs
 import com.ctre.phoenix6.configs.Slot0Configs
 import edu.wpi.first.math.controller.PIDController
+import edu.wpi.first.math.controller.ProfiledPIDController
+import edu.wpi.first.math.trajectory.TrapezoidProfile
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 
 /**
@@ -112,6 +114,18 @@ class TunableGains(
             kPTunable?.get() ?: 0.0,
             kITunable?.get() ?: 0.0,
             kDTunable?.get() ?: 0.0,
+        )
+    }
+
+    val profiledPIDController: ProfiledPIDController by lazy {
+        ProfiledPIDController(
+            kPTunable?.get() ?: 0.0,
+            kITunable?.get() ?: 0.0,
+            kDTunable?.get() ?: 0.0,
+            TrapezoidProfile.Constraints(
+                cruiseVelocityTunable?.get() ?: 0.0,
+                accelerationTunable?.get() ?: 0.0
+            )
         )
     }
 }
