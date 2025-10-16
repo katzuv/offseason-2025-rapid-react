@@ -34,43 +34,6 @@ data class Gains(
 }
 
 /**
- * A function to convert motion magic parameters to a [MotionMagicConfigs]
- * object.
- *
- * @param cruiseVelocity Maximum velocity Motion Magic® based control modes are
- * allowed to use. Motion Magic® Velocity control modes do not use this config.
- * When using Motion Magic® Expo control modes, setting this to 0 will allow the
- * profile to run to the max possible velocity based on Expo_kV.
- * @param acceleration Target acceleration Motion Magic® based control modes are
- * allowed to use. Motion Magic® Expo control modes do not use this config.
- * @param jerk Target jerk (acceleration derivative) Motion Magic® based control
- * modes are allowed to use. Motion Magic® Expo control modes do not use this
- * config. This allows Motion Magic® to generate S-Curve profiles.
- * @param expoKv Target kV used only by Motion Magic® Expo control modes. Unlike
- * the kV slot gain, this is always in units of V/rps. This represents the
- * amount of voltage necessary to hold a velocity. In terms of the Motion Magic®
- * Expo profile, a higher kV results in a slower maximum velocity.
- * @param expoKa Target kA used only by Motion Magic® Expo control modes. Unlike
- * the kA slot gain, this is always in units of V/rps². This represents the
- * amount of voltage necessary to achieve an acceleration. In terms of the
- * Motion Magic® Expo profile, a higher kA results in a slower acceleration.
- * @return A [MotionMagicConfigs] object with the provided parameters set.
- */
-fun getMotionMagicConfigs(
-    cruiseVelocity: AngularVelocity? = null,
-    acceleration: AngularAcceleration? = null,
-    jerk: AngularJerk? = null,
-    expoKv: Double? = null,
-    expoKa: Double? = null
-) = MotionMagicConfigs().apply {
-    cruiseVelocity?.let { MotionMagicCruiseVelocity = it[rps] }
-    acceleration?.let { MotionMagicAcceleration = it[rps_squared] }
-    jerk?.let { MotionMagicJerk = it[rps_tripled] }
-    expoKv?.let { MotionMagicExpo_kV = it }
-    expoKa?.let { MotionMagicExpo_kA = it }
-}
-
-/**
  * A class that creates tunable numbers for gains. Only gains that are provided
  * by the constructor will have gains created for them.
  *
