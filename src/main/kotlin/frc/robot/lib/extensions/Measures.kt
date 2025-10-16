@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.units.*
 import edu.wpi.first.units.measure.*
 import kotlin.math.PI
+import edu.wpi.first.units.Unit as WpilibUnit
 
 /**
  * # Unit DSL Extensions for WPILib
@@ -105,15 +106,13 @@ fun AngularVelocity.toLinear(
 
 operator fun Distance.div(time: TimeUnit): LinearVelocity = this / time.one()
 
-@Suppress("RemoveRedundantQualifierName") // Emphasizing this is not Kotlin's [Unit].
-operator fun <U : edu.wpi.first.units.Unit> Measure<U>.div(divisor: Number): Measure<U> = this / divisor.toDouble()
+operator fun <U : WpilibUnit> Measure<U>.div(divisor: Number): Measure<U> = this / divisor.toDouble()
 
 operator fun VoltageUnit.div(timeUnit: TimeUnit): VelocityUnit<VoltageUnit> = this.per(timeUnit)
 
 operator fun Voltage.div(timeUnit: TimeUnit): Velocity<VoltageUnit> = this / timeUnit.one()
 
-@Suppress("RemoveRedundantQualifierName") // Emphasizing this is not Kotlin's [Unit].
-operator fun <U : edu.wpi.first.units.Unit> Measure<U>.get(unit: U) = this.`in`(unit)
+operator fun <U : WpilibUnit> Measure<U>.get(unit: U) = this.`in`(unit)
 
 // Factories
 
