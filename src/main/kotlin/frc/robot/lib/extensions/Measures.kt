@@ -166,7 +166,7 @@ val Number.deg_ps_ps: AngularAcceleration
     get() = toUnit(Units.DegreesPerSecondPerSecond::of)
 
 val Number.rps_squared: AngularAcceleration
-    get() = toUnit(Units.RotationsPerSecond::of).per(Units.Second)
+    get() = this.rps / 1.sec
 
 typealias AngularJerk = Velocity<AngularAccelerationUnit>
 
