@@ -27,30 +27,41 @@ class TunableGains(
     name: String,
     key: String =
         (Throwable().stackTrace[1]?.fileName?.substringBeforeLast('.') + ""),
-    kP: Double? = null,
-    kI: Double? = null,
-    kD: Double? = null,
-    kS: Double? = null,
-    kV: Double? = null,
-    kA: Double? = null,
-    kG: Double? = null,
-    cruiseVelocity: Double? = null,
-    acceleration: Double? = null,
-    jerk: Double? = null,
+    kP: Any? = null,
+    kI: Any? = null,
+    kD: Any? = null,
+    kS: Any? = null,
+    kV: Any? = null,
+    kA: Any? = null,
+    kG: Any? = null,
+    cruiseVelocity: Any? = null,
+    acceleration: Any? = null,
+    jerk: Any? = null,
 ) {
     private val path = "/Tuning/$key/$name"
-    val kPTunable = kP?.let { LoggedNetworkNumber("$path/kP", it) }
-    val kITunable = kI?.let { LoggedNetworkNumber("$path/kI", it) }
-    val kDTunable = kD?.let { LoggedNetworkNumber("$path/kD", it) }
-    val kSTunable = kS?.let { LoggedNetworkNumber("$path/kS", it) }
-    val kVTunable = kV?.let { LoggedNetworkNumber("$path/kV", it) }
-    val kATunable = kA?.let { LoggedNetworkNumber("$path/kA", it) }
-    val kGTunable = kG?.let { LoggedNetworkNumber("$path/kG", it) }
-    val cruiseVelocityTunable =
-        cruiseVelocity?.let { LoggedNetworkNumber("$path/Cruise velocity", it) }
-    val accelerationTunable =
-        acceleration?.let { LoggedNetworkNumber("$path/Acceleration", it) }
-    val jerkTunable = jerk?.let { LoggedNetworkNumber("$path/Jerk", it) }
+
+    private fun getTunable(name: String, gain: Any?): LoggedNetworkNumber? {
+        if (gain == null || gain is LoggedNetworkNumber) {
+            return gain
+        }
+        if (gain !is Number) {
+            throw IllegalArgumentException(
+                "gain must be a double or a tunable, not $gain"
+            )
+        }
+        return LoggedNetworkNumber("$path/$name", gain as Double)
+    }
+
+    val kPTunable = getTunable("kP", kP)
+    val kITunable = getTunable("kI", kI)
+    val kDTunable = getTunable("kD", kD)
+    val kSTunable = getTunable("kS", kS)
+    val kVTunable = getTunable("kV", kV)
+    val kATunable = getTunable("kA", kA)
+    val kGTunable = getTunable("kG", kG)
+    val cruiseVelocityTunable = getTunable("Cruise Velocity", cruiseVelocity)
+    val accelerationTunable = getTunable("Acceleration", acceleration)
+    val jerkTunable = getTunable("Jerk", jerk)
 
     // If you call this, you probably should have a tunable for that.
     val kP
