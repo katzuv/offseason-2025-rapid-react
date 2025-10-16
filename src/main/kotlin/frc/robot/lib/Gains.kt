@@ -129,3 +129,21 @@ class TunableGains(
         )
     }
 }
+
+var PIDController.gains: TunableGains
+    get() =
+        TunableGains(
+            "I don't think anyone will ever use this"
+        ) // Dummy return to satisfy getter requirement.
+    set(gains) {
+        // It's possible that some PID gains are null, so we try/catch each one.
+        try {
+            p = gains.kP
+        } catch (_: NullPointerException) {}
+        try {
+            i = gains.kI
+        } catch (_: NullPointerException) {}
+        try {
+            d = gains.kD
+        } catch (_: NullPointerException) {}
+    }
