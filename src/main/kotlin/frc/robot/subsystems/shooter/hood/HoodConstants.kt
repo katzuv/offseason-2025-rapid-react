@@ -27,7 +27,15 @@ val HOOD_ANGLE_BY_DISTANCE: InterpolatingDoubleMap =
 val STATOR_LIMIT = 30.amps
 val SUPPLY_LIMIT: Current = STATOR_LIMIT * 2.0
 val CONTROL_GAINS =
-    TunableGains("Hoodd", kP = 100.0, kD = 0.1, kS = 0.3, kV = 7.4, kA = 0.02, kG = 0.2)
+    TunableGains(
+        "Hood",
+        kP = 100.0,
+        kD = 0.1,
+        kS = 0.3,
+        kV = 7.4,
+        kA = 0.02,
+        kG = 0.2
+    )
 
 val ENCODER_OFFSET = 294.1115625.deg
 

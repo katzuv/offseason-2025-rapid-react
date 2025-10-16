@@ -1,57 +1,55 @@
 package frc.robot.subsystems.drive
 
-import edu.wpi.first.math.controller.ProfiledPIDController
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.kinematics.ChassisSpeeds
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.lib.TunableGains
+import frc.robot.lib.extensions.deg_ps
+import frc.robot.lib.extensions.get
+import frc.robot.lib.extensions.rad_ps
+import frc.robot.lib.gains
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 import org.team5987.annotation.LoggedOutput
 
 private const val LOGGING_PREFIX = "AutoAlignment"
 
-private val xGains = TunableGains("x Gains", kP = 4.0)
-private val yGains = TunableGains("y Gains")
-
-private val thetaGains = TunableGains("ϴ Gains", kP = 6.0)
-private val linearMaxVelocity =
+private val linearMaxVelocityTunable =
     LoggedNetworkNumber("$LOGGING_PREFIX/linearMaxVelocity", 4.69)
-private val linearMaxAcceleration =
+private val linearMaxAccelerationTunable =
     LoggedNetworkNumber("$LOGGING_PREFIX/linearMaxAcceleration", 2.8)
 
-private var rotationalMaxVelocity =
-    LoggedNetworkNumber("$LOGGING_PREFIX/rotationMaxVelocity", 7.0)
-private var rotationalMaxAcceleration =
-    LoggedNetworkNumber("$LOGGING_PREFIX/rotationMaxAcceleration", 360.0)
-
-private val linearLimits
-    get() = Constraints(linearMaxVelocity.get(), linearMaxAcceleration.get())
-
-private val rotationalLimits
-    get() =
-        Constraints(
-            rotationalMaxVelocity.get(),
-            rotationalMaxAcceleration.get()
-        )
+private val xGains =
+    TunableGains(
+        "x Gains",
+        kP = 4.0,
+        cruiseVelocity = linearMaxVelocityTunable,
+        acceleration = linearMaxAccelerationTunable
+    )
+private val yGains =
+    TunableGains(
+        "y Gains",
+        cruiseVelocity = linearMaxVelocityTunable,
+        acceleration = linearMaxAccelerationTunable
+    )
+private val thetaGains =
+    TunableGains(
+        "ϴ Gains",
+        kP = 6.0,
+        cruiseVelocity = 7.deg_ps[rad_ps],
+        acceleration = 360.deg_ps[rad_ps]
+    )
 
 @LoggedOutput("X controller", LOGGING_PREFIX)
-var xController =
-    ProfiledPIDController(xGains.kP, xGains.kI, xGains.kD, linearLimits)
+var xController = xGains.profiledPIDController
 
 @LoggedOutput("Y controller", LOGGING_PREFIX)
-var yController =
-    ProfiledPIDController(yGains.kP, yGains.kI, yGains.kD, linearLimits)
+var yController = yGains.profiledPIDController
 
 @LoggedOutput("ϴ controller", LOGGING_PREFIX)
 var thetaController =
-    ProfiledPIDController(
-            thetaGains.kP,
-            thetaGains.kI,
-            thetaGains.kD,
-            rotationalLimits
-        )
-        .apply { enableContinuousInput(-Math.PI, Math.PI) }
+    thetaGains.profiledPIDController.apply {
+        enableContinuousInput(-Math.PI, Math.PI)
+    }
 
 @LoggedOutput(path = LOGGING_PREFIX)
 var atGoal: Trigger =
@@ -65,10 +63,7 @@ fun updateProfiledPIDGains() {
             yController to yGains,
             thetaController to thetaGains
         )
-        .forEach { (controller, gains) ->
-            controller.setPID(gains.kP, gains.kI, gains.kD)
-            controller.reset(controller.goal)
-        }
+        .forEach { (controller, gains) -> controller.gains = gains }
 }
 
 fun setGoal(desiredPose: Pose2d) {
