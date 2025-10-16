@@ -13,7 +13,8 @@ import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d
 
-@AutoLogOutput private var mechanism = LoggedMechanism2d(6.0, 4.0)
+@AutoLogOutput
+private var mechanism = LoggedMechanism2d(6.0, 4.0)
 private var root = mechanism.getRoot("Turret", 3.0, 2.0)
 private val ligament =
     root.append(LoggedMechanismLigament2d("TurretLigament", 0.25, 90.0))

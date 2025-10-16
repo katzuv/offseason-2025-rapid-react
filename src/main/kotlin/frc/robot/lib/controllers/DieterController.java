@@ -18,11 +18,11 @@ public class DieterController extends PIDController {
     /**
      * Constructor for DieterController.
      *
-     * @param kp The proportional gain.
-     * @param ki The integral gain.
-     * @param kd The derivative gain.
+     * @param kp      The proportional gain.
+     * @param ki      The integral gain.
+     * @param kd      The derivative gain.
      * @param kDieter The Dieter constant.
-     * @param period The period of the controller.
+     * @param period  The period of the controller.
      */
     public DieterController(double kp, double ki, double kd, double kDieter, double period) {
         super(kp, ki, kd, period);
@@ -46,9 +46,9 @@ public class DieterController extends PIDController {
     /**
      * Updates the PIDF constants.
      *
-     * @param kP The new proportional gain.
-     * @param kI The new integral gain.
-     * @param kD The new derivative gain.
+     * @param kP      The new proportional gain.
+     * @param kI      The new integral gain.
+     * @param kD      The new derivative gain.
      * @param kDieter The new Dieter constant.
      */
     public void setPIDF(double kP, double kI, double kD, double kDieter) {

@@ -20,7 +20,7 @@ val SLOW_ROTATION = 10.rps
 val SHOOTER_VELOCITY_BY_DISTANCE: InterpolatingDoubleMap =
     ShootingTableReader.parse(
         Filesystem.getDeployDirectory().path +
-            "/shootData/distanceToVelocity.csv"
+                "/shootData/distanceToVelocity.csv"
     )
 
 const val MAIN_MOTOR_PORT = 5

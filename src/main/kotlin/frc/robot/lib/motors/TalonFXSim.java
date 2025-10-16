@@ -75,8 +75,8 @@ public class TalonFXSim extends SimMotor {
         voltageRequest =
                 () ->
                         controller.calculate(
-                                        getVelocity().in(Units.RotationsPerSecond),
-                                        request.Velocity)
+                                getVelocity().in(Units.RotationsPerSecond),
+                                request.Velocity)
                                 + request.FeedForward;
     }
 
@@ -96,8 +96,8 @@ public class TalonFXSim extends SimMotor {
         voltageRequest =
                 () ->
                         controller.calculate(
-                                        getVelocity().in(Units.RotationsPerSecond),
-                                        request.Velocity)
+                                getVelocity().in(Units.RotationsPerSecond),
+                                request.Velocity)
                                 + (request.FeedForward * 12);
     }
 
@@ -123,8 +123,8 @@ public class TalonFXSim extends SimMotor {
         voltageRequest =
                 () ->
                         profiledController.calculate(
-                                        getVelocity().in(Units.RotationsPerSecond),
-                                        request.Velocity)
+                                getVelocity().in(Units.RotationsPerSecond),
+                                request.Velocity)
                                 + request.FeedForward * 12;
     }
 
@@ -132,8 +132,8 @@ public class TalonFXSim extends SimMotor {
         voltageRequest =
                 () ->
                         profiledController.calculate(
-                                        getVelocity().in(Units.RotationsPerSecond),
-                                        request.Velocity)
+                                getVelocity().in(Units.RotationsPerSecond),
+                                request.Velocity)
                                 + request.FeedForward * 12;
     }
 
@@ -166,7 +166,7 @@ public class TalonFXSim extends SimMotor {
         else if (request
                 instanceof
                 MotionMagicVelocityTorqueCurrentFOC
-                reqMotionMagicVelocityTorqueCurrentFOC)
+                        reqMotionMagicVelocityTorqueCurrentFOC)
             setControl(reqMotionMagicVelocityTorqueCurrentFOC);
     }
 

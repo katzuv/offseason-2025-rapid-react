@@ -16,7 +16,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
-/** Geometry utilities for working with translations, rotations, transforms, and poses. */
+/**
+ * Geometry utilities for working with translations, rotations, transforms, and poses.
+ */
 public class GeomUtil {
     /**
      * Creates a pure translating transform
@@ -88,7 +90,7 @@ public class GeomUtil {
     /**
      * Multiplies a twist by a scaling factor
      *
-     * @param twist The twist to multiply
+     * @param twist  The twist to multiply
      * @param factor The scaling factor for the twist components
      * @return The new twist
      */
@@ -131,7 +133,7 @@ public class GeomUtil {
     /**
      * Creates a new pose from an existing one using a different translation value.
      *
-     * @param pose The original pose
+     * @param pose        The original pose
      * @param translation The new translation to use
      * @return The new pose with the new translation and original rotation
      */
@@ -142,7 +144,7 @@ public class GeomUtil {
     /**
      * Creates a new pose from an existing one using a different rotation value.
      *
-     * @param pose The original pose
+     * @param pose     The original pose
      * @param rotation The new rotation to use
      * @return The new pose with the original translation and new rotation
      */

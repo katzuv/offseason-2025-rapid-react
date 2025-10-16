@@ -20,8 +20,11 @@ public class Integral {
     // The integral of the integral
     private Integral integral = null;
 
-    /** Constructor for Integral. */
-    public Integral() {}
+    /**
+     * Constructor for Integral.
+     */
+    public Integral() {
+    }
 
     /**
      * Gets the integral of the integral.
@@ -47,7 +50,7 @@ public class Integral {
     /**
      * Updates the value to integrate.
      *
-     * @param newValue The new value to integrate.
+     * @param newValue  The new value to integrate.
      * @param timestamp The current timestamp. [s]
      */
     public void update(double newValue, double timestamp) {

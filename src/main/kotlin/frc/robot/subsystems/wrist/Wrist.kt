@@ -16,14 +16,16 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanism2d
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d
 
 class Wrist : SubsystemBase() {
-    @AutoLogOutput private var mechanism = LoggedMechanism2d(6.0, 4.0)
+    @AutoLogOutput
+    private var mechanism = LoggedMechanism2d(6.0, 4.0)
 
     private var root = mechanism.getRoot("Wrist", 3.0, 2.0)
 
     private val ligament =
         root.append(LoggedMechanismLigament2d("WristLigament", 0.25, 90.0))
 
-    @AutoLogOutput private var setpoint: Angle = 0.degrees
+    @AutoLogOutput
+    private var setpoint: Angle = 0.degrees
 
     private val motor =
         UniversalTalonFX(

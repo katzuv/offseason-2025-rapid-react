@@ -83,8 +83,8 @@ class LoggedNetworkGains(
     init {
         if (
             jerk != 0.0 ||
-                cruiseVelocity[rad_ps] != 0.0 ||
-                acceleration[rad_ps_ps] != 0.0
+            cruiseVelocity[rad_ps] != 0.0 ||
+            acceleration[rad_ps_ps] != 0.0
         ) {
             this@LoggedNetworkGains.jerk =
                 LoggedNetworkNumber("$path/jerk", jerk)

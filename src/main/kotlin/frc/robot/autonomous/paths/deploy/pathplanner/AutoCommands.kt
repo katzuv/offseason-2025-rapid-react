@@ -14,15 +14,15 @@ internal fun runPath(name: String, mirror: Boolean = false): Command {
     val path = if (IS_RED || mirror) originalPath.mirrorPath() else originalPath
     var startPose = path.pathPoses[0]
     return Commands.runOnce({
-            if (IS_RED) {
-                startPose =
-                    startPose.withRotation(
-                        startPose.rotation + Rotation2d.k180deg
-                    )
-            }
-            drive.resetOdometry(startPose)
-            AutoBuilder.resetOdom(startPose)
-        })
+        if (IS_RED) {
+            startPose =
+                startPose.withRotation(
+                    startPose.rotation + Rotation2d.k180deg
+                )
+        }
+        drive.resetOdometry(startPose)
+        AutoBuilder.resetOdom(startPose)
+    })
         .andThen(AutoBuilder.followPath(path))
 }
 

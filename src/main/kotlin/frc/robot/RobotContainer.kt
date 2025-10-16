@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.autonomous.paths.deploy.pathplanner.AC1SRP
 import frc.robot.autonomous.paths.deploy.pathplanner.BRP2
 import frc.robot.autonomous.paths.deploy.pathplanner.CC2C3
+import frc.robot.lib.extensions.div
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.m

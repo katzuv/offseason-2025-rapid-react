@@ -19,8 +19,11 @@ public class Derivative {
     // The derivative of the derivative
     private Derivative derivative = null;
 
-    /** Constructor for Derivative. */
-    public Derivative() {}
+    /**
+     * Constructor for Derivative.
+     */
+    public Derivative() {
+    }
 
     /**
      * Gets the derivative of the derivative.
@@ -46,7 +49,7 @@ public class Derivative {
     /**
      * Updates the value to differentiate.
      *
-     * @param newValue The new value to differentiate.
+     * @param newValue  The new value to differentiate.
      * @param timestamp The current timestamp. [s]
      */
     public void update(double newValue, double timestamp) {

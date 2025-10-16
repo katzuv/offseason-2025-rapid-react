@@ -25,7 +25,7 @@ const val ALT_ROBORIO_SERIAL = ""
 val IS_RED: Boolean
     get() =
         DriverStation.getAlliance().isPresent &&
-            DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+                DriverStation.getAlliance().get() == DriverStation.Alliance.Red
 
 enum class Mode {
     REAL,

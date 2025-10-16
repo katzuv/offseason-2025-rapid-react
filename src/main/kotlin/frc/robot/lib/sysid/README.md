@@ -1,13 +1,17 @@
 # SysIdCommand Factory
 
-`SysIdCommand` is a Kotlin-based helper for characterizing FRC subsystems using WPILib's SysId framework. It simplifies the creation of dynamic and quasistatic tests for any subsystem that implements the `SysIdable` interface and extends `SubsystemBase`.
+`SysIdCommand` is a Kotlin-based helper for characterizing FRC subsystems using WPILib's SysId framework. It simplifies
+the creation of dynamic and quasistatic tests for any subsystem that implements the `SysIdable` interface and extends
+`SubsystemBase`.
 
 ---
+
 ## Usage
 
 ### Implement `SysIdable`
 
-To use `SysIdCommand`, your subsystem must implement the `SysIdable` interface, which requires a method to apply voltage to the mechanism.
+To use `SysIdCommand`, your subsystem must implement the `SysIdable` interface, which requires a method to apply voltage
+to the mechanism.
 
 ```kotlin
 class Wrist : SubsystemBase(), SysIdable {
@@ -28,14 +32,20 @@ val sysIdCommand = wrist.sysId(
     timeout = 1.sec
 )
 ```
+
 ---
 
 ## Examples
 
 ### Example #1 - Wrist
-This example demonstrates how to implement SysIdable for a mechanism using the Universal TalonFX motor. It defines voltage control for system identification and includes additional functionality for position control using Motion Magic. The configuration is fully parameterized in `WristConstants.kt`, showcasing how to integrate tuning parameters, gearing ratios, and current limits.
+
+This example demonstrates how to implement SysIdable for a mechanism using the Universal TalonFX motor. It defines
+voltage control for system identification and includes additional functionality for position control using Motion Magic.
+The configuration is fully parameterized in `WristConstants.kt`, showcasing how to integrate tuning parameters, gearing
+ratios, and current limits.
 
 `Wrist.kt`
+
 ```kotlin
 class Wrist : SubsystemBase(), SysIdable {
 
@@ -65,6 +75,7 @@ class Wrist : SubsystemBase(), SysIdable {
 ```
 
 `WristConstants.kt`
+
 ```kotlin
 const val MOTOR_ID = 15
 
@@ -107,9 +118,14 @@ val MOTOR_CONFIG =
 
 ### Example #2 - Elevator
 
-This example illustrates a dual-motor linear mechanism with one motor following the other. It implements SysIdable by applying voltage control to the main motor while the auxiliary motor follows it. The subsystem also supports position control based on linear distance, automatically converting it to angular units using the sprocket diameter and gear ratio. All configuration and tuning constants are organized in `ElevatorConstants.kt`, providing a clean structure for gains, motion parameters, and current limits.
+This example illustrates a dual-motor linear mechanism with one motor following the other. It implements SysIdable by
+applying voltage control to the main motor while the auxiliary motor follows it. The subsystem also supports position
+control based on linear distance, automatically converting it to angular units using the sprocket diameter and gear
+ratio. All configuration and tuning constants are organized in `ElevatorConstants.kt`, providing a clean structure for
+gains, motion parameters, and current limits.
 
 `Elevator.kt`
+
 ```kotlin
 class Elevator : SubsystemBase(), SysIdable {
 
@@ -155,6 +171,7 @@ class Elevator : SubsystemBase(), SysIdable {
 ```
 
 `ElevatorConstants.kt`
+
 ```kotlin
 const val MOTOR_ID_MAIN = 13
 const val MOTOR_ID_AUX = 14

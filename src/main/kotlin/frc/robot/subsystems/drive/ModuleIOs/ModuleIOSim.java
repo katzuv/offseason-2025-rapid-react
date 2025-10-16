@@ -20,7 +20,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.lib.PhoenixUtil;
 import frc.robot.subsystems.drive.TunerConstants;
+
 import java.util.Arrays;
+
 import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
 import org.ironmaple.simulation.motorsims.SimulatedMotorController;
 
@@ -70,9 +72,9 @@ public class ModuleIOSim implements ModuleIO {
             driveAppliedVolts =
                     driveFFVolts
                             + driveController.calculate(
-                                    moduleSimulation
-                                            .getDriveWheelFinalSpeed()
-                                            .in(RadiansPerSecond));
+                            moduleSimulation
+                                    .getDriveWheelFinalSpeed()
+                                    .in(RadiansPerSecond));
         } else {
             driveController.reset();
         }

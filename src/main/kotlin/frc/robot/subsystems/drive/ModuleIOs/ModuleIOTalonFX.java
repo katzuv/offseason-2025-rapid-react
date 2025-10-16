@@ -39,6 +39,7 @@ import frc.robot.lib.LoggedNetworkGains;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.PhoenixOdometryThread;
 import frc.robot.subsystems.drive.TunerConstants;
+
 import java.util.Queue;
 
 /**
@@ -49,7 +50,7 @@ import java.util.Queue;
  */
 public class ModuleIOTalonFX implements ModuleIO {
     private final SwerveModuleConstants<
-                    TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
+            TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
             constants;
 
     // Hardware objects

@@ -59,11 +59,11 @@ var yController =
 @LoggedOutput("ϴ controller", LOGGING_PREFIX)
 var thetaController =
     ProfiledPIDController(
-            thetaGains.kP.get(),
-            thetaGains.kI.get(),
-            thetaGains.kD.get(),
-            rotationalLimits
-        )
+        thetaGains.kP.get(),
+        thetaGains.kI.get(),
+        thetaGains.kD.get(),
+        rotationalLimits
+    )
         .apply { enableContinuousInput(-Math.PI, Math.PI) }
 
 @LoggedOutput(path = LOGGING_PREFIX)
@@ -74,10 +74,10 @@ var atGoal: Trigger =
 
 fun updateProfiledPIDGains() {
     mapOf(
-            xController to xGains,
-            yController to yGains,
-            thetaController to thetaGains
-        )
+        xController to xGains,
+        yController to yGains,
+        thetaController to thetaGains
+    )
         .forEach { (controller, gains) ->
             controller.setPID(gains.kP.get(), gains.kI.get(), gains.kD.get())
         }

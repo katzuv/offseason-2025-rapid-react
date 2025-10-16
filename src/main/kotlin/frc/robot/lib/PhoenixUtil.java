@@ -27,13 +27,17 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
+
 import java.util.function.Supplier;
+
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.motorsims.SimulatedBattery;
 import org.ironmaple.simulation.motorsims.SimulatedMotorController;
 
 public final class PhoenixUtil {
-    /** Attempts to run the command until no error is produced. */
+    /**
+     * Attempts to run the command until no error is produced.
+     */
     public static void tryUntilOk(int maxAttempts, Supplier<StatusCode> command) {
         for (int i = 0; i < maxAttempts; i++) {
             var error = command.get();
@@ -103,8 +107,6 @@ public final class PhoenixUtil {
     }
 
     /**
-     *
-     *
      * <h2>Regulates the {@link SwerveModuleConstants} for a single module.</h2>
      *
      * <p>This method applies specific adjustments to the {@link SwerveModuleConstants} for

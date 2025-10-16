@@ -28,9 +28,11 @@ fun LogTable.put(key: String, defaultValue: List<Any>) {
     when {
         defaultValue.all { it is Double } ->
             put(key, defaultValue.toDoubleArray())
+
         defaultValue.all { it is Int } -> put(key, defaultValue.toIntArray())
         defaultValue.all { it is Boolean } ->
             put(key, defaultValue.toBooleanArray())
+
         else ->
             throw IllegalArgumentException(
                 "Unsupported List type: ${defaultValue::class.simpleName}"
@@ -48,10 +50,13 @@ inline fun <reified T : List<Any>> LogTable.get(
         when {
             defaultValue.all { it is Double } ->
                 get(key, defaultValue.toDoubleArray()).toList()
+
             defaultValue.all { it is Int } ->
                 get(key, defaultValue.toIntArray()).toList()
+
             defaultValue.all { it is Boolean } ->
                 get(key, defaultValue.toBooleanArray()).toList()
+
             else ->
                 throw IllegalArgumentException(
                     "Unable to LogTable.get List of type: ${type.simpleName}"

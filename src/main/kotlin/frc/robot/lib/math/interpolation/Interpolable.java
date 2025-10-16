@@ -16,7 +16,7 @@ public interface Interpolable<T> {
      * 0 < x < 1, the return value should be interpolated proportionally between the two.
      *
      * @param other The value of the upper bound
-     * @param x The requested value. Should be between 0 and 1.
+     * @param x     The requested value. Should be between 0 and 1.
      * @return Interpolable<T> The estimated average between the surrounding data
      */
     T interpolate(T other, double x);

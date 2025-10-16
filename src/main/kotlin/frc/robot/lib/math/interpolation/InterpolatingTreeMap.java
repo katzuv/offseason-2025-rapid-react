@@ -12,10 +12,11 @@ import java.util.TreeMap;
  * @param <V> The type of the value (must implement Interpolable)
  */
 public class InterpolatingTreeMap<
-                K extends InverseInterpolable<K> & Comparable<K>, V extends Interpolable<V>>
+        K extends InverseInterpolable<K> & Comparable<K>, V extends Interpolable<V>>
         extends TreeMap<K, V> {
 
-    @Serial private static final long serialVersionUID = 8347275262778054124L;
+    @Serial
+    private static final long serialVersionUID = 8347275262778054124L;
 
     final int max;
 
@@ -30,7 +31,7 @@ public class InterpolatingTreeMap<
     /**
      * Inserts a key value pair, and trims the tree if a max size is specified
      *
-     * @param key Key for inserted data
+     * @param key   Key for inserted data
      * @param value Value for inserted data
      * @return the value
      */
@@ -55,7 +56,7 @@ public class InterpolatingTreeMap<
     /**
      * @param key Lookup for a value (does not have to exist)
      * @return V or null; V if it is Interpolable or exists, null if it is at a bound and cannot
-     *     average
+     * average
      */
     public V getInterpolated(K key) {
         V gotval = get(key);

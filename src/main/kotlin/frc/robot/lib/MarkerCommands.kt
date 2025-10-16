@@ -7,7 +7,8 @@ import org.littletonrobotics.junction.AutoLogOutput
 
 const val ABNORMAL_EVENT_NAME = "### [Error] DRIVER PROBLEM REPORTED ###"
 
-@AutoLogOutput private var marked = false
+@AutoLogOutput
+private var marked = false
 
 private fun markEvent(eventName: String): Command =
     Commands.sequence(

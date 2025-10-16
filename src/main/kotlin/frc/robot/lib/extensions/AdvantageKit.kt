@@ -48,10 +48,10 @@ abstract class AutoLogInputs : LoggableInputs {
         LoggedInput(value, key, LogTable::put, LogTable::get)
 
     fun <
-        U : WPIUnit,
-        Base : Measure<WPIUnit>,
-        M : MutableMeasure<U, Base, M>,
-    > log(value: M, key: String? = null) =
+            U : WPIUnit,
+            Base : Measure<WPIUnit>,
+            M : MutableMeasure<U, Base, M>,
+            > log(value: M, key: String? = null) =
         LoggedInput(value, key, LogTable::put, LogTable::get)
 
     fun log(value: DoubleArray, key: String? = null) =
@@ -142,29 +142,29 @@ fun Map<String, Any>.log(loggingPath: String = "") {
 
 fun PIDController.log(loggingName: String) {
     mapOf(
-            "setpoint" to setpoint,
-            "error" to error,
-            "atSetpoint" to atSetpoint()
-        )
+        "setpoint" to setpoint,
+        "error" to error,
+        "atSetpoint" to atSetpoint()
+    )
         .log(loggingName)
 }
 
 fun ProfiledPIDController.log(loggingName: String) {
 
     mapOf(
-            "goal" to goal.position,
-            "positionSetpoint" to setpoint.position,
-            "error" to positionError,
-            "velocitySetpoint" to setpoint.velocity,
-            "velocityError" to velocityError,
-            "goalVelocity" to goal.velocity,
-            "positionTolerance" to positionTolerance,
-            "velocityTolerance" to velocityTolerance,
-            "maxVelocity" to constraints.maxVelocity,
-            "maxAcceleration" to constraints.maxAcceleration,
-            "atGoal" to atSetpoint(),
-            "atSetpoint" to atGoal()
-        )
+        "goal" to goal.position,
+        "positionSetpoint" to setpoint.position,
+        "error" to positionError,
+        "velocitySetpoint" to setpoint.velocity,
+        "velocityError" to velocityError,
+        "goalVelocity" to goal.velocity,
+        "positionTolerance" to positionTolerance,
+        "velocityTolerance" to velocityTolerance,
+        "maxVelocity" to constraints.maxVelocity,
+        "maxAcceleration" to constraints.maxAcceleration,
+        "atGoal" to atSetpoint(),
+        "atSetpoint" to atGoal()
+    )
         .log(loggingName)
 }
 
