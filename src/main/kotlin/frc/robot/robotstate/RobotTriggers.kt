@@ -12,7 +12,7 @@ import org.team5987.annotation.LoggedOutput
 val isInDeadZone = Trigger {
     val driveTranslation = drive.pose.translation
     !OUTER_SHOOTING_AREA.contains(driveTranslation) ||
-            INNER_SHOOTING_AREA.contains(driveTranslation)
+        INNER_SHOOTING_AREA.contains(driveTranslation)
 }
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)

@@ -47,7 +47,7 @@ fun calculateShot(
         // No motion compensation, just regular interpolation
         val turretAngle =
             robotPose.translation.rotationToPoint(robotToHub) -
-                    robotPose.rotation
+                robotPose.rotation
         return ShotData(
             compensatedTarget = HUB_LOCATION,
             turretAngle = turretAngle,
@@ -65,7 +65,7 @@ fun calculateShot(
         (SHOOT_TARGET + shotOffset).rotateAround(SHOOT_TARGET, rotationOffset)
     val turretAngle =
         robotPose.translation.rotationToPoint(compensatedTarget) -
-                robotPose.rotation
+            robotPose.rotation
     val compensatedDistance =
         robotPose.translation.getDistance(compensatedTarget).m
 

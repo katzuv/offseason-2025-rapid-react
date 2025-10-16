@@ -5,16 +5,16 @@ import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.controller.ProfiledPIDController
 import edu.wpi.first.units.Measure
 import edu.wpi.first.units.MutableMeasure
+import edu.wpi.first.units.Unit as WPIUnit
 import edu.wpi.first.util.struct.Struct
 import edu.wpi.first.util.struct.StructSerializable
 import edu.wpi.first.wpilibj2.command.button.Trigger
+import kotlin.reflect.KProperty
 import org.littletonrobotics.junction.AutoLogOutputManager
 import org.littletonrobotics.junction.LogTable
 import org.littletonrobotics.junction.Logger.recordOutput
 import org.littletonrobotics.junction.inputs.LoggableInputs
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d
-import kotlin.reflect.KProperty
-import edu.wpi.first.units.Unit as WPIUnit
 
 abstract class AutoLogInputs : LoggableInputs {
     fun log(value: Double, key: String? = null) =
@@ -47,10 +47,10 @@ abstract class AutoLogInputs : LoggableInputs {
         LoggedInput(value, key, LogTable::put, LogTable::get)
 
     fun <
-            U : WPIUnit,
-            Base : Measure<WPIUnit>,
-            M : MutableMeasure<U, Base, M>,
-            > log(value: M, key: String? = null) =
+        U : WPIUnit,
+        Base : Measure<WPIUnit>,
+        M : MutableMeasure<U, Base, M>,
+    > log(value: M, key: String? = null) =
         LoggedInput(value, key, LogTable::put, LogTable::get)
 
     fun log(value: DoubleArray, key: String? = null) =
@@ -141,29 +141,29 @@ fun Map<String, Any>.log(loggingPath: String = "") {
 
 fun PIDController.log(loggingName: String) {
     mapOf(
-        "setpoint" to setpoint,
-        "error" to error,
-        "atSetpoint" to atSetpoint()
-    )
+            "setpoint" to setpoint,
+            "error" to error,
+            "atSetpoint" to atSetpoint()
+        )
         .log(loggingName)
 }
 
 fun ProfiledPIDController.log(loggingName: String) {
 
     mapOf(
-        "goal" to goal.position,
-        "positionSetpoint" to setpoint.position,
-        "error" to positionError,
-        "velocitySetpoint" to setpoint.velocity,
-        "velocityError" to velocityError,
-        "goalVelocity" to goal.velocity,
-        "positionTolerance" to positionTolerance,
-        "velocityTolerance" to velocityTolerance,
-        "maxVelocity" to constraints.maxVelocity,
-        "maxAcceleration" to constraints.maxAcceleration,
-        "atGoal" to atSetpoint(),
-        "atSetpoint" to atGoal()
-    )
+            "goal" to goal.position,
+            "positionSetpoint" to setpoint.position,
+            "error" to positionError,
+            "velocitySetpoint" to setpoint.velocity,
+            "velocityError" to velocityError,
+            "goalVelocity" to goal.velocity,
+            "positionTolerance" to positionTolerance,
+            "velocityTolerance" to velocityTolerance,
+            "maxVelocity" to constraints.maxVelocity,
+            "maxAcceleration" to constraints.maxAcceleration,
+            "atGoal" to atSetpoint(),
+            "atSetpoint" to atGoal()
+        )
         .log(loggingName)
 }
 

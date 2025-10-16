@@ -48,7 +48,5 @@ class RapidReactArena : SimulatedArena(RapidReactFieldObstacleMap()) {
     override fun getGamePiecesByType(type: String): MutableList<Pose3d?> =
         super.getGamePiecesByType(type)
 
-    @Synchronized
-    override fun clearGamePieces() {
-    }
+    @Synchronized override fun clearGamePieces() {}
 }

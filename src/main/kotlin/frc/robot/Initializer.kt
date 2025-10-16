@@ -32,9 +32,9 @@ import org.ironmaple.simulation.drivesims.SwerveDriveSimulation
 val driveSimulation: SwerveDriveSimulation? =
     if (CURRENT_MODE == Mode.SIM)
         SwerveDriveSimulation(
-            Drive.mapleSimConfig,
-            Pose2d(3.0, 3.0, Rotation2d())
-        )
+                Drive.mapleSimConfig,
+                Pose2d(3.0, 3.0, Rotation2d())
+            )
             .apply {
                 SimulatedArena.overrideInstance(RapidReactArena())
                 SimulatedArena.getInstance().addDriveTrainSimulation(this)
@@ -43,11 +43,11 @@ val driveSimulation: SwerveDriveSimulation? =
 
 private val driveModuleIOs =
     arrayOf(
-        TunerConstants.FrontLeft,
-        TunerConstants.FrontRight,
-        TunerConstants.BackLeft,
-        TunerConstants.BackRight
-    )
+            TunerConstants.FrontLeft,
+            TunerConstants.FrontRight,
+            TunerConstants.BackLeft,
+            TunerConstants.BackRight
+        )
         .mapIndexed { index, module ->
             when (CURRENT_MODE) {
                 Mode.REAL -> ModuleIOTalonFX(module)
@@ -65,7 +65,6 @@ private val gyroIO =
                 driveSimulation?.gyroSimulation
                     ?: throw Exception("Gyro simulation is null")
             )
-
         else -> object : GyroIO {}
     }
 
@@ -85,17 +84,17 @@ private val visionIOs =
                         it.key,
                         {
                             Pose3d(
-                                it.value.translation.rotateAround(
-                                    Translation3d(),
+                                    it.value.translation.rotateAround(
+                                        Translation3d(),
+                                        getRotation3d(
+                                            yaw = turret.inputs.position
+                                        )
+                                    ),
                                     getRotation3d(
-                                        yaw = turret.inputs.position
+                                        yaw = turret.inputs.position,
+                                        pitch = it.value.rotation.measureZ
                                     )
-                                ),
-                                getRotation3d(
-                                    yaw = turret.inputs.position,
-                                    pitch = it.value.rotation.measureZ
                                 )
-                            )
                                 .toTransform()
                         }
                     )
@@ -103,7 +102,6 @@ private val visionIOs =
                     VisionIOPhotonVision(it.key) { it.value }
                 }
             }
-
         Mode.SIM ->
             VisionConstants.OVNameToTransform.map {
                 VisionIOPhotonVisionSim(
@@ -112,7 +110,6 @@ private val visionIOs =
                     driveSimulation!!::getSimulatedDriveTrainPose
                 )
             }
-
         Mode.REPLAY -> emptyList()
     }.toTypedArray()
 

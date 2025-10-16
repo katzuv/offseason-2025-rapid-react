@@ -49,12 +49,12 @@ object Robot : LoggedRobot() {
 
         // Initialize logger
         listOf(
-            "Project name" to BuildConstants.MAVEN_NAME,
-            "Build date" to BuildConstants.BUILD_DATE,
-            "Last commit hash" to BuildConstants.GIT_SHA,
-            "Last commit timestamp" to BuildConstants.GIT_DATE,
-            "Branch" to BuildConstants.GIT_BRANCH
-        )
+                "Project name" to BuildConstants.MAVEN_NAME,
+                "Build date" to BuildConstants.BUILD_DATE,
+                "Last commit hash" to BuildConstants.GIT_SHA,
+                "Last commit timestamp" to BuildConstants.GIT_DATE,
+                "Branch" to BuildConstants.GIT_BRANCH
+            )
             .forEach { (key, value) -> Logger.recordMetadata(key, value) }
         @Suppress("KotlinConstantConditions")
         Logger.recordMetadata(
@@ -75,7 +75,6 @@ object Robot : LoggedRobot() {
                 Logger.addDataReceiver(WPILOGWriter())
                 Logger.addDataReceiver(NT4Publisher())
             }
-
             SIM -> Logger.addDataReceiver(NT4Publisher())
             REPLAY -> {
                 setUseTiming(false)
@@ -102,13 +101,13 @@ object Robot : LoggedRobot() {
                 val name = command.name
                 val count =
                     commandCounts.getOrDefault(name, 0) +
-                            (if (active) 1 else -1)
+                        (if (active) 1 else -1)
                 commandCounts[name] = count
                 Logger.recordOutput(
                     "Commands/Unique/" +
-                            name +
-                            "_" +
-                            Integer.toHexString(command.hashCode()),
+                        name +
+                        "_" +
+                        Integer.toHexString(command.hashCode()),
                     active
                 )
                 Logger.recordOutput("Commands/All/$name", count > 0)

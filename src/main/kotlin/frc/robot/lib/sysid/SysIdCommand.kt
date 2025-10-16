@@ -27,8 +27,11 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
  * @return A [SysIdCommand] instance.
  */
 fun <T> T.sysId(
-    rampRate: Velocity<VoltageUnit>, stepVoltage: Voltage, timeout: Time
-): Command where T : SysIdable, T : SubsystemBase = SysIdCommand(this, rampRate, stepVoltage, timeout).command()
+    rampRate: Velocity<VoltageUnit>,
+    stepVoltage: Voltage,
+    timeout: Time
+): Command where T : SysIdable, T : SubsystemBase =
+    SysIdCommand(this, rampRate, stepVoltage, timeout).command()
 
 /**
  * Interface that allows a subsystem to be characterized via SysId. Must provide
@@ -57,14 +60,24 @@ interface SysIdable {
  */
 class SysIdCommand<T>
 internal constructor(
-    private val subsystem: T, rampRate: Velocity<VoltageUnit>, stepVoltage: Voltage, timeout: Time
+    private val subsystem: T,
+    rampRate: Velocity<VoltageUnit>,
+    stepVoltage: Voltage,
+    timeout: Time
 ) where T : SysIdable, T : SubsystemBase {
     private val loggingPath = "/Tuning/SysId/${subsystem.name}"
     private val rampRateTunableNumber =
-        LoggedNetworkNumber("$loggingPath/Ramp rate [Quasistatic] [V per sec]", rampRate[volts / sec])
+        LoggedNetworkNumber(
+            "$loggingPath/Ramp rate [Quasistatic] [V per sec]",
+            rampRate[volts / sec]
+        )
     private val stepVoltageTunableNumber =
-        LoggedNetworkNumber("$loggingPath/Step voltage [Dynamic]", stepVoltage[volts])
-    private val timeoutTunableNumber = LoggedNetworkNumber("$loggingPath/Timeout", timeout[sec])
+        LoggedNetworkNumber(
+            "$loggingPath/Step voltage [Dynamic]",
+            stepVoltage[volts]
+        )
+    private val timeoutTunableNumber =
+        LoggedNetworkNumber("$loggingPath/Timeout", timeout[sec])
 
     private val waitBetweenRuns = 1.sec
 
@@ -72,20 +85,25 @@ internal constructor(
      * Creates the [SysIdRoutine] object with configuration values from tunable
      * numbers. Defaults to arguments passed in the constructor.
      */
-    private fun createRoutine() = SysIdRoutine(
-        SysIdRoutine.Config(
-            rampRateTunableNumber.get().volts / sec,
-            stepVoltageTunableNumber.get().volts,
-            timeoutTunableNumber.get().sec,
-        ) { state: SysIdRoutineLog.State ->
-            Logger.recordOutput(
-                "SysId/${subsystem.name}/state", state.toString()
+    private fun createRoutine() =
+        SysIdRoutine(
+            SysIdRoutine.Config(
+                rampRateTunableNumber.get().volts / sec,
+                stepVoltageTunableNumber.get().volts,
+                timeoutTunableNumber.get().sec,
+            ) { state: SysIdRoutineLog.State ->
+                Logger.recordOutput(
+                    "SysId/${subsystem.name}/state",
+                    state.toString()
+                )
+            },
+            SysIdRoutine.Mechanism(
+                // `log` is `null` because data is already logged by AdvantageKit.
+                subsystem.setVoltageConsumer,
+                null,
+                subsystem
             )
-        }, SysIdRoutine.Mechanism(
-            // `log` is `null` because data is already logged by AdvantageKit.
-            subsystem.setVoltageConsumer, null, subsystem
         )
-    )
 
     /**
      * Builds the full characterization command sequence:
@@ -99,16 +117,19 @@ internal constructor(
      *
      * @return Full [Command] sequence.
      */
-    fun command(): Command = subsystem.defer {
-        val routine = createRoutine()
-        Commands.sequence(
-            routine.dynamic(SysIdRoutine.Direction.kForward),
-            waitTime(waitBetweenRuns),
-            routine.dynamic(SysIdRoutine.Direction.kReverse),
-            waitTime(waitBetweenRuns),
-            routine.quasistatic(SysIdRoutine.Direction.kForward),
-            waitTime(waitBetweenRuns),
-            routine.quasistatic(SysIdRoutine.Direction.kReverse)
-        )
-    }.withName("${subsystem.name}/Characterize")
+    fun command(): Command =
+        subsystem
+            .defer {
+                val routine = createRoutine()
+                Commands.sequence(
+                    routine.dynamic(SysIdRoutine.Direction.kForward),
+                    waitTime(waitBetweenRuns),
+                    routine.dynamic(SysIdRoutine.Direction.kReverse),
+                    waitTime(waitBetweenRuns),
+                    routine.quasistatic(SysIdRoutine.Direction.kForward),
+                    waitTime(waitBetweenRuns),
+                    routine.quasistatic(SysIdRoutine.Direction.kReverse)
+                )
+            }
+            .withName("${subsystem.name}/Characterize")
 }

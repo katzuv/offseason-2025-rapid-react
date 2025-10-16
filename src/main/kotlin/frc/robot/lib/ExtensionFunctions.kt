@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.WrapperCommand
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import edu.wpi.first.wpilibj2.command.button.Trigger
-import org.littletonrobotics.junction.LogTable
 import kotlin.math.hypot
+import org.littletonrobotics.junction.LogTable
 
 fun ChassisSpeeds.getSpeed() = hypot(vxMetersPerSecond, vyMetersPerSecond)
 
@@ -28,11 +28,9 @@ fun LogTable.put(key: String, defaultValue: List<Any>) {
     when {
         defaultValue.all { it is Double } ->
             put(key, defaultValue.toDoubleArray())
-
         defaultValue.all { it is Int } -> put(key, defaultValue.toIntArray())
         defaultValue.all { it is Boolean } ->
             put(key, defaultValue.toBooleanArray())
-
         else ->
             throw IllegalArgumentException(
                 "Unsupported List type: ${defaultValue::class.simpleName}"
@@ -50,13 +48,10 @@ inline fun <reified T : List<Any>> LogTable.get(
         when {
             defaultValue.all { it is Double } ->
                 get(key, defaultValue.toDoubleArray()).toList()
-
             defaultValue.all { it is Int } ->
                 get(key, defaultValue.toIntArray()).toList()
-
             defaultValue.all { it is Boolean } ->
                 get(key, defaultValue.toBooleanArray()).toList()
-
             else ->
                 throw IllegalArgumentException(
                     "Unable to LogTable.get List of type: ${type.simpleName}"

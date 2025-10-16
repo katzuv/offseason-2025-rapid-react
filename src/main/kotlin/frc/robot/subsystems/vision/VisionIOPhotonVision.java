@@ -13,22 +13,19 @@
 
 package frc.robot.subsystems.vision;
 
+import static frc.robot.subsystems.vision.VisionConstants.aprilTagLayout;
+
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import org.photonvision.PhotonCamera;
-
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
+import org.photonvision.PhotonCamera;
 
-import static frc.robot.subsystems.vision.VisionConstants.aprilTagLayout;
-
-/**
- * IO implementation for real PhotonVision hardware.
- */
+/** IO implementation for real PhotonVision hardware. */
 public class VisionIOPhotonVision implements VisionIO {
     protected final PhotonCamera camera;
     protected final Supplier<Transform3d> robotToCamera;

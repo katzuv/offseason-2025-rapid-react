@@ -7,8 +7,7 @@ public class InterpolatingDoubleMap
         super(maximumSize);
     }
 
-    public InterpolatingDoubleMap() {
-    }
+    public InterpolatingDoubleMap() {}
 
     public InterpolatingDouble put(double a, double b) {
         return super.put(new InterpolatingDouble(a), new InterpolatingDouble(b));

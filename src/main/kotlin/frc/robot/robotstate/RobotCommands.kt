@@ -38,16 +38,16 @@ val compensatedShot: ShotData
         val shot = calculateShot(drive.pose, robotSpeeds, shooterExitVelocity)
 
         mapOf(
-            "compensatedShot/compensatedTarget" to
+                "compensatedShot/compensatedTarget" to
                     Pose2d(shot.compensatedTarget, Rotation2d()),
-            "regularShot/target" to Pose2d(HUB_LOCATION, Rotation2d()),
-            "compensatedShot/compensatedDistance" to
+                "regularShot/target" to Pose2d(HUB_LOCATION, Rotation2d()),
+                "compensatedShot/compensatedDistance" to
                     shot.compensatedDistance,
-            "regularShot/distance" to robotDistanceFromHub,
-            "compensatedShot/turretAngle" to shot.turretAngle.measure,
-            "regularShot/turretAngle" to angleFromRobotHub,
-            "shooterExitVelocity" to shooterExitVelocity
-        )
+                "regularShot/distance" to robotDistanceFromHub,
+                "compensatedShot/turretAngle" to shot.turretAngle.measure,
+                "regularShot/turretAngle" to angleFromRobotHub,
+                "shooterExitVelocity" to shooterExitVelocity
+            )
             .log("onMoveShoot")
 
         return shot
@@ -82,7 +82,7 @@ fun driveToShootingPoint(): Command {
     val setpoint =
         if (
             INNER_SHOOTING_AREA.getDistance(robotTranslation) <
-            OUTER_SHOOTING_AREA.getDistance(robotTranslation)
+                OUTER_SHOOTING_AREA.getDistance(robotTranslation)
         )
             INNER_SHOOTING_AREA.nearest(robotTranslation)
         else OUTER_SHOOTING_AREA.nearest(robotTranslation)
@@ -91,18 +91,18 @@ fun driveToShootingPoint(): Command {
 
 fun startShooting() =
     sequence(
-        drive.lock(),
-        flywheel.setVelocity {
-            FLYWHEEL_VELOCITY_KEY.value = robotDistanceFromHub[m]
-            SHOOTER_VELOCITY_BY_DISTANCE.getInterpolated(
-                FLYWHEEL_VELOCITY_KEY
-            )
-                .value
-                .rps
-        },
-        waitUntil(flywheel.isAtSetVelocity),
-        parallel(hopper.start(), roller.intake())
-    )
+            drive.lock(),
+            flywheel.setVelocity {
+                FLYWHEEL_VELOCITY_KEY.value = robotDistanceFromHub[m]
+                SHOOTER_VELOCITY_BY_DISTANCE.getInterpolated(
+                        FLYWHEEL_VELOCITY_KEY
+                    )
+                    .value
+                    .rps
+            },
+            waitUntil(flywheel.isAtSetVelocity),
+            parallel(hopper.start(), roller.intake())
+        )
         .named(COMMAND_NAME_PREFIX)
 
 fun stopShooting() =

@@ -4,10 +4,10 @@ package frc.robot.lib.extensions
 
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.units.*
+import edu.wpi.first.units.Unit as WpilibUnit
 import edu.wpi.first.units.Units.Second
 import edu.wpi.first.units.measure.*
 import kotlin.math.PI
-import edu.wpi.first.units.Unit as WpilibUnit
 
 /**
  * # Unit DSL Extensions for WPILib
@@ -89,41 +89,52 @@ val deg_ps_ps
 fun LinearVelocity.toAngular(
     diameter: Distance,
     gearRatio: Double,
-): AngularVelocity = timesConversionFactor(
-    Units.RotationsPerSecond.per(Units.MetersPerSecond).of(1.0 / (diameter[m] * gearRatio * PI))
-)
+): AngularVelocity =
+    timesConversionFactor(
+        Units.RotationsPerSecond.per(Units.MetersPerSecond)
+            .of(1.0 / (diameter[m] * gearRatio * PI))
+    )
 
-fun Distance.toAngle(diameter: Distance, gearRatio: Double): Angle = timesConversionFactor(
-    Units.Rotations.per(Units.Meters).of(1.0 / (diameter[m] * gearRatio * PI))
-)
+fun Distance.toAngle(diameter: Distance, gearRatio: Double): Angle =
+    timesConversionFactor(
+        Units.Rotations.per(Units.Meters)
+            .of(1.0 / (diameter[m] * gearRatio * PI))
+    )
 
-fun Angle.toDistance(diameter: Distance, gearRatio: Double): Distance = timesConversionFactor(
-    Units.Meters.per(Units.Rotations).of(diameter[m] * gearRatio * PI)
-)
+fun Angle.toDistance(diameter: Distance, gearRatio: Double): Distance =
+    timesConversionFactor(
+        Units.Meters.per(Units.Rotations).of(diameter[m] * gearRatio * PI)
+    )
 
 fun AngularVelocity.toLinear(
     diameter: Distance,
     gearRatio: Double,
-): LinearVelocity = timesConversionFactor(
-    Units.MetersPerSecond.per(Units.RotationsPerSecond).of(diameter[m] * gearRatio * PI)
-)
+): LinearVelocity =
+    timesConversionFactor(
+        Units.MetersPerSecond.per(Units.RotationsPerSecond)
+            .of(diameter[m] * gearRatio * PI)
+    )
 
 operator fun Distance.div(time: TimeUnit): LinearVelocity = this / time.one()
 
-operator fun <U : WpilibUnit> Measure<U>.div(divisor: Number): Measure<U> = this / divisor.toDouble()
+operator fun <U : WpilibUnit> Measure<U>.div(divisor: Number): Measure<U> =
+    this / divisor.toDouble()
 
 @Suppress("UNCHECKED_CAST")
-operator fun <T : WpilibUnit> T.div(timeUnit: TimeUnit): VelocityUnit<T> = this.per(timeUnit) as VelocityUnit<T>
+operator fun <T : WpilibUnit> T.div(timeUnit: TimeUnit): VelocityUnit<T> =
+    this.per(timeUnit) as VelocityUnit<T>
 
 @Suppress("UNCHECKED_CAST")
-operator fun <T : WpilibUnit> Measure<T>.div(timeUnit: TimeUnit): Velocity<T> = (this / timeUnit.one()) as Velocity<T>
+operator fun <T : WpilibUnit> Measure<T>.div(timeUnit: TimeUnit): Velocity<T> =
+    (this / timeUnit.one()) as Velocity<T>
 
 operator fun <U : WpilibUnit> Measure<U>.get(unit: U) = this.`in`(unit)
 
 // Factories
 
 // Helper function for conversion
-inline fun <N : Number, R> N.toUnit(converter: (Double) -> R) = converter(toDouble())
+inline fun <N : Number, R> N.toUnit(converter: (Double) -> R) =
+    converter(toDouble())
 
 // Distance
 val Number.m: Distance
