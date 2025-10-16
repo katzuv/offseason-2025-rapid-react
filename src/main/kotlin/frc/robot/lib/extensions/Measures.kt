@@ -4,6 +4,7 @@ package frc.robot.lib.extensions
 
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.units.*
+import edu.wpi.first.units.Units.Second
 import edu.wpi.first.units.measure.*
 import kotlin.math.PI
 import edu.wpi.first.units.Unit as WpilibUnit
@@ -69,6 +70,9 @@ val rps
 
 val rps_squared
     get() = Units.RotationsPerSecond.per(sec)
+
+val rps_tripled
+    get() = Units.RotationsPerSecondPerSecond.per(sec)
 
 val rad_ps
     get() = Units.RadiansPerSecond
@@ -157,12 +161,17 @@ val Number.rad_ps: AngularVelocity
 val Number.mps_ps: LinearAcceleration
     get() = toUnit(Units.MetersPerSecondPerSecond::of)
 
-// Angular acceleration
+// Angular acceleration and jerk
 val Number.deg_ps_ps: AngularAcceleration
     get() = toUnit(Units.DegreesPerSecondPerSecond::of)
 
 val Number.rps_squared: AngularAcceleration
     get() = toUnit(Units.RotationsPerSecond::of).per(Units.Second)
+
+typealias AngularJerk = Velocity<AngularAccelerationUnit>
+
+val Number.rps_tripled: AngularJerk
+    get() = this.rps_squared / Second
 
 // Other
 val Number.sec: Time
