@@ -108,7 +108,8 @@ operator fun Distance.div(time: TimeUnit): LinearVelocity = this / time.one()
 
 operator fun <U : WpilibUnit> Measure<U>.div(divisor: Number): Measure<U> = this / divisor.toDouble()
 
-operator fun VoltageUnit.div(timeUnit: TimeUnit): VelocityUnit<VoltageUnit> = this.per(timeUnit)
+@Suppress("UNCHECKED_CAST")
+operator fun <T : WpilibUnit> T.div(timeUnit: TimeUnit): VelocityUnit<T> = this.per(timeUnit) as VelocityUnit<T>
 
 @Suppress("UNCHECKED_CAST")
 operator fun <T : WpilibUnit> Measure<T>.div(timeUnit: TimeUnit): Velocity<T> = (this / timeUnit.one()) as Velocity<T>
