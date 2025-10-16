@@ -10,19 +10,16 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
  *
  * @param name The name of the gain set. This is used as part of the network
  * table path.
- * @param kP Proportional gain. If null, this gain will not be tunable.
- * @param kI Integral gain. If null, this gain will not be tunable.
- * @param kD Derivative gain. If null, this gain will not be tunable.
- * @param kS Static gain. If null, this gain will not be tunable.
- * @param kV Velocity gain. If null, this gain will not be tunable.
- * @param kA Acceleration gain. If null, this gain will not be tunable.
- * @param kG Gravity gain. If null, this gain will not be tunable.
- * @param cruiseVelocity The cruise velocity in m/s or rad/s. If null, this
- * parameter will not be tunable.
- * @param acceleration The acceleration in m/s² or rad/s². If null, this
- * parameter will not be tunable.
- * @param jerk The jerk in m/s³ or rad/s³. If null, this parameter will not be
- * tunable.
+ * @param kP Proportional gain.
+ * @param kI Integral gain.
+ * @param kD Derivative gain.
+ * @param kS Static gain.
+ * @param kV Velocity gain.
+ * @param kA Acceleration gain.
+ * @param kG Gravity gain.
+ * @param cruiseVelocity The cruise velocity in m/s or rad/s.
+ * @param acceleration The acceleration in m/s² or rad/s².
+ * @param jerk The jerk in m/s³ or rad/s³.
  * @param key An optional key to further distinguish the network table path. By
  * default, this is the name of the file that instantiated the class.
  */
