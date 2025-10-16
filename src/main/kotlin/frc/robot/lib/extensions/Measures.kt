@@ -63,6 +63,9 @@ val amps: CurrentUnit = Units.Amps
 val volts: VoltageUnit = Units.Volts
 val kg2m: MomentOfInertiaUnit = Units.KilogramSquareMeters
 
+val rps
+    get() = Units.RotationsPerSecond
+
 val rps_squared
     get() = Units.RotationsPerSecond.per(sec)
 
