@@ -136,15 +136,7 @@ object RobotContainer {
         autoChooser.addOption("CC2C3", CC2C3())
         autoChooser.addOption(
             "hoodSysId",
-            hood
-                .sysId()
-                .withForwardRoutineConfig(1.8.volts.per(sec), 1.volts, 0.75.sec)
-                .withBackwardRoutineConfig(
-                    1.volts.per(sec),
-                    0.8.volts,
-                    0.75.sec
-                )
-                .command()
+            hood.sysId(1.volts / sec, 0.75.volts, 0.5.sec)
         )
     }
 
