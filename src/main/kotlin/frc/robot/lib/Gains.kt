@@ -147,3 +147,29 @@ var PIDController.gains: TunableGains
             d = gains.kD
         } catch (_: NullPointerException) {}
     }
+
+var ProfiledPIDController.gains: TunableGains
+    get() =
+        TunableGains(
+            "I don't think anyone will ever use this"
+        ) // Dummy return to satisfy getter requirement.
+    set(gains) {
+        // It's possible that some PID gains are null, so we try/catch each one. However, there
+        // shouldn't be a case where
+        // we use a profiled PID controller without cruise velocity and acceleration gains, so no
+        // null check there.
+        try {
+            p = gains.kP
+        } catch (_: NullPointerException) {}
+        try {
+            i = gains.kI
+        } catch (_: NullPointerException) {}
+        try {
+            d = gains.kD
+        } catch (_: NullPointerException) {}
+        constraints =
+            TrapezoidProfile.Constraints(
+                gains.cruiseVelocity,
+                gains.acceleration
+            )
+    }
