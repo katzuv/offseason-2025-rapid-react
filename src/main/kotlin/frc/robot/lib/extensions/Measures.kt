@@ -110,7 +110,8 @@ operator fun <U : WpilibUnit> Measure<U>.div(divisor: Number): Measure<U> = this
 
 operator fun VoltageUnit.div(timeUnit: TimeUnit): VelocityUnit<VoltageUnit> = this.per(timeUnit)
 
-operator fun Voltage.div(timeUnit: TimeUnit): Velocity<VoltageUnit> = this / timeUnit.one()
+@Suppress("UNCHECKED_CAST")
+operator fun <T : WpilibUnit> Measure<T>.div(timeUnit: TimeUnit): Velocity<T> = (this / timeUnit.one()) as Velocity<T>
 
 operator fun <U : WpilibUnit> Measure<U>.get(unit: U) = this.`in`(unit)
 
