@@ -25,7 +25,8 @@ val STATOR_CURRENT_LIMIT = 100.amps
 val SUPPLY_CURRENT_LIMIT = 50.amps
 val CONTROL_GAINS =
     TunableGains(
-        "Flywheel",
+        "Subsystems/Shooter",
+        "Flywheel gains",
         kP = 4.0,
         kD = 0.0,
         kS = 0.2480,

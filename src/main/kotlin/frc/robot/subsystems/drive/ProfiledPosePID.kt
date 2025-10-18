@@ -13,12 +13,13 @@ import org.team5987.annotation.LoggedOutput
 
 private const val LOGGING_PREFIX = "Auto alignment"
 private val linearMaxVelocityTunable =
-    LoggedNetworkNumber("$LOGGING_PREFIX/linearMaxVelocity", 4.69)
+    LoggedNetworkNumber("/Tuning/$LOGGING_PREFIX/Linear max velocity", 4.69)
 private val linearMaxAccelerationTunable =
-    LoggedNetworkNumber("$LOGGING_PREFIX/linearMaxAcceleration", 2.8)
+    LoggedNetworkNumber("/Tuning/$LOGGING_PREFIX/Linear max acceleration", 2.8)
 
 private val xGains =
     TunableGains(
+        LOGGING_PREFIX,
         "x gains",
         kP = 4.0,
         cruiseVelocity = linearMaxVelocityTunable,
@@ -26,12 +27,14 @@ private val xGains =
     )
 private val yGains =
     TunableGains(
+        LOGGING_PREFIX,
         "y gains",
         cruiseVelocity = linearMaxVelocityTunable,
         acceleration = linearMaxAccelerationTunable
     )
 private val thetaGains =
     TunableGains(
+        LOGGING_PREFIX,
         "ϴ gains",
         kP = 6.0,
         cruiseVelocity = 7.deg_ps[rad_ps],

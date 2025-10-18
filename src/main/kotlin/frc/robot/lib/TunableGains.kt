@@ -11,8 +11,9 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
  * A class that creates tunable numbers for gains. Only gains that are provided
  * by the constructor will have gains created for them.
  *
- * @param name The name of the gain set. This is used as part of the network
- * table path.
+ * @param loggingPath Logging path ("directory") for the gain set. Useful for
+ * grouping related gains.
+ * @param keyName Key name for the gain set.
  * @param kP Proportional gain.
  * @param kI Integral gain.
  * @param kD Derivative gain.
@@ -23,13 +24,10 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
  * @param cruiseVelocity The cruise velocity in m/s or rad/s.
  * @param acceleration The acceleration in m/s² or rad/s².
  * @param jerk The jerk in m/s³ or rad/s³.
- * @param key An optional key to further distinguish the network table path. By
- * default, this is the name of the file that instantiated the class.
  */
 class TunableGains(
-    name: String,
-    key: String =
-        (Throwable().stackTrace[1]?.fileName?.substringBeforeLast('.') + ""),
+    loggingPath: String,
+    keyName: String,
     kP: Any? = null,
     kI: Any? = null,
     kD: Any? = null,
@@ -41,7 +39,7 @@ class TunableGains(
     acceleration: Any? = null,
     jerk: Any? = null,
 ) {
-    private val path = "/Tuning/$key/$name"
+    private val path = "/Tuning/$loggingPath/$keyName"
 
     private fun getTunable(name: String, gain: Any?) =
         when (gain) {
@@ -136,7 +134,8 @@ class TunableGains(
 var PIDController.gains: TunableGains
     get() =
         TunableGains(
-            "I don't think anyone will ever use this"
+            "I don't think anyone will ever use this",
+            ""
         ) // Dummy return to satisfy getter requirement.
     set(gains) {
         // It's possible that some PID gains are null, so we try/catch each one.
@@ -155,7 +154,8 @@ var PIDController.gains: TunableGains
 var ProfiledPIDController.gains: TunableGains
     get() =
         TunableGains(
-            "I don't think anyone will ever use this"
+            "I don't think anyone will ever use this",
+            ""
         ) // Dummy return to satisfy getter requirement.
     set(gains) {
         // It's possible that some PID gains are null, so we try/catch each one. However, there

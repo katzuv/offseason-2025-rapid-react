@@ -28,7 +28,8 @@ val STATOR_LIMIT = 30.amps
 val SUPPLY_LIMIT: Current = STATOR_LIMIT * 2.0
 val CONTROL_GAINS =
     TunableGains(
-        "Hood",
+        "Subsystems/Shooter",
+        "Hood gains",
         kP = 100.0,
         kD = 0.1,
         kS = 0.3,

@@ -168,8 +168,8 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
 
     private final TunableGains turnGains =
             new TunableGains(
-                    "Turn",
                     "Drive",
+                    "Turn",
                     TunerConstants.turnGains.kP,
                     TunerConstants.turnGains.kI,
                     TunerConstants.turnGains.kD,
