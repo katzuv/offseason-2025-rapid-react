@@ -8,7 +8,6 @@ import edu.wpi.first.units.measure.MomentOfInertia
 import frc.robot.CURRENT_MODE
 import frc.robot.Mode
 import frc.robot.lib.extensions.deg
-import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.kg2m
 import frc.robot.lib.extensions.m
 
@@ -16,8 +15,8 @@ import frc.robot.lib.extensions.m
  * Represents a universal wrapper for a motor, which abstracts the real and
  * simulated implementations.
  *
- * @param port The CAN ID of the motor controller.
- * @param canbus The CAN bus name (optional, default is the default bus).
+ * @param mainId The CAN ID of the main motor controller.
+ * @param canBus The CAN bus name (optional, default is the default bus).
  * @param config Configuration for the TalonFX motor controller.
  * @param momentOfInertia The moment of inertia used in simulation.
  * @param gearRatio The gear ratio between the motor and the mechanism (default
@@ -29,8 +28,8 @@ import frc.robot.lib.extensions.m
  * ```
  */
 class UniversalTalonFX(
-    port: Int,
-    canbus: String = "",
+    mainId: Int,
+    canBus: String = "rio",
     config: TalonFXConfiguration = TalonFXConfiguration(),
     momentOfInertia: MomentOfInertia = 0.003.kg2m,
     gearRatio: Double = 1.0,
@@ -40,8 +39,8 @@ class UniversalTalonFX(
     private val motorIO: MotorIO =
         if (CURRENT_MODE == Mode.REAL)
             MotorIOReal(
-                port,
-                canbus,
+                mainId,
+                canBus,
                 config,
                 gearRatio,
                 linearSystemWheelDiameter,

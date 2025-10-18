@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.lib.extensions.kg2m
-import frc.robot.lib.extensions.kilogramSquareMeters
 import frc.robot.lib.unified_canrange.UnifiedCANRange
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.AutoLogOutput
@@ -20,7 +19,7 @@ class Roller : SubsystemBase() {
     private val auxiliaryMotor =
         UniversalTalonFX(
             AUXILIARY_MOTOR_PORT,
-            momentOfInertia = (0.002).kilogramSquareMeters,
+            momentOfInertia = (0.002).kg2m,
         )
 
     private val voltageRequest = VoltageOut(0.0)

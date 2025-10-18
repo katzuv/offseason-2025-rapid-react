@@ -1,13 +1,9 @@
 package frc.robot.subsystems.shooter.turret
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs
-import com.ctre.phoenix6.configs.FeedbackConfigs
-import com.ctre.phoenix6.configs.MotionMagicConfigs
-import com.ctre.phoenix6.configs.MotorOutputConfigs
-import com.ctre.phoenix6.configs.TalonFXConfiguration
+import com.ctre.phoenix6.configs.*
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
-import frc.robot.lib.Gains
+import frc.robot.lib.TunableGains
 import frc.robot.lib.extensions.amps
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
@@ -17,7 +13,14 @@ val MAX_ANGLE = 135.deg
 val MIN_ANGLE = (-135).deg
 const val HALL_EFFECT_SENSOR_PORT = 0
 const val MOTOR_ID = 7
-val GAINS = Gains(1.0, kV = 1.0, kA = 1.0)
+val CONTROL_GAINS =
+    TunableGains(
+        "Subsystems/Shooter",
+        "Turret gains",
+        kP = 1.0,
+        kV = 1.0,
+        kA = 1.0
+    )
 val STATOR_CURRENT_LIMIT = 80.amps
 val SUPPLY_CURRENT_LIMIT = 40.amps
 val MOTOR_CONFIG: TalonFXConfiguration =
@@ -28,7 +31,7 @@ val MOTOR_CONFIG: TalonFXConfiguration =
                 Inverted = InvertedValue.CounterClockwise_Positive
             }
         Feedback = FeedbackConfigs().apply { RotorToSensorRatio = 1.0 }
-        Slot0 = GAINS.toSlotConfig()
+        Slot0 = CONTROL_GAINS.slot0Config
         CurrentLimits =
             CurrentLimitsConfigs().apply {
                 StatorCurrentLimitEnable = true

@@ -51,7 +51,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.ConstantsKt;
 import frc.robot.Mode;
 import frc.robot.lib.LocalADStarAK;
-import frc.robot.lib.LoggedNetworkGains;
+import frc.robot.lib.TunableGains;
 import frc.robot.lib.sysid.SysIdable;
 import frc.robot.subsystems.drive.ModuleIOs.Module;
 import frc.robot.subsystems.drive.ModuleIOs.ModuleIO;
@@ -149,8 +149,9 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                 new SwerveModulePosition()
             };
 
-    private final LoggedNetworkGains driveGains =
-            new LoggedNetworkGains(
+    private final TunableGains driveGains =
+            new TunableGains(
+                    "Drive",
                     "Drive",
                     TunerConstants.driveGains.kP,
                     TunerConstants.driveGains.kI,
@@ -159,13 +160,15 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                     TunerConstants.driveGains.kV,
                     TunerConstants.driveGains.kA,
                     TunerConstants.driveGains.kG,
-                    RotationsPerSecond.zero(),
-                    RotationsPerSecond.per(Second).zero(),
-                    0.0,
-                    "Drive");
+                    RotationsPerSecond.zero().in(RotationsPerSecond),
+                    RotationsPerSecondPerSecond.zero().in(RotationsPerSecondPerSecond),
+                    RotationsPerSecondPerSecond.per(Second)
+                            .zero()
+                            .in(RotationsPerSecondPerSecond.per(Second)));
 
-    private final LoggedNetworkGains turnGains =
-            new LoggedNetworkGains(
+    private final TunableGains turnGains =
+            new TunableGains(
+                    "Drive",
                     "Turn",
                     TunerConstants.turnGains.kP,
                     TunerConstants.turnGains.kI,
@@ -174,12 +177,9 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                     TunerConstants.turnGains.kV,
                     TunerConstants.turnGains.kA,
                     TunerConstants.turnGains.kG,
-                    RadiansPerSecond.of(
-                            TunerConstants.motionMagicSteerGains.MotionMagicCruiseVelocity),
-                    RadiansPerSecondPerSecond.of(
-                            TunerConstants.motionMagicSteerGains.MotionMagicAcceleration),
-                    TunerConstants.motionMagicSteerGains.MotionMagicJerk,
-                    "Drive");
+                    TunerConstants.motionMagicSteerGains.MotionMagicCruiseVelocity,
+                    TunerConstants.motionMagicSteerGains.MotionMagicAcceleration,
+                    TunerConstants.motionMagicSteerGains.MotionMagicJerk);
 
     private final SwerveDrivePoseEstimator poseEstimator =
             new SwerveDrivePoseEstimator(
@@ -357,9 +357,17 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
         }
     }
 
-    /** Stops the drive. */
-    public void stop() {
-        runVelocity(new ChassisSpeeds());
+    /** Returns an array of module translations. */
+    public static Translation2d[] getModuleTranslations() {
+        return new Translation2d[] {
+            new Translation2d(
+                    TunerConstants.FrontLeft.LocationX, TunerConstants.FrontLeft.LocationY),
+            new Translation2d(
+                    TunerConstants.FrontRight.LocationX, TunerConstants.FrontRight.LocationY),
+            new Translation2d(TunerConstants.BackLeft.LocationX, TunerConstants.BackLeft.LocationY),
+            new Translation2d(
+                    TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)
+        };
     }
 
     /**
@@ -379,6 +387,11 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
         return runOnce(this::stopWithX);
     }
 
+    /** Stops the drive. */
+    public void stop() {
+        runVelocity(new ChassisSpeeds());
+    }
+
     /** Returns a command to run a quasistatic test in the specified direction. */
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return run(() -> runCharacterization(0.0))
@@ -393,6 +406,10 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                 .andThen(sysId.dynamic(direction));
     }
 
+    public void resetGyro() {
+        gyroIO.reset();
+    }
+
     /** Returns the module states (turn angles and drive velocities) for all of the modules. */
     @AutoLogOutput(key = "SwerveStates/Measured")
     private SwerveModuleState[] getModuleStates() {
@@ -401,10 +418,6 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
             states[i] = modules[i].getState();
         }
         return states;
-    }
-
-    public void resetGyro() {
-        gyroIO.reset();
     }
 
     /** Returns the module positions (turn angles and drive positions) for all of the modules. */
@@ -416,16 +429,16 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
         return states;
     }
 
-    /** Returns the measured chassis speeds of the robot. */
-    @AutoLogOutput(key = "SwerveChassisSpeeds/Measured")
-    public ChassisSpeeds getChassisSpeeds() {
-        return kinematics.toChassisSpeeds(getModuleStates());
-    }
-
     @AutoLogOutput(key = "SwerveChassisSpeeds/MeasuredFieldOriented")
     public ChassisSpeeds getFieldOrientedSpeeds() {
         return ChassisSpeeds.fromRobotRelativeSpeeds(
                 kinematics.toChassisSpeeds(getModuleStates()), getRotation());
+    }
+
+    /** Returns the measured chassis speeds of the robot. */
+    @AutoLogOutput(key = "SwerveChassisSpeeds/Measured")
+    public ChassisSpeeds getChassisSpeeds() {
+        return kinematics.toChassisSpeeds(getModuleStates());
     }
 
     /** Returns the position of each module in radians. */
@@ -481,19 +494,6 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
     /** Returns the maximum angular speed in radians per sec. */
     public double getMaxAngularSpeedRadPerSec() {
         return getMaxLinearSpeedMetersPerSec() / DRIVE_BASE_RADIUS;
-    }
-
-    /** Returns an array of module translations. */
-    public static Translation2d[] getModuleTranslations() {
-        return new Translation2d[] {
-            new Translation2d(
-                    TunerConstants.FrontLeft.LocationX, TunerConstants.FrontLeft.LocationY),
-            new Translation2d(
-                    TunerConstants.FrontRight.LocationX, TunerConstants.FrontRight.LocationY),
-            new Translation2d(TunerConstants.BackLeft.LocationX, TunerConstants.BackLeft.LocationY),
-            new Translation2d(
-                    TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)
-        };
     }
 
     @Override

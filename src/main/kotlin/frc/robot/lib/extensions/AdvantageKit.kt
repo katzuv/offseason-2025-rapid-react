@@ -3,7 +3,6 @@ package frc.robot.lib.extensions
 import edu.wpi.first.math.controller.HolonomicDriveController
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.controller.ProfiledPIDController
-import edu.wpi.first.math.geometry.*
 import edu.wpi.first.units.Measure
 import edu.wpi.first.units.MutableMeasure
 import edu.wpi.first.units.Unit as WPIUnit

@@ -30,6 +30,14 @@ public interface VisionIO {
     /** Represents the angle to a simple target, not used for pose estimation. */
     record TargetObservation(Rotation2d tx, Rotation2d ty) {}
 
+    default void updateInputs(VisionIOInputs inputs) {}
+
+    enum PoseObservationType {
+        MEGATAG_1,
+        MEGATAG_2,
+        PHOTONVISION
+    }
+
     /** Represents a robot pose sample used for pose estimation. */
     record PoseObservation(
             double timestamp,
@@ -38,12 +46,4 @@ public interface VisionIO {
             int tagCount,
             double averageTagDistance,
             PoseObservationType type) {}
-
-    enum PoseObservationType {
-        MEGATAG_1,
-        MEGATAG_2,
-        PHOTONVISION
-    }
-
-    default void updateInputs(VisionIOInputs inputs) {}
 }

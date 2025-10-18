@@ -1,18 +1,13 @@
 package frc.robot.subsystems.shooter.hood
 
-import com.ctre.phoenix6.configs.CANcoderConfiguration
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs
-import com.ctre.phoenix6.configs.FeedbackConfigs
-import com.ctre.phoenix6.configs.MotorOutputConfigs
-import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs
-import com.ctre.phoenix6.configs.TalonFXConfiguration
+import com.ctre.phoenix6.configs.*
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
 import com.ctre.phoenix6.signals.SensorDirectionValue
 import edu.wpi.first.units.measure.Current
 import edu.wpi.first.wpilibj.Filesystem
-import frc.robot.lib.Gains
+import frc.robot.lib.TunableGains
 import frc.robot.lib.extensions.amps
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
@@ -31,8 +26,17 @@ val HOOD_ANGLE_BY_DISTANCE: InterpolatingDoubleMap =
 
 val STATOR_LIMIT = 30.amps
 val SUPPLY_LIMIT: Current = STATOR_LIMIT * 2.0
-val PID_GAINS =
-    Gains(kP = 100.0, kD = 0.1, kS = 0.3, kV = 7.4, kA = 0.02, kG = 0.2)
+val CONTROL_GAINS =
+    TunableGains(
+        "Subsystems/Shooter",
+        "Hood gains",
+        kP = 100.0,
+        kD = 0.1,
+        kS = 0.3,
+        kV = 7.4,
+        kA = 0.02,
+        kG = 0.2
+    )
 
 val ENCODER_OFFSET = 294.1115625.deg
 
@@ -48,7 +52,7 @@ val MOTOR_CONFIG =
                 Inverted = InvertedValue.Clockwise_Positive
                 NeutralMode = NeutralModeValue.Brake
             }
-        Slot0 = PID_GAINS.toSlotConfig()
+        Slot0 = CONTROL_GAINS.slot0Config
         CurrentLimits =
             CurrentLimitsConfigs().apply {
                 StatorCurrentLimitEnable = true

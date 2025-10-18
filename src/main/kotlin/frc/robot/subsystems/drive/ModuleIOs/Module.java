@@ -20,7 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import frc.robot.lib.LoggedNetworkGains;
+import frc.robot.lib.TunableGains;
 import org.littletonrobotics.junction.Logger;
 
 public class Module {
@@ -144,7 +144,7 @@ public class Module {
         return Units.radiansToRotations(inputs.driveVelocityRadPerSec);
     }
 
-    public void updateGains(LoggedNetworkGains turnGains, LoggedNetworkGains driveGains) {
+    public void updateGains(TunableGains turnGains, TunableGains driveGains) {
         io.updateGains(turnGains, driveGains);
     }
 }

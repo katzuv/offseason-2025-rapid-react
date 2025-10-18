@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.lib.extensions.deg
-import frc.robot.lib.extensions.degrees
 import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.kg2m
 import frc.robot.lib.universal_motor.UniversalTalonFX
@@ -23,7 +22,7 @@ class Wrist : SubsystemBase() {
     private val ligament =
         root.append(LoggedMechanismLigament2d("WristLigament", 0.25, 90.0))
 
-    @AutoLogOutput private var setpoint: Angle = 0.degrees
+    @AutoLogOutput private var setpoint: Angle = 0.deg
 
     private val motor =
         UniversalTalonFX(

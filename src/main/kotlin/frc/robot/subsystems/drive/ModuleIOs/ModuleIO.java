@@ -14,7 +14,7 @@
 package frc.robot.subsystems.drive.ModuleIOs;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.lib.LoggedNetworkGains;
+import frc.robot.lib.TunableGains;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ModuleIO {
@@ -54,5 +54,5 @@ public interface ModuleIO {
     /** Run the turn motor to the specified rotation. */
     public default void setTurnPosition(Rotation2d rotation) {}
 
-    public default void updateGains(LoggedNetworkGains turnGains, LoggedNetworkGains driveGains) {}
+    public default void updateGains(TunableGains turnGains, TunableGains driveGains) {}
 }

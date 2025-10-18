@@ -10,18 +10,10 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.autonomous.paths.deploy.pathplanner.AC1SRP
 import frc.robot.autonomous.paths.deploy.pathplanner.BRP2
 import frc.robot.autonomous.paths.deploy.pathplanner.CC2C3
-import frc.robot.lib.extensions.enableAutoLogOutputFor
-import frc.robot.lib.extensions.get
-import frc.robot.lib.extensions.m
-import frc.robot.lib.extensions.sec
-import frc.robot.lib.extensions.volts
+import frc.robot.lib.extensions.*
 import frc.robot.lib.math.interpolation.InterpolatingDouble
 import frc.robot.lib.sysid.sysId
-import frc.robot.robotstate.bindRobotCommands
-import frc.robot.robotstate.hoodDefaultCommand
-import frc.robot.robotstate.robotDistanceFromHub
-import frc.robot.robotstate.setIntaking
-import frc.robot.robotstate.turretAngleToHub
+import frc.robot.robotstate.*
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.wrist.WristAngles
 import org.ironmaple.simulation.SimulatedArena
@@ -144,15 +136,7 @@ object RobotContainer {
         autoChooser.addOption("CC2C3", CC2C3())
         autoChooser.addOption(
             "hoodSysId",
-            hood
-                .sysId()
-                .withForwardRoutineConfig(1.8.volts.per(sec), 1.volts, 0.75.sec)
-                .withBackwardRoutineConfig(
-                    1.volts.per(sec),
-                    0.8.volts,
-                    0.75.sec
-                )
-                .command()
+            hood.sysId(1.volts / sec, 0.75.volts, 0.5.sec)
         )
     }
 

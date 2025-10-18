@@ -6,7 +6,8 @@ This document demonstrates how to create subsystems using the `UniversalMotor` c
 
 ## Elevator Example
 
-The `Elevator` subsystem uses a `UniversalMotor` with a diameter and gear ratio to control position using closed-loop feedback:
+The `Elevator` subsystem uses a `UniversalMotor` with a diameter and gear ratio to control position using closed-loop
+feedback:
 
 ```kotlin
 private const val GEAR_RATIO = 1 / 10.0
