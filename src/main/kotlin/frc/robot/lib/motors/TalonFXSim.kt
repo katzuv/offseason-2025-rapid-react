@@ -1,10 +1,6 @@
 package frc.robot.lib.motors
 
 import com.ctre.phoenix6.controls.*
-import edu.wpi.first.math.numbers.N1
-import edu.wpi.first.math.numbers.N2
-import edu.wpi.first.math.system.LinearSystem
-import edu.wpi.first.math.system.plant.DCMotor
 import edu.wpi.first.units.Units
 import edu.wpi.first.units.measure.AngularVelocity
 import edu.wpi.first.units.measure.Current
@@ -13,26 +9,6 @@ import frc.robot.lib.math.differential.Derivative
 
 class TalonFXSim : SimMotor {
     private val acceleration = Derivative()
-
-    constructor(
-        model: LinearSystem<N2, N1, N2>,
-        numMotors: Int,
-        gearing: Double,
-        conversionFactor: Double,
-        motorType: TalonType
-    ) : super(
-        model,
-        TalonType.getDCMotor(motorType, numMotors),
-        gearing,
-        conversionFactor
-    )
-
-    constructor(
-        motor: DCMotor,
-        gearing: Double,
-        jKgMetersSquared: Double,
-        conversionFactor: Double
-    ) : super(motor, jKgMetersSquared, gearing, conversionFactor)
 
     constructor(
         numMotors: Int,
