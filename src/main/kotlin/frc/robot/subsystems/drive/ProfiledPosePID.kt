@@ -19,20 +19,20 @@ private val linearMaxAccelerationTunable =
 
 private val xGains =
     TunableGains(
-        "x Gains",
+        "x gains",
         kP = 4.0,
         cruiseVelocity = linearMaxVelocityTunable,
         acceleration = linearMaxAccelerationTunable
     )
 private val yGains =
     TunableGains(
-        "y Gains",
+        "y gains",
         cruiseVelocity = linearMaxVelocityTunable,
         acceleration = linearMaxAccelerationTunable
     )
 private val thetaGains =
     TunableGains(
-        "ϴ Gains",
+        "ϴ gains",
         kP = 6.0,
         cruiseVelocity = 7.deg_ps[rad_ps],
         acceleration = 360.deg_ps[rad_ps]
