@@ -7,21 +7,20 @@ import edu.wpi.first.units.measure.Current
 import edu.wpi.first.units.measure.Voltage
 import frc.robot.lib.math.differential.Derivative
 
-class TalonFXSim : SimMotor {
-    private val acceleration = Derivative()
-
-    constructor(
-        numMotors: Int,
-        gearing: Double,
-        jKgMetersSquared: Double,
-        conversionFactor: Double,
-        talonType: TalonType
-    ) : super(
+class TalonFXSim(
+    numMotors: Int,
+    gearing: Double,
+    jKgMetersSquared: Double,
+    conversionFactor: Double,
+    talonType: TalonType
+) :
+    SimMotor(
         TalonType.getDCMotor(talonType, numMotors),
         jKgMetersSquared,
         gearing,
         conversionFactor
-    )
+    ) {
+    private val acceleration = Derivative()
 
     override fun update(timestampSeconds: Double) {
         super.update(timestampSeconds)
