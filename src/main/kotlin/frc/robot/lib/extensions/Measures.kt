@@ -65,25 +65,25 @@ val amps: CurrentUnit = Units.Amps
 val volts: VoltageUnit = Units.Volts
 val kg2m: MomentOfInertiaUnit = Units.KilogramSquareMeters
 
-val rps
+val rps: AngularVelocityUnit
     get() = Units.RotationsPerSecond
 
-val rps_squared
+val rps_squared: AngularAccelerationUnit
     get() = Units.RotationsPerSecond.per(sec)
 
-val rps_tripled
+val rps_tripled: VelocityUnit<AngularAccelerationUnit>
     get() = Units.RotationsPerSecondPerSecond.per(sec)
 
-val rad_ps
+val rad_ps: AngularVelocityUnit
     get() = Units.RadiansPerSecond
-val rad_ps_ps
+val rad_ps_ps: AngularAccelerationUnit
     get() = Units.RadiansPerSecondPerSecond
-val mps
+val mps: LinearVelocityUnit
     get() = Units.MetersPerSecond
 
-val mps_ps
+val mps_ps: LinearAccelerationUnit
     get() = Units.MetersPerSecondPerSecond
-val deg_ps_ps
+val deg_ps_ps: AngularAccelerationUnit
     get() = Units.DegreesPerSecondPerSecond
 
 fun LinearVelocity.toAngular(
