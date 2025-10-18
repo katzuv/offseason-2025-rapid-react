@@ -16,7 +16,7 @@ import frc.robot.lib.extensions.m
  * simulated implementations.
  *
  * @param mainId The CAN ID of the main motor controller.
- * @param canbus The CAN bus name (optional, default is the default bus).
+ * @param canBus The CAN bus name (optional, default is the default bus).
  * @param config Configuration for the TalonFX motor controller.
  * @param momentOfInertia The moment of inertia used in simulation.
  * @param gearRatio The gear ratio between the motor and the mechanism (default
@@ -29,7 +29,7 @@ import frc.robot.lib.extensions.m
  */
 class UniversalTalonFX(
     mainId: Int,
-    canbus: String = "rio",
+    canBus: String = "rio",
     config: TalonFXConfiguration = TalonFXConfiguration(),
     momentOfInertia: MomentOfInertia = 0.003.kg2m,
     gearRatio: Double = 1.0,
@@ -40,7 +40,7 @@ class UniversalTalonFX(
         if (CURRENT_MODE == Mode.REAL)
             MotorIOReal(
                 mainId,
-                canbus,
+                canBus,
                 config,
                 gearRatio,
                 linearSystemWheelDiameter,
