@@ -8,13 +8,11 @@ enum class TalonType {
     KRAKEN,
     KRAKEN_FOC;
 
-    companion object {
-        fun getDCMotor(motorType: TalonType, numMotors: Int): DCMotor =
-            when (motorType) {
-                FALCON -> DCMotor.getFalcon500(numMotors)
-                FALCON_FOC -> DCMotor.getFalcon500Foc(numMotors)
-                KRAKEN -> DCMotor.getKrakenX60(numMotors)
-                KRAKEN_FOC -> DCMotor.getKrakenX60Foc(numMotors)
-            }
-    }
+    fun getDCMotor(numMotors: Int): DCMotor =
+        when (this) {
+            FALCON -> DCMotor.getFalcon500(numMotors)
+            FALCON_FOC -> DCMotor.getFalcon500Foc(numMotors)
+            KRAKEN -> DCMotor.getKrakenX60(numMotors)
+            KRAKEN_FOC -> DCMotor.getKrakenX60Foc(numMotors)
+        }
 }

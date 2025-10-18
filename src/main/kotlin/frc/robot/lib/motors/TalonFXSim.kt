@@ -15,7 +15,7 @@ class TalonFXSim(
     talonType: TalonType
 ) :
     SimMotor(
-        TalonType.getDCMotor(talonType, numMotors),
+        talonType.getDCMotor(numMotors),
         jKgMetersSquared,
         gearing,
         conversionFactor
