@@ -176,19 +176,19 @@ class TalonFXSim : SimMotor {
     val velocity: AngularVelocity
         get() =
             Units.Rotation.per(Units.Minutes)
-                .of(motorSim.getAngularVelocityRPM())
+                .of(motorSim.angularVelocityRPM)
                 .times(conversionFactor)
 
     val position: Double
-        get() = motorSim.getAngularPositionRotations() * conversionFactor
+        get() = motorSim.angularPositionRotations * conversionFactor
 
     fun getAcceleration(): Double {
         return acceleration.get()
     }
 
     val appliedCurrent: Current
-        get() = Units.Amps.of(motorSim.getCurrentDrawAmps())
+        get() = Units.Amps.of(motorSim.currentDrawAmps)
 
     val appliedVoltage: Voltage
-        get() = Units.Volts.of(motorSim.getInputVoltage())
+        get() = Units.Volts.of(motorSim.inputVoltage)
 }
