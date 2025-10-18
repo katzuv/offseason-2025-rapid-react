@@ -11,14 +11,14 @@ import frc.robot.lib.extensions.toDistance
  * Real implementation of [MotorIO] for interacting with actual TalonFX
  * hardware.
  *
- * @param port The CAN ID of the motor controller.
+ * @param mainId The CAN ID of the main motor controller.
  * @param canBus The CAN bus name (use empty string for default).
  * @param config The TalonFX configuration to apply on startup.
  * @param gearRatio The gear ratio between motor rotations and mechanism output.
  * @param diameter The diameter of the wheel/spool if used in a linear system.
  */
 class MotorIOReal(
-    private val port: Int,
+    private val mainId: Int,
     private val canBus: String,
     override val config: TalonFXConfiguration,
     private val gearRatio: Double,
@@ -26,7 +26,7 @@ class MotorIOReal(
     private val absoluteEncoderOffset: Angle,
 ) : MotorIO {
     override val inputs = LoggedMotorInputs()
-    private val motor = TalonFX(port, canBus)
+    private val motor = TalonFX(mainId, canBus)
 
     init {
         motor.configurator.apply(config)

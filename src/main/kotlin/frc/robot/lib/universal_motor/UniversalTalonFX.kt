@@ -15,7 +15,7 @@ import frc.robot.lib.extensions.m
  * Represents a universal wrapper for a motor, which abstracts the real and
  * simulated implementations.
  *
- * @param port The CAN ID of the motor controller.
+ * @param mainId The CAN ID of the main motor controller.
  * @param canbus The CAN bus name (optional, default is the default bus).
  * @param config Configuration for the TalonFX motor controller.
  * @param momentOfInertia The moment of inertia used in simulation.
@@ -28,7 +28,7 @@ import frc.robot.lib.extensions.m
  * ```
  */
 class UniversalTalonFX(
-    port: Int,
+    mainId: Int,
     canbus: String = "rio",
     config: TalonFXConfiguration = TalonFXConfiguration(),
     momentOfInertia: MomentOfInertia = 0.003.kg2m,
@@ -39,7 +39,7 @@ class UniversalTalonFX(
     private val motorIO: MotorIO =
         if (CURRENT_MODE == Mode.REAL)
             MotorIOReal(
-                port,
+                mainId,
                 canbus,
                 config,
                 gearRatio,
