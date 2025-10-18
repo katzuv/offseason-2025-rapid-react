@@ -11,8 +11,7 @@ import frc.robot.lib.gains
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 import org.team5987.annotation.LoggedOutput
 
-private const val LOGGING_PREFIX = "AutoAlignment"
-
+private const val LOGGING_PREFIX = "Auto alignment"
 private val linearMaxVelocityTunable =
     LoggedNetworkNumber("$LOGGING_PREFIX/linearMaxVelocity", 4.69)
 private val linearMaxAccelerationTunable =
