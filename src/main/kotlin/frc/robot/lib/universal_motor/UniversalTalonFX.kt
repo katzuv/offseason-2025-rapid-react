@@ -29,7 +29,7 @@ import frc.robot.lib.extensions.m
  */
 class UniversalTalonFX(
     port: Int,
-    canbus: String = "",
+    canbus: String = "rio",
     config: TalonFXConfiguration = TalonFXConfiguration(),
     momentOfInertia: MomentOfInertia = 0.003.kg2m,
     gearRatio: Double = 1.0,
