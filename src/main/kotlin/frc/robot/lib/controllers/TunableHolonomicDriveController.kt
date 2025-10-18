@@ -45,19 +45,25 @@ class TunableHolonomicDriveController(
         translationController,
         thetaController
     ) {
-    private val translationKP =
+    private val translationKP by lazy {
         LoggedNetworkNumber("$TRANSLATION_TUNING_PATH/kP", xController.p)
-    private val translationKI =
+    }
+    private val translationKI by lazy {
         LoggedNetworkNumber("$TRANSLATION_TUNING_PATH/kI", xController.i)
-    private val translationKD =
+    }
+    private val translationKD by lazy {
         LoggedNetworkNumber("$TRANSLATION_TUNING_PATH/kD", xController.d)
+    }
 
-    private val rotationKP =
+    private val rotationKP by lazy {
         LoggedNetworkNumber("$ROTATION_TUNING_PATH/kP", thetaController.p)
-    private val rotationKI =
+    }
+    private val rotationKI by lazy {
         LoggedNetworkNumber("$ROTATION_TUNING_PATH/kI", thetaController.i)
-    private val rotationKD =
+    }
+    private val rotationKD by lazy {
         LoggedNetworkNumber("$ROTATION_TUNING_PATH/kD", thetaController.d)
+    }
 
     /**
      * Calculates the next chassis speeds using the current and target poses,
