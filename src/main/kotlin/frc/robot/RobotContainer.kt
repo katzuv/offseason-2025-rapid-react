@@ -94,7 +94,7 @@ object RobotContainer {
             create().whileTrue(Wrist.reset())
         }
 
-        SwitchController.apply {
+        switchController.apply {
             button(SwitchInput.DisableAutoAlign.buttonId)
                 .whileTrue(disableAutoAlign())
                 .whileFalse(enableAutoAlign())
