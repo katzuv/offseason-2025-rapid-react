@@ -29,7 +29,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 object RobotContainer {
 
     private val driverController = CommandPS5Controller(0)
-    private val SwitchController = CommandGenericHID(1)
+    private val switchController = CommandGenericHID(1)
     private val autoChooser: LoggedDashboardChooser<Command>
 
     enum class SwitchInput(val buttonId: Int) {
@@ -68,7 +68,7 @@ object RobotContainer {
                 { driverController.leftX },
                 { -driverController.rightX * 0.8 }
             )
-        Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
+//        Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
         Hood.defaultCommand = hoodDefaultCommand()
         Wrist.defaultCommand = Wrist.open()
     }
