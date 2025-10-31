@@ -72,7 +72,7 @@ public class DriveCommands {
     public static Command resetGyro(){
         return drive.defer(() -> drive.runOnce(()->{
             Angle resetHeading = AllianceHelperKt.getIS_RED() ? Degrees.of(180) : Degrees.zero();
-//            drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d(resetHeading)));
+            drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d(resetHeading)));
             drive.resetGyro(resetHeading);
         })).ignoringDisable(true);
     }
