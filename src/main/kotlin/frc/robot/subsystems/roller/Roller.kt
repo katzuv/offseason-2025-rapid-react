@@ -58,8 +58,10 @@ object Roller : SubsystemBase() {
         if (CURRENT_MODE == Mode.REAL) isBallBlue.or(isBallRed)
         else Trigger { simulatedHasBall.get() }
 
-    private fun setVoltage(voltage: Voltage): Command = runOnce {
-        motor.setControl(voltageRequest.withOutput(voltage))
+    private fun setVoltage(voltage: Voltage): Command {
+        return runOnce {
+            motor.setControl(voltageRequest.withOutput(voltage))
+        }
     }
 
     fun intake(): Command = setVoltage(INTAKE)

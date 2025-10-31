@@ -13,6 +13,8 @@
 
 package frc.robot.subsystems.vision;
 
+import static edu.wpi.first.units.Units.*;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -23,8 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static edu.wpi.first.units.Units.*;
 
 public class VisionConstants {
     public static String LOG_PREFIX = "Subsystems/Vision/";
