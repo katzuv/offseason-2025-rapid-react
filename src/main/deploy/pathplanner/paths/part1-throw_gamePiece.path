@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.3726773607393365,
+        "y": 4.621246165569254
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.581368085813096,
+        "y": 7.258943748656728
+      },
+      "isLocked": false,
+      "linkedName": "Startgame_position"
+    },
+    {
+      "anchor": {
+        "x": 3.302397374025518,
+        "y": 6.130009183095289
+      },
+      "prevControl": {
+        "x": 3.3657021160173373,
+        "y": 6.425431312397151
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Throw_gamePiece"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Throw_gamePiece_AtStartAuto",
+      "waypointRelativePos": 0.2,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "New Folder",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -14.381394591090581
+  },
+  "useDefaultConstraints": true
+}
