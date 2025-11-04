@@ -3,6 +3,7 @@ package frc.robot
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Pose3d
 import edu.wpi.first.math.geometry.Rotation2d
+import frc.robot.lib.Mode
 import frc.robot.lib.extensions.millimeters
 import frc.robot.lib.extensions.toTransform
 import frc.robot.lib.getRotation3d
@@ -75,26 +76,21 @@ private val visionIOs =
         Mode.REAL ->
             VisionConstants.OVNameToTransform.map {
                 if (it.key == turretOVName) {
-                    VisionIOPhotonVision(
-                        it.key,
-                        {
-                            Pose3d(
-                                    it.value.translation.rotateAround(
-                                        getTranslation3d(
-                                            z = 441.837.millimeters
-                                        ),
-                                        getRotation3d(
-                                            yaw = Turret.inputs.position
-                                        )
-                                    ),
-                                    getRotation3d(
-                                        yaw = Turret.inputs.position,
-                                        pitch = it.value.rotation.measureZ
-                                    )
+                    VisionIOPhotonVision(it.key) {
+                        Pose3d(
+                                it.value.translation.rotateAround(
+                                    getTranslation3d(z = 441.837.millimeters),
+                                    getRotation3d(yaw = Turret.inputs.position)
+                                ),
+                                getRotation3d(
+                                    yaw =
+                                        it.value.rotation.measureZ -
+                                            Turret.inputs.position,
+                                    pitch = it.value.rotation.measureY
                                 )
-                                .toTransform()
-                        }
-                    )
+                            )
+                            .toTransform()
+                    }
                 } else {
                     VisionIOPhotonVision(it.key) { it.value }
                 }

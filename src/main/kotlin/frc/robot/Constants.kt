@@ -1,6 +1,6 @@
 package frc.robot
 
-import edu.wpi.first.wpilibj.DriverStation
+import frc.robot.lib.Mode
 import org.littletonrobotics.junction.LoggedRobot
 import org.team5987.annotation.LoggedOutput
 
@@ -18,17 +18,3 @@ val CURRENT_MODE: Mode
                 Mode.SIM
             }
         }
-
-const val ALT_ROBORIO_SERIAL = ""
-
-@LoggedOutput
-val IS_RED: Boolean
-    get() =
-        DriverStation.getAlliance().isPresent &&
-            DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-
-enum class Mode {
-    REAL,
-    SIM,
-    REPLAY
-}

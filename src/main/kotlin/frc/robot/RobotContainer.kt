@@ -4,6 +4,7 @@ import com.pathplanner.lib.auto.AutoBuilder
 import com.pathplanner.lib.auto.NamedCommands
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.units.Units
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
@@ -14,6 +15,9 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 //import frc.robot.autonomous.CC2
 //import frc.robot.autonomous.CC2C3
 import frc.robot.autonomous.Test2
+import frc.robot.lib.IS_RED
+import frc.robot.lib.Mode
+import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.sec
 import frc.robot.lib.extensions.volts
@@ -163,12 +167,10 @@ object RobotContainer {
             "swerveFFCharacterization",
             DriveCommands.feedforwardCharacterization()
         )
-          autoChooser.addOption("Test2", Test2())
-//        autoChooser.addOption("BRP2", BRP2())
-//        autoChooser.addOption("AC1SRP", AC1SRP())
-//        autoChooser.addOption("CC2C3", CC2C3())
-//        autoChooser.addOption("CC2", CC2())
-//        autoChooser.addOption("AC1", AC1())
+
+        autoChooser.addDefaultOption("BRP2", BRP2())
+        autoChooser.addOption("AC1SRP", AC1SRP())
+        autoChooser.addOption("CC2C3", CC2C3())
         autoChooser.addOption(
             "hoodSysId",
             Hood.sysId()

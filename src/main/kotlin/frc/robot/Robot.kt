@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.PowerDistribution
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
-import frc.robot.Mode.REAL
-import frc.robot.Mode.REPLAY
-import frc.robot.Mode.SIM
+import frc.robot.lib.Mode
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.logged_output.generated.registerAllLoggedOutputs
 import org.ironmaple.simulation.SimulatedArena
@@ -68,7 +66,7 @@ object Robot : LoggedRobot() {
         )
 
         when (CURRENT_MODE) {
-            REAL -> {
+            Mode.REAL -> {
                 LoggedPowerDistribution.getInstance(
                     1,
                     PowerDistribution.ModuleType.kRev
@@ -76,8 +74,8 @@ object Robot : LoggedRobot() {
                 Logger.addDataReceiver(WPILOGWriter())
                 Logger.addDataReceiver(NT4Publisher())
             }
-            SIM -> Logger.addDataReceiver(NT4Publisher())
-            REPLAY -> {
+            Mode.SIM -> Logger.addDataReceiver(NT4Publisher())
+            Mode.REPLAY -> {
                 setUseTiming(false)
                 val logPath = LogFileUtil.findReplayLog()
                 Logger.setReplaySource(WPILOGReader(logPath))

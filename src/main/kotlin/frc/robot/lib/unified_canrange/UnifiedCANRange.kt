@@ -2,7 +2,7 @@ package frc.robot.lib.unified_canrange
 
 import com.ctre.phoenix6.configs.CANrangeConfiguration
 import frc.robot.CURRENT_MODE
-import frc.robot.Mode
+import frc.robot.lib.Mode
 
 class UnifiedCANRange(
     private val port: Int,

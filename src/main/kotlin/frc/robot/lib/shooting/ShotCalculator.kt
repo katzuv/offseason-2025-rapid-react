@@ -22,7 +22,7 @@ data class ShotData(
 )
 
 val disableCompensation =
-    LoggedNetworkBoolean("/Tuning/disableShotCompensation", false)
+    LoggedNetworkBoolean("/Tuning/disableShotCompensation", true)
 val SHOOT_TARGET = HUB_LOCATION
 
 val NO_COMPENSATION_THRESHOLD: LinearVelocity =

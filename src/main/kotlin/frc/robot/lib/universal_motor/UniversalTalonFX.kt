@@ -6,10 +6,9 @@ import edu.wpi.first.units.measure.Angle
 import edu.wpi.first.units.measure.Distance
 import edu.wpi.first.units.measure.MomentOfInertia
 import frc.robot.CURRENT_MODE
-import frc.robot.Mode
 import frc.robot.lib.Gains
+import frc.robot.lib.Mode
 import frc.robot.lib.extensions.deg
-import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.kg2m
 import frc.robot.lib.extensions.m
 

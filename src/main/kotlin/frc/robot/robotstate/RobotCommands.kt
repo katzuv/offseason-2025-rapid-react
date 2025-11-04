@@ -65,6 +65,7 @@ val compensatedShot: ShotData
 val robotDistanceFromHub
     get() = drive.pose.distanceFromPoint(HUB_LOCATION)
 
+@LoggedOutput(path = COMMAND_NAME_PREFIX)
 val angleFromRobotHub
     get() =
         (drive.pose.translation.rotationToPoint(HUB_LOCATION) -

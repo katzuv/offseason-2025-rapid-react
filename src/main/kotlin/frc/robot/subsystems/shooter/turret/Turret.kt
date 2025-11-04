@@ -30,6 +30,10 @@ object Turret : SubsystemBase(), SysIdable {
     val inputs
         get() = motor.inputs
 
+    init {
+        motor.reset()
+    }
+
     val isAtResetPoint =
         Trigger(hallEffectSensor::get).onTrue(runOnce { motor.reset(0.rot) })
 

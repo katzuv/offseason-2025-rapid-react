@@ -13,7 +13,7 @@ import edu.wpi.first.units.Units
 import edu.wpi.first.units.Units.Rotations
 import edu.wpi.first.units.measure.Angle
 import edu.wpi.first.units.measure.Distance
-import frc.robot.IS_RED
+import frc.robot.lib.IS_RED
 import frc.robot.lib.extensions.get
 
 fun Pose2d.moveBack(distance: Distance): Pose2d =
