@@ -6,9 +6,11 @@ import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.units.Units
 import edu.wpi.first.wpilibj2.command.Command
+import edu.wpi.first.wpilibj2.command.Subsystem
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
+import frc.robot.autonomous.StartAuto
 //import frc.robot.autonomous.AC1
 //import frc.robot.autonomous.AC1SRP
 //import frc.robot.autonomous.BRP2
@@ -26,7 +28,9 @@ import frc.robot.lib.sysid.sysId
 import frc.robot.robotstate.*
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.roller.Roller
+import frc.robot.subsystems.shooter.flywheel.Flywheel
 import frc.robot.subsystems.shooter.hood.Hood
+import frc.robot.subsystems.shooter.hopper.Hopper
 import frc.robot.subsystems.shooter.turret.Turret
 import frc.robot.subsystems.wrist.Wrist
 import org.ironmaple.simulation.SimulatedArena
@@ -85,7 +89,7 @@ object RobotContainer {
         driverController.apply {
             options()
                 .onTrue(
-                    drive.runOnce { drive.resetGyro() }.ignoringDisable(true),
+                    drive.runOnce { drive.resetGyro(0.0.deg) }.ignoringDisable(true),
                 )
 
             circle().onTrue(setIntaking())
@@ -167,10 +171,13 @@ object RobotContainer {
             "swerveFFCharacterization",
             DriveCommands.feedforwardCharacterization()
         )
-
-        autoChooser.addDefaultOption("BRP2", BRP2())
-        autoChooser.addOption("AC1SRP", AC1SRP())
-        autoChooser.addOption("CC2C3", CC2C3())
+        NamedCommands.registerCommand("pickUp_gamePiece", setIntaking())
+        NamedCommands.registerCommand("Shoot_gamePiece",setShooting())
+          autoChooser.addOption("Test2", Test2())
+          autoChooser.addOption("StartAuto", StartAuto())
+//        autoChooser.addDefaultOption("BRP2", BRP2())
+//        autoChooser.addOption("AC1SRP", AC1SRP())
+//        autoChooser.addOption("CC2C3", CC2C3())
         autoChooser.addOption(
             "hoodSysId",
             Hood.sysId()

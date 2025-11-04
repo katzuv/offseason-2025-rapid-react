@@ -8,6 +8,7 @@ import frc.robot.lib.extensions.*
 import frc.robot.lib.shooting.disableCompensation
 import frc.robot.robotRelativeBallPoses
 import frc.robot.subsystems.roller.Roller
+import frc.robot.subsystems.roller.Roller.simulatedHasBall
 import frc.robot.subsystems.shooter.flywheel.Flywheel
 import frc.robot.subsystems.shooter.flywheel.STATIC_SHOOT_VELOCITY
 import frc.robot.subsystems.shooter.hood.Hood
@@ -66,6 +67,7 @@ fun bindRobotCommands() {
         and(ballsEmpty).apply {
             and(robotRelativeBallPoses::isNotEmpty, { intakeByVision }).apply {
                 onTrue(
+
                     Roller.intake(),
                     Hopper.start(),
                     alignToBall(disableAutoAlign::get)

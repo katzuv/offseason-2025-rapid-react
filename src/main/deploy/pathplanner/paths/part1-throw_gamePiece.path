@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.3726773607393365,
-        "y": 4.621246165569254
+        "x": 6.286919335404508,
+        "y": 4.607804233402062
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.581368085813096,
-        "y": 7.258943748656728
+        "x": 5.495610060478267,
+        "y": 7.245501816489536
       },
       "isLocked": false,
       "linkedName": "Startgame_position"
     },
     {
       "anchor": {
-        "x": 3.302397374025518,
-        "y": 6.130009183095289
+        "x": 4.490656668146077,
+        "y": 5.008058414693342
       },
       "prevControl": {
-        "x": 3.3657021160173373,
-        "y": 6.425431312397151
+        "x": 4.553961410137896,
+        "y": 5.303480543995204
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,14 +31,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Throw_gamePiece_AtStartAuto",
-      "waypointRelativePos": 0.2,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "part1-throw_gamePiece"
+            "pathName": "Start_auto"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "part2_pickUp_redGamePiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "part3-throw_gamePiece_inEndAuto"
+            "pathName": "part2"
           }
         }
       ]

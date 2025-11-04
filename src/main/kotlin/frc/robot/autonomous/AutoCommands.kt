@@ -15,12 +15,14 @@ internal fun runPath(name: String): Command {
     var startPose = path.pathPoses[0]
     return AutoBuilder.resetOdom(startPose)
         .andThen(AutoBuilder.followPath(path))
+
 }
 
 fun A(): Command {
     return Roller.intake().andThen(Wrist.default())
 }
 fun Test2(): Command= PathPlannerAuto("Test2")
+fun StartAuto(): Command= PathPlannerAuto("StartAuto")
 
 //fun AC1(): Command = runPath("AC1")
 //
