@@ -81,7 +81,6 @@ object RobotContainer {
             )
         Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
         Hood.defaultCommand = hoodDefaultCommand()
-        Wrist.defaultCommand = Wrist.open()
     }
 
     private fun configureButtonBindings() {
@@ -171,9 +170,9 @@ object RobotContainer {
             "swerveFFCharacterization",
             DriveCommands.feedforwardCharacterization()
         )
-        NamedCommands.registerCommand("pickUp_gamePiece", setIntaking())
-        NamedCommands.registerCommand("Shoot_gamePiece",setShooting())
-          autoChooser.addOption("Test2", Test2())
+        NamedCommands.registerCommand("pickup_gamepiece", setIntaking())
+        NamedCommands.registerCommand("shoot_gamepiece",setShooting())
+          autoChooser.addOption("Test2",setIntaking().andThen(Test2()) )
           autoChooser.addOption("StartAuto", StartAuto())
 //        autoChooser.addDefaultOption("BRP2", BRP2())
 //        autoChooser.addOption("AC1SRP", AC1SRP())

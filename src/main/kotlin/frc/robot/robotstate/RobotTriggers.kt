@@ -15,6 +15,8 @@ import frc.robot.subsystems.shooter.hood.Hood
 import frc.robot.subsystems.shooter.hood.STATIC_SHOOT_SETPOINT
 import frc.robot.subsystems.shooter.hopper.Hopper
 import frc.robot.subsystems.shooter.turret.Turret
+import frc.robot.subsystems.wrist.Wrist
+import org.littletonrobotics.junction.Logger
 import org.team5987.annotation.LoggedOutput
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)
@@ -54,6 +56,7 @@ fun bindRobotCommands() {
             .onTrue(driveToShootingPoint(disableAutoAlign::get))
     }
     isIntaking.apply {
+        onTrue(Wrist.open())
         and(hasFrontBall, hasBackBall)
             .onTrue(Roller.stop(), Hopper.stop(), setShooting())
         and(hasBackBall, !hasFrontBall).apply {
@@ -84,12 +87,12 @@ fun bindRobotCommands() {
             Flywheel.setVelocity { STATIC_SHOOT_VELOCITY }
         )
     }
+    Trigger(stopIdling::get).onFalse(setIdling()).onTrue(setIntaking())
     applyLeds()
 }
 
 private fun setRobotState(newState: RobotState) =
-    Commands.runOnce({ state = newState })
-
+    Commands.runOnce({ state = newState})
 fun setShooting() = setRobotState(RobotState.SHOOTING)
 
 fun setIntaking() = setRobotState(RobotState.INTAKING)
