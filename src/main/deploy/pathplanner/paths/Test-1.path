@@ -45,7 +45,7 @@
     "rotation": -144.29330859939714
   },
   "reversed": false,
-  "folder": "AC1SRP",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": -135.69027719786507

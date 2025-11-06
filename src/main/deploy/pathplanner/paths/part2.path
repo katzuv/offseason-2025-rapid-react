@@ -33,13 +33,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "pickup piece",
+      "name": "shoot_gamepiece",
       "waypointRelativePos": 0.7559055118110345,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Shoot_gamePiece"
+          "name": "shoot_gamepiece"
         }
       }
     }

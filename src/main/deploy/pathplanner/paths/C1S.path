@@ -1,5 +1,5 @@
 {
- "version": "2025.0",
+  "version": "2025.0",
   "waypoints": [
     {
       "anchor": {
@@ -45,7 +45,7 @@
     "rotation": -135.69027719786507
   },
   "reversed": false,
-  "folder": "AC1SRP",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": -175.07289005235106
