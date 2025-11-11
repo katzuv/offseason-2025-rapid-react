@@ -31,8 +31,8 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean
 import org.team5987.annotation.LoggedOutput
 
 var hoodAngle = InterpolatingDouble(robotDistanceFromHub[m])
-var forceShoot = false
-var disableAutoAlign = LoggedNetworkBoolean("/Tuning/disableAutoAlign", false)
+@LoggedOutput var forceShoot = false
+var disableAutoAlign = LoggedNetworkBoolean("/Tuning/disableAutoAlign", true)
 var intakeByVision = false
 val compensatedShot: ShotData
     get() {
@@ -71,7 +71,7 @@ val angleFromRobotToHub
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)
 val turretToRobotHubAngle
-    get() = drive.pose.rotation - angleFromRobotToHub + Rotation2d.k180deg
+    get() = -angleFromRobotToHub + Rotation2d.k180deg + drive.pose.rotation
 
 @LoggedOutput
 val turretAngleToHub: Angle
@@ -142,21 +142,24 @@ fun startShooting() =
     sequence(
             drive.lock(),
             Flywheel.setVelocity {
-                FLYWHEEL_VELOCITY_KEY.value = robotDistanceFromHub[m]
-                SHOOTER_VELOCITY_BY_DISTANCE.getInterpolated(
-                        FLYWHEEL_VELOCITY_KEY
+                    FLYWHEEL_VELOCITY_KEY.value = robotDistanceFromHub[m]
+                    SHOOTER_VELOCITY_BY_DISTANCE.getInterpolated(
+                            FLYWHEEL_VELOCITY_KEY
+                        )
+                        .value
+                        .rps
+                }
+                .alongWith(
+                    sequence(
+                        waitUntil(Flywheel.isAtSetVelocity),
+                        parallel(Hopper.startShoot(), Roller.intake())
                     )
-                    .value
-                    .rps
-            },
-            waitUntil(Flywheel.isAtSetVelocity),
-            parallel(Hopper.start(), Roller.intake())
+                ),
         )
         .named(COMMAND_NAME_PREFIX)
 
 fun stopShooting() =
-    parallel(Flywheel.setVelocity(SLOW_ROTATION), Hopper.stop(), Roller.stop())
-        .named(COMMAND_NAME_PREFIX)
+    parallel(Flywheel.stop(), Hopper.stop()).named(COMMAND_NAME_PREFIX)
 
 fun stopIntaking() =
     parallel(Roller.stop(), Hopper.stop()).named(COMMAND_NAME_PREFIX)

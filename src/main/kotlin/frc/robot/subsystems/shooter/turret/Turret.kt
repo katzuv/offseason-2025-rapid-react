@@ -35,6 +35,7 @@ object Turret : SubsystemBase(), SysIdable {
         motor.reset()
     }
 
+    @LoggedOutput
     val isAtSetpoint = Trigger {
         motor.inputs.position.isNear(angleSetpoint, TOLERANCE)
     }

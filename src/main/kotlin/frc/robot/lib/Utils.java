@@ -84,5 +84,4 @@ public class Utils {
     public static double distanceToSpeakerVarianceFactor(Translation2d toSpeaker) {
         return Math.cos(0.2 * toSpeaker.getY() / toSpeaker.getX());
     }
-
 }

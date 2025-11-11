@@ -21,12 +21,17 @@ import org.team5987.annotation.LoggedOutput
 
 object Roller : SubsystemBase() {
     private val motor =
-        UniversalTalonFX(MOTOR_PORT, momentOfInertia = 0.002.kg2m)
+        UniversalTalonFX(
+            MOTOR_PORT,
+            momentOfInertia = 0.002.kg2m,
+            config = MOTOR_CONFIG
+        )
 
     private val auxiliaryMotor =
         UniversalTalonFX(
             AUXILIARY_MOTOR_PORT,
             momentOfInertia = (0.002).kilogramSquareMeters,
+            config = MOTOR_CONFIG
         )
 
     private val voltageRequest = VoltageOut(0.0)

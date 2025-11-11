@@ -52,7 +52,9 @@ object Hopper : SubsystemBase() {
         motor.setControl(voltageRequest.withOutput(voltage))
     }
 
-    fun start(): Command = setVoltage(INTAKE_VOLTAGE)
+    fun startIntake(): Command = setVoltage(INTAKE_VOLTAGE)
+
+    fun startShoot(): Command = setVoltage(SHOOT_VOLTAGE)
 
     fun stop(): Command = setVoltage(0.volts)
 
