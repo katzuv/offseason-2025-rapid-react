@@ -2,13 +2,11 @@ package frc.robot.robotstate
 
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.button.Trigger
-import frc.robot.applyLeds
 import frc.robot.drive
 import frc.robot.lib.extensions.*
 import frc.robot.lib.shooting.disableCompensation
 import frc.robot.robotRelativeBallPoses
 import frc.robot.subsystems.roller.Roller
-import frc.robot.subsystems.roller.Roller.simulatedHasBall
 import frc.robot.subsystems.shooter.flywheel.Flywheel
 import frc.robot.subsystems.shooter.flywheel.STATIC_SHOOT_VELOCITY
 import frc.robot.subsystems.shooter.hood.Hood
@@ -16,7 +14,6 @@ import frc.robot.subsystems.shooter.hood.STATIC_SHOOT_SETPOINT
 import frc.robot.subsystems.shooter.hopper.Hopper
 import frc.robot.subsystems.shooter.turret.Turret
 import frc.robot.subsystems.wrist.Wrist
-import org.littletonrobotics.junction.Logger
 import org.team5987.annotation.LoggedOutput
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)
@@ -55,10 +52,10 @@ fun bindRobotCommands() {
         and((isInDeadZone).or(!atShootingRotation))
             .onTrue(driveToShootingPoint(disableAutoAlign::get))
     }
+
     isIntaking.apply {
         onTrue(Wrist.open())
-        and(hasFrontBall, hasBackBall)
-            .onTrue(Roller.stop(), Hopper.stop(), setShooting())
+        and(hasFrontBall, hasBackBall).onTrue(stopIntaking(), setShooting())
         and(hasBackBall, !hasFrontBall).apply {
             onTrue(stopIntaking())
             and(robotRelativeBallPoses::isNotEmpty, { intakeByVision }).apply {
@@ -70,7 +67,6 @@ fun bindRobotCommands() {
         and(ballsEmpty).apply {
             and(robotRelativeBallPoses::isNotEmpty, { intakeByVision }).apply {
                 onTrue(
-
                     Roller.intake(),
                     Hopper.start(),
                     alignToBall(disableAutoAlign::get)
@@ -87,12 +83,11 @@ fun bindRobotCommands() {
             Flywheel.setVelocity { STATIC_SHOOT_VELOCITY }
         )
     }
-    Trigger(stopIdling::get).onFalse(setIdling()).onTrue(setIntaking())
-    applyLeds()
 }
 
 private fun setRobotState(newState: RobotState) =
-    Commands.runOnce({ state = newState})
+    Commands.runOnce({ state = newState })
+
 fun setShooting() = setRobotState(RobotState.SHOOTING)
 
 fun setIntaking() = setRobotState(RobotState.INTAKING)

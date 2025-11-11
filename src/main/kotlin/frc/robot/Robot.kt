@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot
 
+import com.pathplanner.lib.commands.FollowPathCommand
 import com.pathplanner.lib.commands.PathfindingCommand
 import edu.wpi.first.hal.FRCNetComm.tInstances
 import edu.wpi.first.hal.FRCNetComm.tResourceType
@@ -44,7 +45,7 @@ object Robot : LoggedRobot() {
             tResourceType.kResourceType_Language,
             tInstances.kLanguage_Kotlin
         )
-        arrayOf(vision, drive).forEach { AutoLogOutputManager.addObject(it) }
+        arrayOf(drive).forEach { AutoLogOutputManager.addObject(it) }
 
         // Initialize logger
         listOf(
@@ -92,6 +93,7 @@ object Robot : LoggedRobot() {
         registerAllLoggedOutputs()
 
         DriverStation.silenceJoystickConnectionWarning(true)
+        FollowPathCommand.warmupCommand().schedule()
         PathfindingCommand.warmupCommand().schedule()
 
         val commandCounts = HashMap<String, Int>()

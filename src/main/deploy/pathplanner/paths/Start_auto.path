@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.544984755449938,
-        "y": 5.867140559903896
+        "x": 5.515794882169564,
+        "y": 5.480020311861629
       },
       "isLocked": false,
       "linkedName": "Startgame_position"
@@ -20,8 +20,8 @@
         "y": 6.765271893533112
       },
       "prevControl": {
-        "x": 4.642473248687994,
-        "y": 6.583221895359911
+        "x": 4.734019521455109,
+        "y": 6.471421382593046
       },
       "nextControl": null,
       "isLocked": false,

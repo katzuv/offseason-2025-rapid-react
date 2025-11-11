@@ -2,28 +2,22 @@ package frc.robot.autonomous.paths.deploy.pathplanner
 
 import com.pathplanner.lib.auto.AutoBuilder
 import com.pathplanner.lib.path.PathPlannerPath
-import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
 import frc.robot.drive
 import frc.robot.lib.IS_RED
-import frc.robot.lib.extensions.withRotation
 
 internal fun runPath(name: String, mirror: Boolean = false): Command {
     val originalPath = PathPlannerPath.fromPathFile(name)
-    val path = if (IS_RED || mirror) originalPath.mirrorPath() else originalPath
+    val path = if (IS_RED) originalPath.flipPath() else originalPath
     var startPose = path.pathPoses[0]
-    return Commands.runOnce({
-            if (IS_RED) {
-                startPose =
-                    startPose.withRotation(
-                        startPose.rotation + Rotation2d.k180deg
-                    )
-            }
-            drive.resetOdometry(startPose)
-            AutoBuilder.resetOdom(startPose)
-        })
-        .andThen(AutoBuilder.followPath(path))
+    return drive.defer {
+        Commands.runOnce({
+                drive.resetOdometry(startPose)
+                AutoBuilder.resetOdom(startPose)
+            })
+            .andThen(AutoBuilder.followPath(path))
+    }
 }
 
 fun AC1(): Command = runPath("AC1")

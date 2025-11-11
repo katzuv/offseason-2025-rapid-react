@@ -1,23 +1,20 @@
 package frc.robot
 
+// import frc.robot.autonomous.AC1
+// import frc.robot.autonomous.AC1SRP
+// import frc.robot.autonomous.BRP2
+// import frc.robot.autonomous.CC2
+// import frc.robot.autonomous.CC2C3
 import com.pathplanner.lib.auto.AutoBuilder
 import com.pathplanner.lib.auto.NamedCommands
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
-import edu.wpi.first.units.Units
 import edu.wpi.first.wpilibj2.command.Command
-import edu.wpi.first.wpilibj2.command.Subsystem
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.autonomous.StartAuto
-//import frc.robot.autonomous.AC1
-//import frc.robot.autonomous.AC1SRP
-//import frc.robot.autonomous.BRP2
-//import frc.robot.autonomous.CC2
-//import frc.robot.autonomous.CC2C3
 import frc.robot.autonomous.Test2
-import frc.robot.lib.IS_RED
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
@@ -28,9 +25,7 @@ import frc.robot.lib.sysid.sysId
 import frc.robot.robotstate.*
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.roller.Roller
-import frc.robot.subsystems.shooter.flywheel.Flywheel
 import frc.robot.subsystems.shooter.hood.Hood
-import frc.robot.subsystems.shooter.hopper.Hopper
 import frc.robot.subsystems.shooter.turret.Turret
 import frc.robot.subsystems.wrist.Wrist
 import org.ironmaple.simulation.SimulatedArena
@@ -88,7 +83,9 @@ object RobotContainer {
         driverController.apply {
             options()
                 .onTrue(
-                    drive.runOnce { drive.resetGyro(0.0.deg) }.ignoringDisable(true),
+                    drive
+                        .runOnce { drive.resetGyro(0.0.deg) }
+                        .ignoringDisable(true),
                 )
 
             circle().onTrue(setIntaking())
@@ -171,12 +168,12 @@ object RobotContainer {
             DriveCommands.feedforwardCharacterization()
         )
         NamedCommands.registerCommand("pickup_gamepiece", setIntaking())
-        NamedCommands.registerCommand("shoot_gamepiece",setShooting())
-          autoChooser.addOption("Test2",setIntaking().andThen(Test2()) )
-          autoChooser.addOption("StartAuto", StartAuto())
-//        autoChooser.addDefaultOption("BRP2", BRP2())
-//        autoChooser.addOption("AC1SRP", AC1SRP())
-//        autoChooser.addOption("CC2C3", CC2C3())
+        NamedCommands.registerCommand("shoot_gamepiece", setShooting())
+        autoChooser.addOption("Test2", setIntaking().andThen(Test2()))
+        autoChooser.addOption("StartAuto", StartAuto())
+        //        //autoChooser.addDefaultOption("BRP2", BRP2())
+        //       //autoChooser.addOption("AC1SRP", AC1SRP())
+        //       // autoChooser.addOption("CC2C3", CC2C3())
         autoChooser.addOption(
             "hoodSysId",
             Hood.sysId()

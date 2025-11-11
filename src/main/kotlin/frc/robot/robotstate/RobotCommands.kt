@@ -33,7 +33,7 @@ import org.team5987.annotation.LoggedOutput
 var hoodAngle = InterpolatingDouble(robotDistanceFromHub[m])
 var forceShoot = false
 var disableAutoAlign = LoggedNetworkBoolean("/Tuning/disableAutoAlign", false)
-var stopIdling = LoggedNetworkBoolean("/Tuning/stopIdling",false)
+var stopIdling = LoggedNetworkBoolean("/Tuning/stopIdling", false)
 var intakeByVision = false
 val compensatedShot: ShotData
     get() {

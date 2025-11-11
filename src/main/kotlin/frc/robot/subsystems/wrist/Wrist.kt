@@ -1,6 +1,5 @@
 package frc.robot.subsystems.wrist
 
-import com.ctre.phoenix6.configs.Slot0Configs
 import com.ctre.phoenix6.controls.PositionVoltage
 import com.ctre.phoenix6.controls.VoltageOut
 import edu.wpi.first.units.measure.Angle
@@ -36,7 +35,6 @@ object Wrist : SubsystemBase() {
             gearRatio = GEAR_RATIO,
             config = MOTOR_CONFIG,
             simGains = SIM_CONFIG
-
         )
 
     @LoggedOutput
@@ -62,10 +60,11 @@ object Wrist : SubsystemBase() {
             }
         )
 
-    fun setAngle(angle: WristAngles): Command = Wrist.runOnce {
-        setpoint = angle.angle
-        motor.setControl(positionRequest.withPosition(angle.angle))
-    }
+    fun setAngle(angle: WristAngles): Command =
+        Wrist.runOnce {
+            setpoint = angle.angle
+            motor.setControl(positionRequest.withPosition(angle.angle))
+        }
 
     fun open(): Command = setAngle(WristAngles.OPEN)
 
