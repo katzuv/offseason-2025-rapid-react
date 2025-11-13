@@ -83,10 +83,7 @@ private fun getAllSwerveModulePoseDrive(): Array<Pose3d> {
 val wristTranslation
     get() = getTranslation3d(-0.3, 0.0, 0.28)
 val wristRotation
-    get() =
-        getRotation3d(
-            pitch = Wrist.inputs.position / 60.0
-        ) // wrist position divided by constant to match the visualization
+    get() = getRotation3d(pitch = Wrist.inputs.position / 60.0)
 val wristPose
     get() = getPose3d(wristTranslation, wristRotation)
 
@@ -95,7 +92,7 @@ val rollerTranslation
 val rollerRotation
     get() = getRotation3d(0.0)
 val rollerPose
-    get() = wristPose + Transform3d(rollerTranslation, rollerRotation)
+    get() = getPose3d() + Transform3d(rollerTranslation, rollerRotation)
 
 val turretTranslation
     get() = getTranslation3d(z = 0.41)
