@@ -15,7 +15,6 @@ import frc.robot.subsystems.shooter.flywheel.STATIC_SHOOT_VELOCITY
 import frc.robot.subsystems.shooter.hood.Hood
 import frc.robot.subsystems.shooter.hood.STATIC_SHOOT_SETPOINT
 import frc.robot.subsystems.shooter.hopper.Hopper
-import frc.robot.subsystems.shooter.turret.Turret
 import org.team5987.annotation.LoggedOutput
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)
@@ -47,8 +46,12 @@ fun bindRobotCommands() {
                 .onTrue(startShooting())
             and(shouldShootOnMove).onTrue(startShooting())
         }
-        and((isInDeadZone.or(isTurretInRange.negate())).and(shouldShootOnMove.negate()))
-            .onTrue(driveToShootingPoint())
+        and(shouldShootOnMove.negate()).apply {
+            and(isInDeadZone)
+                .onTrue(alignToShootingPoint(deadZoneAlignmentSetpoint))
+            and(isTurretInRange.negate())
+                .onTrue(alignToShootingPoint())
+        }
     }
     isIntaking.apply {
         and(hasFrontBall, hasBackBall)

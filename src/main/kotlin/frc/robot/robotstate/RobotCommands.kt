@@ -140,11 +140,11 @@ fun stopIntakeByVision() = Commands.runOnce({ intakeByVision = false })
 fun setIntakeByVision() = Commands.runOnce({ intakeByVision = true })
 
 // TODO: FIX SWERVECOMPENSATIONANGLE
-fun driveToShootingPoint(): Command =
+fun alignToShootingPoint(pose: Translation2d = drive.pose.translation): Command =
     drive
         .defer {
             alignToPose(
-                Pose2d(deadZoneAlignmentSetpoint, appliedSwerveCompensationAngle)
+                Pose2d(pose, appliedSwerveCompensationAngle)
             )
         }
         .until(disableAutoAlign::get)
