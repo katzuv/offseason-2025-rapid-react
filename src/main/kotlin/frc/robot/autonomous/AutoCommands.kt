@@ -22,16 +22,3 @@ fun Test2(): Command = PathPlannerAuto("Test2")
 
 fun StartAuto(): Command = PathPlannerAuto("StartAuto")
 
-// fun AC1(): Command = runPath("AC1")
-//
-// fun C1S(): Command = runPath("C1S")
-//
-// fun CC2(): Command = runPath("CC2")
-//
-// fun C2C3(): Command = runPath("C2C3")
-//
-// fun BRP2(): Command = runPath("BRP2")
-//
-// fun AC1SRP(): Command = Commands.sequence(AC1(), C1S())
-//
-// fun CC2C3(): Command = Commands.sequence(CC2(), C2C3())
