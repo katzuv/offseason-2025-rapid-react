@@ -21,7 +21,7 @@ val SUPPLY_CURRENT_LIMIT = 40.amps
 val SOFTWARE_LIMIT_CONFIG =
     SoftwareLimitSwitchConfigs().apply {
         ForwardSoftLimitEnable = true
-        ForwardSoftLimitThreshold = 0.625
+        ForwardSoftLimitThreshold = 0.73291
         ReverseSoftLimitEnable = true
         ReverseSoftLimitThreshold = -0.005
     }
