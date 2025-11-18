@@ -31,7 +31,6 @@ val MOTOR_CONFIG =
             }
     }
 
-
 val SENSOR_DEBOUNCE = 0.4.sec
 
 val DISTANCE_SENSOR_ID = 12

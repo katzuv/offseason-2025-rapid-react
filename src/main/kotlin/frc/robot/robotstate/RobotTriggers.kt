@@ -94,7 +94,8 @@ fun bindRobotCommands() {
 }
 
 val isDisabled =
-    Trigger { DriverStation.isDisabled() }.onTrue(setIdling().ignoringDisable(true))
+    Trigger { DriverStation.isDisabled() }
+        .onTrue(setIdling().ignoringDisable(true))
 
 private fun setRobotState(newState: RobotState) =
     Commands.runOnce({ state = newState })

@@ -54,12 +54,17 @@ object Roller : SubsystemBase() {
         get() = ballColor.colorSimilarity(BLUE_COLOR)
 
     @LoggedOutput
-    val isBallRed: Trigger = Trigger { redConfidence > SIMILARITY_THRESHOLD }.debounce(SENSOR_DEBOUNCE)
+    val isBallRed: Trigger =
+        Trigger { redConfidence > SIMILARITY_THRESHOLD }
+            .debounce(SENSOR_DEBOUNCE)
 
     @LoggedOutput
-    val isBallBlue: Trigger = Trigger { blueConfidence > SIMILARITY_THRESHOLD }.debounce(SENSOR_DEBOUNCE)
+    val isBallBlue: Trigger =
+        Trigger { blueConfidence > SIMILARITY_THRESHOLD }
+            .debounce(SENSOR_DEBOUNCE)
 
-    private val simulatedHasBall = LoggedNetworkBoolean("/Tuning/Roller/hasBall", false)
+    private val simulatedHasBall =
+        LoggedNetworkBoolean("/Tuning/Roller/hasBall", false)
 
     @LoggedOutput
     val hasBall: Trigger =
