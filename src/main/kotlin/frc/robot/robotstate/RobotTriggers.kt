@@ -7,6 +7,7 @@ import frc.robot.RobotContainer.forceShoot
 import frc.robot.applyLeds
 import frc.robot.drive
 import frc.robot.lib.extensions.and
+import frc.robot.lib.extensions.onFalse
 import frc.robot.lib.extensions.onTrue
 import frc.robot.lib.extensions.whileTrue
 import frc.robot.lib.shooting.disableCompensation
@@ -40,6 +41,10 @@ private val ballsEmpty = hasFrontBall.or(hasBackBall).negate()
 
 val shouldShootOnMove = Trigger { !disableCompensation.get() }
 
+private val isIntakeManual = Trigger{ !intakeByVision }
+private val isIntakeAuto = Trigger{ intakeByVision && robotRelativeBallPoses.isNotEmpty() }
+
+
 fun bindRobotCommands() {
     isShooting.apply {
         and(ballsEmpty.and(forceShoot.negate())).onTrue(setIntaking())
@@ -58,26 +63,26 @@ fun bindRobotCommands() {
         and(hasFrontBall, hasBackBall)
             .onTrue(Roller.stop(), Hopper.stop(), setShooting())
         and(hasBackBall, hasFrontBall.negate()).apply {
-            onTrue(Hopper.stop())
+            onTrue(Hopper.slowBack(), Roller.intake())
             and(robotRelativeBallPoses::isNotEmpty, { intakeByVision }).apply {
                 and(forceShoot.negate())
                     .onTrue(alignToBall(disableAutoAlign::get))
             }
-            onTrue(Roller.intake())
         }
         and(hasBackBall.negate(), hasFrontBall).apply {
             onTrue(Hopper.startIntake(), Roller.intake())
         }
         and(ballsEmpty).apply {
-            and(robotRelativeBallPoses::isNotEmpty, { intakeByVision }).apply {
+            onTrue(stopIntaking())
+
+            and(isIntakeAuto).apply {
                 onTrue(
                     Roller.intake(),
                     Hopper.startIntake(),
                     alignToBall(disableAutoAlign::get)
                 )
             }
-            onTrue(stopIntaking())
-            and { !intakeByVision }
+            and(isIntakeManual)
                 .onTrue(Roller.intake(), Hopper.startIntake())
         }
         onTrue(stopShooting())

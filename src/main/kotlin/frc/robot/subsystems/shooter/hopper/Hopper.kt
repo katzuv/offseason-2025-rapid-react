@@ -5,12 +5,14 @@ import com.revrobotics.ColorSensorV3
 import edu.wpi.first.units.measure.Voltage
 import edu.wpi.first.wpilibj.util.Color
 import edu.wpi.first.wpilibj2.command.Command
+import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.CURRENT_MODE
 import frc.robot.lib.Mode
 import frc.robot.lib.colorSimilarity
 import frc.robot.lib.extensions.debounce
+import frc.robot.lib.extensions.sec
 import frc.robot.lib.extensions.volts
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
@@ -40,12 +42,10 @@ object Hopper : SubsystemBase() {
     @LoggedOutput
     val isBallRed: Trigger =
         Trigger { redConfidence > SIMILARITY_THRESHOLD }
-            .debounce(SENSOR_DEBOUNCE)
 
     @LoggedOutput
     val isBallBlue: Trigger =
         Trigger { blueConfidence > SIMILARITY_THRESHOLD }
-            .debounce(SENSOR_DEBOUNCE)
 
     private val simulatedHasBall =
         LoggedNetworkBoolean("/Tuning/Hopper/hasBall", false)
@@ -55,15 +55,21 @@ object Hopper : SubsystemBase() {
         if (CURRENT_MODE == Mode.REAL) isBallBlue.or(isBallRed)
         else Trigger { simulatedHasBall.get() }
 
-    private fun setVoltage(voltage: Voltage): Command = runOnce {
+    private fun setVoltageCommand(voltage: Voltage): Command = runOnce {
+        setVoltage(voltage)
+    }
+
+    private fun setVoltage(voltage: Voltage) {
         motor.setControl(voltageRequest.withOutput(voltage))
     }
 
-    fun startIntake(): Command = setVoltage(INTAKE_VOLTAGE)
+    fun startIntake(): Command = setVoltageCommand(INTAKE_VOLTAGE)
 
-    fun startShoot(): Command = setVoltage(SHOOT_VOLTAGE)
+    fun startShoot(): Command = setVoltageCommand(SHOOT_VOLTAGE)
 
-    fun stop(): Command = setVoltage(0.volts)
+    fun slowBack(): Command = Commands.sequence(this.run { setVoltage(SLOW_BACK_VOLTAGE) }.withTimeout(SLOW_BACK_TIMEOUT), stop())
+
+    fun stop(): Command = setVoltageCommand(0.volts)
 
     override fun periodic() {
         motor.updateInputs()

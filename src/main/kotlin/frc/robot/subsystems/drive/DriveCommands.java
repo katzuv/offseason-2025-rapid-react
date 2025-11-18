@@ -79,6 +79,10 @@ public class DriveCommands {
                                                             ? Degrees.of(180)
                                                             : Degrees.zero();
                                             drive.resetGyro(resetHeading);
+                                            drive.resetOdometry(
+                                                    new Pose2d(
+                                                            drive.getPose().getTranslation(),
+                                                            new Rotation2d(resetHeading)));
                                         }))
                 .ignoringDisable(true);
     }

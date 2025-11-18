@@ -9,9 +9,12 @@ import edu.wpi.first.wpilibj.I2C
 import edu.wpi.first.wpilibj.util.Color
 import frc.robot.lib.extensions.*
 
-val MOTOR_ID = 4
+const val MOTOR_ID = 4
 
-val INTAKE_VOLTAGE = 3.volts
+val SLOW_BACK_TIMEOUT = 0.2.sec
+val INTAKE_VOLTAGE = 3
+    .volts
+val SLOW_BACK_VOLTAGE = (-1.7).volts
 val SHOOT_VOLTAGE = 8.volts
 val STATOR_LIMIT = 30.amps
 
@@ -30,8 +33,6 @@ val MOTOR_CONFIG =
                 SupplyCurrentLimit = SUPPLY_LIMIT[amps]
             }
     }
-
-val SENSOR_DEBOUNCE = 0.4.sec
 
 val DISTANCE_SENSOR_ID = 12
 

@@ -52,14 +52,16 @@ object Turret : SubsystemBase(), SysIdable {
             }
             .ignoringDisable(true)
 
-    fun setAngle(position: Angle) = runOnce {
-        motor.setControl(positionVoltage.withPosition(position))
+    fun setAngle(angle: Angle) = runOnce {
+        motor.setControl(positionVoltage.withPosition(angle))
     }
 
-    fun setAngle(position: () -> Angle) = run {
-        angleSetpoint = position.invoke()
-        motor.setControl(positionVoltage.withPosition(position.invoke()))
+    fun setAngle(angle: () -> Angle) = run {
+        angleSetpoint = angle.invoke()
+        motor.setControl(positionVoltage.withPosition(angle.invoke()))
     }
+
+    fun reset(angle: Angle = 0.deg) = this.runOnce { motor.reset(angle)}
 
     override fun periodic() {
         motor.updateInputs()

@@ -5,9 +5,11 @@ import com.pathplanner.lib.auto.NamedCommands
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Transform2d
+import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
+import edu.wpi.first.wpilibj2.command.button.Trigger
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.autonomous.paths.deploy.pathplanner.AC1SRP
 import frc.robot.autonomous.paths.deploy.pathplanner.BRP2
@@ -37,6 +39,7 @@ object RobotContainer {
 
     private val driverController = CommandPS5Controller(0)
     private val switchController = CommandGenericHID(1)
+    private val userButton = Trigger { RobotController.getUserButton() }
     private val autoChooser: LoggedDashboardChooser<Command>
 
     @LoggedOutput(path = COMMAND_NAME_PREFIX)
@@ -106,6 +109,8 @@ object RobotContainer {
 
             create().whileTrue(Wrist.reset())
         }
+
+        userButton.onTrue(Turret.reset().ignoringDisable(true))
 
         switchController.apply {
             button(SwitchInput.DisableAutoAlign.buttonId)
