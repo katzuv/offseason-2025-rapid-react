@@ -15,7 +15,6 @@ import frc.robot.lib.extensions.*
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import frc.robot.subsystems.shooter.hopper.BLUE_COLOR
 import frc.robot.subsystems.shooter.hopper.RED_COLOR
-import frc.robot.subsystems.shooter.hopper.SIMILARITY_THRESHOLD
 import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean
 import org.team5987.annotation.LoggedOutput
@@ -52,22 +51,25 @@ object Roller : SubsystemBase() {
         get() = ballColor.colorSimilarity(BLUE_COLOR)
 
     @LoggedOutput
-    val isBallRed: Trigger =
-        Trigger { redConfidence > SIMILARITY_THRESHOLD }
+    val isBallRed: Trigger = Trigger {
+        redConfidence > ROLLER_COLOR_SIMILARITY_THRESHOLD
+    }
 
     @LoggedOutput
-    val isBallBlue: Trigger =
-        Trigger { blueConfidence > SIMILARITY_THRESHOLD }
+    val isBallBlue: Trigger = Trigger {
+        blueConfidence > ROLLER_COLOR_SIMILARITY_THRESHOLD
+    }
 
     private val simulatedHasBall =
         LoggedNetworkBoolean("/Tuning/Roller/hasBall", false)
 
     @LoggedOutput
     val hasBall: Trigger =
-        if (CURRENT_MODE == Mode.REAL) (isBallBlue.or(isBallRed)).debounce(
-            SENSOR_DEBOUNCE[sec],
-            Debouncer.DebounceType.kRising
-        )
+        if (CURRENT_MODE == Mode.REAL)
+            (isBallBlue.or(isBallRed)).debounce(
+                SENSOR_DEBOUNCE[sec],
+                Debouncer.DebounceType.kRising
+            )
         else Trigger { simulatedHasBall.get() }
 
     private fun setVoltage(voltage: Voltage): Command = runOnce {

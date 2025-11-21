@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.CURRENT_MODE
 import frc.robot.lib.Mode
 import frc.robot.lib.colorSimilarity
-import frc.robot.lib.extensions.debounce
-import frc.robot.lib.extensions.sec
 import frc.robot.lib.extensions.volts
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
@@ -40,12 +38,14 @@ object Hopper : SubsystemBase() {
         get() = ballColor.colorSimilarity(BLUE_COLOR)
 
     @LoggedOutput
-    val isBallRed: Trigger =
-        Trigger { redConfidence > SIMILARITY_THRESHOLD }
+    val isBallRed: Trigger = Trigger {
+        redConfidence > HOPPER_COLOR_SIMILARITY_THRESHOLD
+    }
 
     @LoggedOutput
-    val isBallBlue: Trigger =
-        Trigger { blueConfidence > SIMILARITY_THRESHOLD }
+    val isBallBlue: Trigger = Trigger {
+        blueConfidence > HOPPER_COLOR_SIMILARITY_THRESHOLD
+    }
 
     private val simulatedHasBall =
         LoggedNetworkBoolean("/Tuning/Hopper/hasBall", false)
@@ -67,9 +67,16 @@ object Hopper : SubsystemBase() {
 
     fun startShoot(): Command = setVoltageCommand(SHOOT_VOLTAGE)
 
-    fun slowBack(): Command = Commands.sequence(this.run { setVoltage(SLOW_BACK_VOLTAGE) }.withTimeout(SLOW_BACK_TIMEOUT), stop())
+    fun slowBack(): Command =
+        Commands.sequence(
+            this.run { setVoltage(SLOW_BACK_VOLTAGE) }
+                .withTimeout(SLOW_BACK_TIMEOUT),
+            stop()
+        )
 
     fun stop(): Command = setVoltageCommand(0.volts)
+
+    fun outtake(): Command = setVoltageCommand(-INTAKE_VOLTAGE)
 
     override fun periodic() {
         motor.updateInputs()

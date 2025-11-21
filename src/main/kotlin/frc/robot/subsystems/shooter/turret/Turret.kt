@@ -61,7 +61,7 @@ object Turret : SubsystemBase(), SysIdable {
         motor.setControl(positionVoltage.withPosition(angle.invoke()))
     }
 
-    fun reset(angle: Angle = 0.deg) = this.runOnce { motor.reset(angle)}
+    fun reset(angle: Angle = 0.deg) = this.runOnce { motor.reset(angle) }
 
     override fun periodic() {
         motor.updateInputs()

@@ -4,7 +4,6 @@ import com.pathplanner.lib.auto.AutoBuilder
 import com.pathplanner.lib.auto.NamedCommands
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
-import edu.wpi.first.math.geometry.Transform2d
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
@@ -15,19 +14,19 @@ import frc.robot.autonomous.paths.deploy.pathplanner.AC1SRP
 import frc.robot.autonomous.paths.deploy.pathplanner.BRP2
 import frc.robot.autonomous.paths.deploy.pathplanner.CC2C3
 import frc.robot.lib.Mode
-import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
-import frc.robot.lib.extensions.m
+import frc.robot.lib.extensions.get
+import frc.robot.lib.extensions.onFalse
+import frc.robot.lib.extensions.onTrue
 import frc.robot.lib.extensions.sec
-import frc.robot.lib.extensions.toRotation2d
 import frc.robot.lib.extensions.volts
 import frc.robot.lib.shooting.toggleCompensation
 import frc.robot.lib.sysid.sysId
 import frc.robot.robotstate.*
 import frc.robot.subsystems.drive.DriveCommands
-import frc.robot.subsystems.drive.profiledAlignToPose
 import frc.robot.subsystems.roller.Roller
 import frc.robot.subsystems.shooter.hood.Hood
+import frc.robot.subsystems.shooter.hopper.Hopper
 import frc.robot.subsystems.shooter.turret.Turret
 import frc.robot.subsystems.wrist.Wrist
 import org.ironmaple.simulation.SimulatedArena
@@ -43,12 +42,17 @@ object RobotContainer {
     private val autoChooser: LoggedDashboardChooser<Command>
 
     @LoggedOutput(path = COMMAND_NAME_PREFIX)
+    val shouldShootOneBall: Trigger =
+        switchController.button(SwitchInput.ShouldShootOneBall.buttonId)
+
+    @LoggedOutput(path = COMMAND_NAME_PREFIX)
     val forceShoot = driverController.triangle()
 
     enum class SwitchInput(val buttonId: Int) {
         DisableAutoAlign(0),
         StaticSetpoint(1),
-        IntakeByVision(2)
+        IntakeByVision(2),
+        ShouldShootOneBall(12)
     }
 
     init {
@@ -81,6 +85,7 @@ object RobotContainer {
                 { -driverController.leftX },
                 { -driverController.rightX * 0.8 }
             )
+
         Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
         Hood.defaultCommand = hoodDefaultCommand()
         Wrist.defaultCommand = Wrist.open()
@@ -92,17 +97,12 @@ object RobotContainer {
             options().onTrue(DriveCommands.resetGyro())
 
             circle().onTrue(setIntaking())
-            L2().onTrue(Roller.intake()).onFalse(Roller.stop())
-            R2().onTrue(Roller.outtake()).onFalse(Roller.stop())
-            square()
-                .onTrue(
-                    drive.defer {
-                        profiledAlignToPose(
-                            drive.pose +
-                                Transform2d(2.m, 2.m, 180.deg.toRotation2d())
-                        )
-                    }
-                )
+            L2()
+                .onTrue(Roller.intake(), Hopper.startShoot())
+                .onFalse(Roller.stop(), Hopper.stop())
+            R2()
+                .onTrue(Roller.outtake(), Hopper.outtake())
+                .onFalse(Roller.stop(), Hopper.stop())
             cross().onTrue(setShooting())
             povDown().onTrue(setIdling())
             povUp().onTrue(toggleCompensation())
@@ -125,20 +125,6 @@ object RobotContainer {
                 .whileTrue(setIntakeByVision())
                 .onFalse(stopIntakeByVision())
         }
-        // Reset gyro / odometry
-        val resetOdometry =
-            if (CURRENT_MODE == Mode.SIM)
-                Runnable {
-                    drive.resetOdometry(
-                        driveSimulation!!.simulatedDriveTrainPose
-                    )
-                }
-            else
-                Runnable {
-                    drive.resetOdometry(
-                        Pose2d(drive.pose.translation, Rotation2d())
-                    )
-                }
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()

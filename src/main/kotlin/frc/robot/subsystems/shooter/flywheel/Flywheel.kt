@@ -17,6 +17,7 @@ import frc.robot.lib.namedRunOnce
 import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 
 object Flywheel : SubsystemBase(), SysIdable {
     private val mainMotor =
@@ -26,6 +27,10 @@ object Flywheel : SubsystemBase(), SysIdable {
     private val velocityTorque = VelocityTorqueCurrentFOC(0.0)
     private val voltageOut = VoltageOut(0.0)
     private var velocitySetpoint = 0.rps
+
+    private val calibrationVelocity =
+        LoggedNetworkNumber("/Tuning/calibrationFlywheelVelocity", 0.0)
+
     val velocity
         get() = mainMotor.inputs.velocity
     init {
@@ -46,6 +51,10 @@ object Flywheel : SubsystemBase(), SysIdable {
     fun setVelocity(velocity: () -> AngularVelocity): Command = namedRun {
         velocitySetpoint = velocity.invoke()
         mainMotor.setControl(velocityTorque.withVelocity(velocitySetpoint))
+    }
+
+    fun setCalibrationAngle(): Command = setVelocity {
+        calibrationVelocity.get().rps
     }
 
     fun slowRotation() = setVelocity(SLOW_ROTATION).named()

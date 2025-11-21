@@ -2,7 +2,6 @@ package frc.robot.robotstate
 
 import edu.wpi.first.math.geometry.Ellipse2d
 import edu.wpi.first.math.geometry.Translation2d
-import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.m
 import frc.robot.lib.math.interpolation.InterpolatingDouble
@@ -16,4 +15,3 @@ val INNER_SHOOTING_AREA =
     Ellipse2d(HUB_LOCATION, 1.3.m) // the inner part of the shooting area
 
 val FLYWHEEL_VELOCITY_KEY = InterpolatingDouble(robotDistanceFromHub[m])
-

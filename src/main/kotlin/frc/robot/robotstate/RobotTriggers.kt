@@ -2,12 +2,13 @@ package frc.robot.robotstate
 
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj2.command.Commands
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.RobotContainer.forceShoot
+import frc.robot.RobotContainer.shouldShootOneBall
 import frc.robot.applyLeds
 import frc.robot.drive
 import frc.robot.lib.extensions.and
-import frc.robot.lib.extensions.onFalse
 import frc.robot.lib.extensions.onTrue
 import frc.robot.lib.extensions.whileTrue
 import frc.robot.lib.shooting.disableCompensation
@@ -41,9 +42,10 @@ private val ballsEmpty = hasFrontBall.or(hasBackBall).negate()
 
 val shouldShootOnMove = Trigger { !disableCompensation.get() }
 
-private val isIntakeManual = Trigger{ !intakeByVision }
-private val isIntakeAuto = Trigger{ intakeByVision && robotRelativeBallPoses.isNotEmpty() }
-
+private val isIntakeManual = Trigger { !intakeByVision }
+private val isIntakeAuto = Trigger {
+    intakeByVision && robotRelativeBallPoses.isNotEmpty()
+}
 
 fun bindRobotCommands() {
     isShooting.apply {
@@ -60,8 +62,14 @@ fun bindRobotCommands() {
         }
     }
     isIntaking.apply {
-        and(hasFrontBall, hasBackBall)
-            .onTrue(Roller.stop(), Hopper.stop(), setShooting())
+        and(hasFrontBall.or(shouldShootOneBall), hasBackBall)
+            .onTrue(Roller.stop(), Hopper.stop())
+            .apply {
+                and(RobotModeTriggers.test())
+                    .onTrue(setTestShooting())
+                    .negate()
+                    .onTrue(setShooting())
+            }
         and(hasBackBall, hasFrontBall.negate()).apply {
             onTrue(Hopper.slowBack(), Roller.intake())
             and(robotRelativeBallPoses::isNotEmpty, { intakeByVision }).apply {
@@ -82,8 +90,7 @@ fun bindRobotCommands() {
                     alignToBall(disableAutoAlign::get)
                 )
             }
-            and(isIntakeManual)
-                .onTrue(Roller.intake(), Hopper.startIntake())
+            and(isIntakeManual).onTrue(Roller.intake(), Hopper.startIntake())
         }
         onTrue(stopShooting())
     }

@@ -152,9 +152,9 @@ fun Color.colorSimilarity(color: Color): Double {
     val valDiff = abs(hsvColor1.value - hsvColor2.value)
 
     // --- Weight each component ---
-    val hueWeight = 2.0 // hue is most important
-    val satWeight = 1.5
-    val valWeight = 1.0
+    val hueWeight = 3.0 // hue is most important
+    val satWeight = 1.0
+    val valWeight = 0.5
 
     // Combine into one distance value
     val distance =

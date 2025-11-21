@@ -11,10 +11,9 @@ import frc.robot.lib.extensions.*
 
 const val MOTOR_ID = 4
 
-val SLOW_BACK_TIMEOUT = 0.2.sec
-val INTAKE_VOLTAGE = 3
-    .volts
-val SLOW_BACK_VOLTAGE = (-1.7).volts
+val SLOW_BACK_TIMEOUT = 0.15.sec
+val INTAKE_VOLTAGE = 3.volts
+val SLOW_BACK_VOLTAGE = (-1.2).volts
 val SHOOT_VOLTAGE = 8.volts
 val STATOR_LIMIT = 30.amps
 
@@ -40,6 +39,6 @@ val DISTANCE_THRESHOLD = 50.mm
 
 val RED_COLOR = Color(138, 87, 29)
 val BLUE_COLOR = Color(73, 147, 33)
-const val SIMILARITY_THRESHOLD = 0.93
+const val HOPPER_COLOR_SIMILARITY_THRESHOLD = 0.97
 
 val COLOR_SENSOR_PORT = I2C.Port.kMXP
