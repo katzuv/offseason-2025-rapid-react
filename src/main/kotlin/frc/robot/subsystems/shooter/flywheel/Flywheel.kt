@@ -1,7 +1,7 @@
 package frc.robot.subsystems.shooter.flywheel
 
 import com.ctre.phoenix6.controls.Follower
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC
+import com.ctre.phoenix6.controls.VelocityVoltage
 import com.ctre.phoenix6.controls.VoltageOut
 import edu.wpi.first.units.measure.AngularVelocity
 import edu.wpi.first.units.measure.Voltage
@@ -24,7 +24,7 @@ object Flywheel : SubsystemBase(), SysIdable {
         UniversalTalonFX(MAIN_MOTOR_PORT, config = MOTOR_CONFIG)
     private val auxMotor =
         UniversalTalonFX(AUX_MOTOR_PORT, config = MOTOR_CONFIG)
-    private val velocityTorque = VelocityTorqueCurrentFOC(0.0)
+    private val velocityTorque = VelocityVoltage(0.0)
     private val voltageOut = VoltageOut(0.0)
     private var velocitySetpoint = 0.rps
 
@@ -45,7 +45,7 @@ object Flywheel : SubsystemBase(), SysIdable {
 
     fun setVelocity(velocity: AngularVelocity): Command = namedRunOnce {
         velocitySetpoint = velocity
-        mainMotor.setControl(velocityTorque.withVelocity(velocitySetpoint))
+        mainMotor.setControl(velocityTorque.withVelocity(velocity))
     }
 
     fun setVelocity(velocity: () -> AngularVelocity): Command = namedRun {
