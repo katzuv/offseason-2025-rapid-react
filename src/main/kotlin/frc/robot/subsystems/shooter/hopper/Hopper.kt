@@ -8,10 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.button.Trigger
-import frc.robot.CURRENT_MODE
-import frc.robot.lib.Mode
 import frc.robot.lib.colorSimilarity
 import frc.robot.lib.extensions.volts
+import frc.robot.lib.unified_canrange.UnifiedCANRange
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean
@@ -50,10 +49,14 @@ object Hopper : SubsystemBase() {
     private val simulatedHasBall =
         LoggedNetworkBoolean("/Tuning/Hopper/hasBall", false)
 
-    @LoggedOutput
-    val hasBall: Trigger =
-        if (CURRENT_MODE == Mode.REAL) isBallBlue.or(isBallRed)
-        else Trigger { simulatedHasBall.get() }
+    private val distanceSensor =
+        UnifiedCANRange(
+            DISTANCE_SENSOR_ID,
+            configuration = CANRANGE_CONFIG,
+            subsystemName = name
+        )
+
+    @LoggedOutput val hasBall: Trigger = Trigger { distanceSensor.isInRange }
 
     private fun setVoltageCommand(voltage: Voltage): Command = runOnce {
         setVoltage(voltage)
@@ -80,6 +83,8 @@ object Hopper : SubsystemBase() {
 
     override fun periodic() {
         motor.updateInputs()
+        distanceSensor.updateInputs()
         Logger.processInputs("Subsystems/$name", motor.inputs)
+        Logger.processInputs("Subsystems/$name/Distance", distanceSensor.inputs)
     }
 }

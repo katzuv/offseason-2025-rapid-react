@@ -198,7 +198,7 @@ fun startShooting() =
         )
         .named(COMMAND_NAME_PREFIX)
 
-fun setTestShooting(): Command =
+fun startTestShooting(): Command =
     Flywheel.setCalibrationAngle()
         .alongWith(Hood.setCalibrationAngle())
         .alongWith(

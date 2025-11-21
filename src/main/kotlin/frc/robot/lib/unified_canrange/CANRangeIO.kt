@@ -1,11 +1,11 @@
 package frc.robot.lib.unified_canrange
 
-import edu.wpi.first.epilogue.Logged
 import edu.wpi.first.units.measure.Distance
 import frc.robot.lib.extensions.cm
+import org.team5987.annotation.Logged
 
 interface CANRangeIO {
-    val inputs: SensorInputs
+    val inputs: LoggedSensorInputs
 
     fun updateInputs() {}
 
@@ -13,5 +13,6 @@ interface CANRangeIO {
     open class SensorInputs {
         var distance: Distance = 0.cm
         var isDetecting: Boolean = false
+        var signalStrength: Double = 0.0
     }
 }

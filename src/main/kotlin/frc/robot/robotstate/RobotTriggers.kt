@@ -52,7 +52,13 @@ fun bindRobotCommands() {
         and(ballsEmpty.and(forceShoot.negate())).onTrue(setIntaking())
         and(isInDeadZone.negate()).apply {
             and(shouldShootOnMove.negate().and(isTurretInRange))
-                .onTrue(startShooting())
+                .onTrue(
+                    Commands.either(
+                        startTestShooting(),
+                        startShooting(),
+                        RobotModeTriggers.test()
+                    )
+                )
             and(shouldShootOnMove).onTrue(startShooting())
         }
         and(shouldShootOnMove.negate()).apply {
@@ -63,13 +69,7 @@ fun bindRobotCommands() {
     }
     isIntaking.apply {
         and(hasFrontBall.or(shouldShootOneBall), hasBackBall)
-            .onTrue(Roller.stop(), Hopper.stop())
-            .apply {
-                and(RobotModeTriggers.test())
-                    .onTrue(setTestShooting())
-                    .negate()
-                    .onTrue(setShooting())
-            }
+            .onTrue(Roller.stop(), Hopper.stop(), setShooting())
         and(hasBackBall, hasFrontBall.negate()).apply {
             onTrue(Hopper.slowBack(), Roller.intake())
             and(robotRelativeBallPoses::isNotEmpty, { intakeByVision }).apply {

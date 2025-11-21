@@ -29,7 +29,7 @@ object Flywheel : SubsystemBase(), SysIdable {
     private var velocitySetpoint = 0.rps
 
     private val calibrationVelocity =
-        LoggedNetworkNumber("/Tuning/calibrationFlywheelVelocity", 0.0)
+        LoggedNetworkNumber("/Tuning/calibrationFlywheelVelocity", 40.0)
 
     val velocity
         get() = mainMotor.inputs.velocity
