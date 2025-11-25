@@ -236,6 +236,7 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
         FlippingUtil.symmetryType = FlippingUtil.FieldSymmetry.kRotational;
         FlippingUtil.fieldSizeX = Units.inchesToMeters(324 * 2);
         FlippingUtil.fieldSizeY = Units.inchesToMeters(162 * 2);
+        //TODO: remove this after the kickoff
         Pathfinding.setPathfinder(new LocalADStarAK());
         PathPlannerLogging.setLogActivePathCallback(
                 (activePath) -> {
@@ -413,11 +414,6 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
         gyroIO.reset(resetHeading);
     }
 
-    public void followTrajectory(SwerveSample sample) {
-        var pose2d = getPose();
-
-        ChassisSpeeds speeds = new ChassisSpeeds(sample.vx, sample.vy, sample.omega);
-    }
 
     /** Returns the module positions (turn angles and drive positions) for all of the modules. */
     private SwerveModulePosition[] getModulePositions() {
