@@ -45,7 +45,7 @@ object Robot : LoggedRobot() {
             tResourceType.kResourceType_Language,
             tInstances.kLanguage_Kotlin
         )
-        arrayOf(vision,drive).forEach { AutoLogOutputManager.addObject(it) }
+        arrayOf(vision, drive).forEach { AutoLogOutputManager.addObject(it) }
 
         // Initialize logger
         listOf(

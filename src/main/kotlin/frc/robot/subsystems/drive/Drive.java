@@ -15,7 +15,6 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
-import choreo.trajectory.SwerveSample;
 import com.ctre.phoenix6.CANBus;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.ModuleConfig;
@@ -236,7 +235,7 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
         FlippingUtil.symmetryType = FlippingUtil.FieldSymmetry.kRotational;
         FlippingUtil.fieldSizeX = Units.inchesToMeters(324 * 2);
         FlippingUtil.fieldSizeY = Units.inchesToMeters(162 * 2);
-        //TODO: remove this after the kickoff
+        // TODO: remove this after the kickoff
         Pathfinding.setPathfinder(new LocalADStarAK());
         PathPlannerLogging.setLogActivePathCallback(
                 (activePath) -> {
@@ -413,7 +412,6 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
     public void resetGyro(Angle resetHeading) {
         gyroIO.reset(resetHeading);
     }
-
 
     /** Returns the module positions (turn angles and drive positions) for all of the modules. */
     private SwerveModulePosition[] getModulePositions() {
