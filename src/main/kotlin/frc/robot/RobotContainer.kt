@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
-import frc.robot.autonomous.StartAuto
-import frc.robot.autonomous.Test2
+import frc.robot.autonomous.paths.deploy.pathplanner.ExamplePath
+import frc.robot.autonomous.paths.deploy.pathplanner.StartAuto
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
@@ -169,7 +169,7 @@ object RobotContainer {
         )
         NamedCommands.registerCommand("pickup_gamepiece", setIntaking())
         NamedCommands.registerCommand("shoot_gamepiece", setShooting())
-        autoChooser.addOption("Test2", setIntaking().andThen(Test2()))
+        autoChooser.addOption("Test2", setIntaking().andThen(ExamplePath()))
         autoChooser.addOption("StartAuto", StartAuto())
         autoChooser.addOption(
             "hoodSysId",
