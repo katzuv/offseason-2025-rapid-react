@@ -59,7 +59,6 @@ import frc.robot.subsystems.drive.ModuleIOs.ModuleIO;
 import frc.robot.subsystems.drive.gyroIOs.GyroIO;
 import frc.robot.subsystems.drive.gyroIOs.GyroIOInputsAutoLogged;
 import frc.robot.subsystems.vision.Vision;
-
 import java.time.LocalDate;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -235,7 +234,6 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                                 && DriverStation.getAlliance().get() == DriverStation.Alliance.Red,
                 this);
 
-
         FlippingUtil.symmetryType = FlippingUtil.FieldSymmetry.kRotational;
         FlippingUtil.fieldSizeX = Units.inchesToMeters(324 * 2);
         FlippingUtil.fieldSizeY = Units.inchesToMeters(162 * 2);
@@ -245,7 +243,8 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
         LocalDate today = LocalDate.now();
 
         if (today.isAfter(kickoffDate)) {
-            throw new IllegalArgumentException("REMOVE THE FIELD OVERRIDE, REMOVE LINES: DRIVE, 239-241");
+            throw new IllegalArgumentException(
+                    "REMOVE THE FIELD OVERRIDE, REMOVE LINES: DRIVE, 239-241");
         }
 
         Pathfinding.setPathfinder(new LocalADStarAK());

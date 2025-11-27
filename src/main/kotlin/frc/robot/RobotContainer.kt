@@ -1,7 +1,6 @@
 package frc.robot
 
 import com.pathplanner.lib.auto.AutoBuilder
-import com.pathplanner.lib.auto.NamedCommands
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.RobotController
@@ -10,9 +9,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
-import frc.robot.autonomous.paths.deploy.pathplanner.AC1SRP
-import frc.robot.autonomous.paths.deploy.pathplanner.BRP2
-import frc.robot.autonomous.paths.deploy.pathplanner.CC2C3
 import frc.robot.autonomous.paths.deploy.pathplanner.ExamplePath
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.enableAutoLogOutputFor
@@ -39,7 +35,15 @@ object RobotContainer {
 
     private val driverController = CommandPS5Controller(0)
     private val switchController = CommandGenericHID(1)
+    private val userButton = Trigger { RobotController.getUserButton() }
     private val autoChooser: LoggedDashboardChooser<Command>
+
+    @LoggedOutput(path = COMMAND_NAME_PREFIX)
+    val shouldShootOneBall: Trigger =
+        switchController.button(SwitchInput.ShouldShootOneBall.buttonId)
+
+    @LoggedOutput(path = COMMAND_NAME_PREFIX)
+    val forceShoot: Trigger = driverController.triangle()
 
     enum class SwitchInput(val buttonId: Int) {
         DisableAutoAlign(0),

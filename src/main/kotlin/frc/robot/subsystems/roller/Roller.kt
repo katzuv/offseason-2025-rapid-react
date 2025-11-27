@@ -72,7 +72,9 @@ object Roller : SubsystemBase() {
             )
         else Trigger { simulatedHasBall.get() }
 
-    private fun setVoltage(voltage: Voltage): Command = runOnce { motor.setControl(voltageRequest.withOutput(voltage)) }
+    private fun setVoltage(voltage: Voltage): Command = runOnce {
+        motor.setControl(voltageRequest.withOutput(voltage))
+    }
 
     fun intake(): Command = setVoltage(INTAKE)
 
