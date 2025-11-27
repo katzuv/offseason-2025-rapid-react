@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.autonomous.paths.deploy.pathplanner.ExamplePath
-import frc.robot.autonomous.paths.deploy.pathplanner.StartAuto
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
@@ -133,11 +132,7 @@ object RobotContainer {
     fun getAutonomousCommand(): Command = autoChooser.get()
 
     private fun registerAutoCommands() {
-        val namedCommands: Map<String, Command> = mapOf()
-
-        NamedCommands.registerCommands(namedCommands)
-
-        // Set up SysId routines
+        // SysIds
         autoChooser.addOption(
             "Drive Wheel Radius Characterization",
             DriveCommands.wheelRadiusCharacterization()
@@ -167,10 +162,6 @@ object RobotContainer {
             "swerveFFCharacterization",
             DriveCommands.feedforwardCharacterization()
         )
-        NamedCommands.registerCommand("pickup_gamepiece", setIntaking())
-        NamedCommands.registerCommand("shoot_gamepiece", setShooting())
-        autoChooser.addOption("Test2", setIntaking().andThen(ExamplePath()))
-        autoChooser.addOption("StartAuto", StartAuto())
         autoChooser.addOption(
             "hoodSysId",
             Hood.sysId()
@@ -182,6 +173,7 @@ object RobotContainer {
                 )
                 .command()
         )
+
         autoChooser.addOption(
             "Turret SysId",
             Turret.sysId()
@@ -189,6 +181,9 @@ object RobotContainer {
                 .withBackwardRoutineConfig(1.volts.per(sec), 2.volts, 2.2.sec)
                 .command()
         )
+
+        // Autos
+        autoChooser.addOption("TestPath", ExamplePath())
     }
 
     fun resetSimulationField() {

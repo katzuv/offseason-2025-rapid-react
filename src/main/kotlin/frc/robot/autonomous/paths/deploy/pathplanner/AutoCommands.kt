@@ -4,6 +4,7 @@ import com.pathplanner.lib.auto.AutoBuilder
 import com.pathplanner.lib.commands.PathPlannerAuto
 import com.pathplanner.lib.path.PathPlannerPath
 import edu.wpi.first.wpilibj2.command.Command
+import frc.robot.lib.extensions.onTrue
 
 internal fun runPath(name: String): Command {
     val path = PathPlannerPath.fromPathFile(name)
@@ -13,5 +14,3 @@ internal fun runPath(name: String): Command {
 }
 
 fun ExamplePath(): Command = PathPlannerAuto("ExamplePath")
-
-fun StartAuto(): Command = PathPlannerAuto("StartAuto")
