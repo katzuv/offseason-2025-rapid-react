@@ -29,8 +29,8 @@ const val MAIN_MOTOR_PORT = 5
 const val AUX_MOTOR_PORT = 6
 val STATOR_CURRENT_LIMIT = 100.amps
 val SUPPLY_CURRENT_LIMIT = 50.amps
-val GAINS = Gains(kP = 4.0, kD = 0.0, kS = 0.2480, kV = 0.2, kA = 0.0011426)
-val TOLERANCE = 0.1.rps
+val GAINS = Gains(kP = 0.4, kS = 0.5, kV = 0.1)
+val TOLERANCE = 5.rps
 val AT_SET_VELOCITY_DEBOUNCE = 0.2.sec
 val FLYWHEEL_DIAMETER = 101.6.mm
 val MOTOR_CONFIG =

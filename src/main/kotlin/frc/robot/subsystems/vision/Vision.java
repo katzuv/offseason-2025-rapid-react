@@ -104,9 +104,9 @@ public class Vision extends SubsystemBase {
                         observation.tagCount() == 0 // Must have at least one tag
                                 || (observation.tagCount() == 1
                                         && observation.ambiguity()
-                                                > maxAmbiguity); // Cannot be high ambiguity
-                //                                || Math.abs(observation.pose().getZ())
-                //                                        > maxZError; // Must have realistic Z
+                                                > maxAmbiguity) // Cannot be high ambiguity
+                                                || Math.abs(observation.pose().getZ())
+                                                        > maxZError; // Must have realistic Z
                 // coordinate
 
                 // Must be within the field boundaries

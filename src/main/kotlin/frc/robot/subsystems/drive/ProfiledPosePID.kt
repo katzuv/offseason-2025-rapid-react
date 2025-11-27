@@ -10,23 +10,24 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 import org.team5987.annotation.LoggedOutput
 
 private const val LOGGING_PREFIX = "AutoAlignment"
+private const val TUNING_PATH = "/Tuning/ProfiledPosePID"
 
-private val xGains = LoggedNetworkGains("x Gains", 4.0)
-private val yGains =
-    LoggedNetworkGains(
-        "y Gains",
-    )
+@LoggedOutput var alignmentGoal: Pose2d = Pose2d()
 
-private val thetaGains = LoggedNetworkGains("ϴ Gains", 6.0)
+private val xGains = LoggedNetworkGains("X Gains", 8.0)
+
+private val yGains = LoggedNetworkGains("Y Gains", 8.0)
+
+private val thetaGains = LoggedNetworkGains("Theta Gains", 4.0, kD = 0.15)
 private val linearMaxVelocity =
-    LoggedNetworkNumber("$LOGGING_PREFIX/linearMaxVelocity", 4.69)
+    LoggedNetworkNumber("$TUNING_PATH/linearMaxVelocity", 16.5)
 private val linearMaxAcceleration =
-    LoggedNetworkNumber("$LOGGING_PREFIX/linearMaxAcceleration", 2.8)
+    LoggedNetworkNumber("$TUNING_PATH/linearMaxAcceleration", 30.0)
 
 private var rotationalMaxVelocity =
-    LoggedNetworkNumber("$LOGGING_PREFIX/rotationMaxVelocity", 7.0)
+    LoggedNetworkNumber("$TUNING_PATH/rotationMaxVelocity", 80.0)
 private var rotationalMaxAcceleration =
-    LoggedNetworkNumber("$LOGGING_PREFIX/rotationMaxAcceleration", 360.0)
+    LoggedNetworkNumber("$TUNING_PATH/rotationMaxAcceleration", 100.0)
 
 private val linearLimits
     get() = Constraints(linearMaxVelocity.get(), linearMaxAcceleration.get())
@@ -56,7 +57,7 @@ var yController =
         linearLimits
     )
 
-@LoggedOutput("ϴ controller", LOGGING_PREFIX)
+@LoggedOutput("Theta controller", LOGGING_PREFIX)
 var thetaController =
     ProfiledPIDController(
             thetaGains.kP.get(),
@@ -74,17 +75,25 @@ var atGoal: Trigger =
 
 fun updateProfiledPIDGains() {
     mapOf(
-            xController to xGains,
-            yController to yGains,
-            thetaController to thetaGains
+            xController to Pair(xGains, linearLimits),
+            yController to Pair(yGains, linearLimits),
+            thetaController to Pair(thetaGains, rotationalLimits)
         )
-        .forEach { (controller, gains) ->
-            controller.setPID(gains.kP.get(), gains.kI.get(), gains.kD.get())
+        .forEach { (controller, pair) ->
+            controller.setPID(
+                pair.first.kP.get(),
+                pair.first.kI.get(),
+                pair.first.kD.get()
+            )
+            println("MAXVELOCITY ${pair.second.maxVelocity}")
+            println("MAXACCEL ${pair.second.maxAcceleration}")
+            controller.constraints = pair.second
         }
 }
 
 fun setGoal(desiredPose: Pose2d) {
     updateProfiledPIDGains()
+    alignmentGoal = desiredPose
     xController.setGoal(desiredPose.x)
     yController.setGoal(desiredPose.y)
     thetaController.setGoal(desiredPose.rotation.radians)

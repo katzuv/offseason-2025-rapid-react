@@ -8,7 +8,7 @@ class CANRangeIOReal(
     private val canbus: String = "",
     configuration: CANrangeConfiguration
 ) : CANRangeIO {
-    override val inputs = CANRangeIO.SensorInputs()
+    override val inputs = LoggedSensorInputs()
 
     private val CANrange = CANrange(port, canbus)
 
@@ -19,5 +19,6 @@ class CANRangeIOReal(
     override fun updateInputs() {
         inputs.distance = CANrange.distance.value
         inputs.isDetecting = CANrange.isDetected.value
+        inputs.signalStrength = CANrange.signalStrength.value
     }
 }

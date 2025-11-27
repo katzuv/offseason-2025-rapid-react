@@ -19,6 +19,9 @@ class UnifiedCANRange(
     val isInRange: Boolean
         get() = sensorIO.inputs.isDetecting
 
+    val inputs
+        get() = sensorIO.inputs
+
     fun updateInputs() {
         sensorIO.updateInputs()
     }

@@ -13,8 +13,6 @@
 
 package frc.robot.subsystems.drive;
 
-import static edu.wpi.first.units.Units.Degrees;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -39,6 +37,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.Degrees;
 
 public class DriveCommands {
     private static final Drive drive = InitializerKt.getDrive();
@@ -78,11 +78,11 @@ public class DriveCommands {
                                                     AllianceHelperKt.getIS_RED()
                                                             ? Degrees.of(180)
                                                             : Degrees.zero();
+                                            drive.resetGyro(resetHeading);
                                             drive.resetOdometry(
                                                     new Pose2d(
                                                             drive.getPose().getTranslation(),
                                                             new Rotation2d(resetHeading)));
-                                            drive.resetGyro(resetHeading);
                                         }))
                 .ignoringDisable(true);
     }

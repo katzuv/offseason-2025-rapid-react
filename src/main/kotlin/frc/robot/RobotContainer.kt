@@ -1,22 +1,24 @@
 package frc.robot
 
-// import frc.robot.autonomous.AC1
-// import frc.robot.autonomous.AC1SRP
-// import frc.robot.autonomous.BRP2
-// import frc.robot.autonomous.CC2
-// import frc.robot.autonomous.CC2C3
 import com.pathplanner.lib.auto.AutoBuilder
 import com.pathplanner.lib.auto.NamedCommands
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
+import edu.wpi.first.wpilibj2.command.button.Trigger
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
+import frc.robot.autonomous.paths.deploy.pathplanner.AC1SRP
+import frc.robot.autonomous.paths.deploy.pathplanner.BRP2
+import frc.robot.autonomous.paths.deploy.pathplanner.CC2C3
 import frc.robot.autonomous.paths.deploy.pathplanner.ExamplePath
 import frc.robot.lib.Mode
-import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
+import frc.robot.lib.extensions.get
+import frc.robot.lib.extensions.onFalse
+import frc.robot.lib.extensions.onTrue
 import frc.robot.lib.extensions.sec
 import frc.robot.lib.extensions.volts
 import frc.robot.lib.shooting.toggleCompensation
@@ -25,11 +27,13 @@ import frc.robot.robotstate.*
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.roller.Roller
 import frc.robot.subsystems.shooter.hood.Hood
+import frc.robot.subsystems.shooter.hopper.Hopper
 import frc.robot.subsystems.shooter.turret.Turret
 import frc.robot.subsystems.wrist.Wrist
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.AutoLogOutput
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
+import org.team5987.annotation.LoggedOutput
 
 object RobotContainer {
 
@@ -40,7 +44,8 @@ object RobotContainer {
     enum class SwitchInput(val buttonId: Int) {
         DisableAutoAlign(0),
         StaticSetpoint(1),
-        IntakeByVision(2)
+        IntakeByVision(2),
+        ShouldShootOneBall(12)
     }
 
     init {
@@ -73,32 +78,32 @@ object RobotContainer {
                 { -driverController.leftX },
                 { -driverController.rightX * 0.8 }
             )
+
         Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
         Hood.defaultCommand = hoodDefaultCommand()
+        Wrist.defaultCommand = Wrist.open()
     }
 
     private fun configureButtonBindings() {
         // reset swerve
         driverController.apply {
-            options()
-                .onTrue(
-                    drive
-                        .runOnce { drive.resetGyro(0.0.deg) }
-                        .ignoringDisable(true),
-                )
+            options().onTrue(DriveCommands.resetGyro())
 
             circle().onTrue(setIntaking())
-            L2().onTrue(Roller.intake()).onFalse(Roller.stop())
-            R2().onTrue(Roller.outtake()).onFalse(Roller.stop())
-            square().onTrue(setIntaking())
+            L2()
+                .onTrue(Roller.intake(), Hopper.startShoot())
+                .onFalse(Roller.stop(), Hopper.stop())
+            R2()
+                .onTrue(Roller.outtake(), Hopper.outtake())
+                .onFalse(Roller.stop(), Hopper.stop())
             cross().onTrue(setShooting())
-
             povDown().onTrue(setIdling())
             povUp().onTrue(toggleCompensation())
-            triangle().onTrue(setForceShoot()).onFalse(stopForceShoot())
 
             create().whileTrue(Wrist.reset())
         }
+
+        userButton.onTrue(Turret.reset().ignoringDisable(true))
 
         switchController.apply {
             button(SwitchInput.DisableAutoAlign.buttonId)
@@ -113,20 +118,6 @@ object RobotContainer {
                 .whileTrue(setIntakeByVision())
                 .onFalse(stopIntakeByVision())
         }
-        // Reset gyro / odometry
-        val resetOdometry =
-            if (CURRENT_MODE == Mode.SIM)
-                Runnable {
-                    drive.resetOdometry(
-                        driveSimulation!!.simulatedDriveTrainPose
-                    )
-                }
-            else
-                Runnable {
-                    drive.resetOdometry(
-                        Pose2d(drive.pose.translation, Rotation2d())
-                    )
-                }
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()

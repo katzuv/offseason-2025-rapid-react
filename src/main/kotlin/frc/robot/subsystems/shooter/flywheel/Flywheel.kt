@@ -1,7 +1,7 @@
 package frc.robot.subsystems.shooter.flywheel
 
 import com.ctre.phoenix6.controls.Follower
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC
+import com.ctre.phoenix6.controls.VelocityVoltage
 import com.ctre.phoenix6.controls.VoltageOut
 import edu.wpi.first.units.measure.AngularVelocity
 import edu.wpi.first.units.measure.Voltage
@@ -17,15 +17,20 @@ import frc.robot.lib.namedRunOnce
 import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 
 object Flywheel : SubsystemBase(), SysIdable {
     private val mainMotor =
         UniversalTalonFX(MAIN_MOTOR_PORT, config = MOTOR_CONFIG)
     private val auxMotor =
         UniversalTalonFX(AUX_MOTOR_PORT, config = MOTOR_CONFIG)
-    private val velocityTorque = VelocityTorqueCurrentFOC(0.0)
+    private val velocityTorque = VelocityVoltage(0.0)
     private val voltageOut = VoltageOut(0.0)
     private var velocitySetpoint = 0.rps
+
+    private val calibrationVelocity =
+        LoggedNetworkNumber("/Tuning/calibrationFlywheelVelocity", 40.0)
+
     val velocity
         get() = mainMotor.inputs.velocity
     init {
@@ -40,12 +45,16 @@ object Flywheel : SubsystemBase(), SysIdable {
 
     fun setVelocity(velocity: AngularVelocity): Command = namedRunOnce {
         velocitySetpoint = velocity
-        mainMotor.setControl(velocityTorque.withVelocity(velocitySetpoint))
+        mainMotor.setControl(velocityTorque.withVelocity(velocity))
     }
 
     fun setVelocity(velocity: () -> AngularVelocity): Command = namedRun {
         velocitySetpoint = velocity.invoke()
         mainMotor.setControl(velocityTorque.withVelocity(velocitySetpoint))
+    }
+
+    fun setCalibrationAngle(): Command = setVelocity {
+        calibrationVelocity.get().rps
     }
 
     fun slowRotation() = setVelocity(SLOW_ROTATION).named()

@@ -12,12 +12,11 @@ import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
 import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.universal_motor.UniversalTalonFX
-import frc.robot.subsystems.shooter.turret.MAX_ANGLE
-import frc.robot.subsystems.shooter.turret.MIN_ANGLE
 import org.littletonrobotics.junction.AutoLogOutput
 import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 
 @AutoLogOutput(key = "Hood/mechanism")
 private var mechanism = LoggedMechanism2d(6.0, 4.0)
@@ -32,7 +31,7 @@ object Hood : SubsystemBase(), SysIdable {
             MOTOR_ID,
             config = MOTOR_CONFIG,
             gearRatio = MOTOR_TO_MECHANISM_RATIO,
-            absoluteEncoderOffset = ENCODER_OFFSET
+            absoluteEncoderOffset = -ENCODER_OFFSET
         )
 
     val inputs
@@ -45,7 +44,10 @@ object Hood : SubsystemBase(), SysIdable {
 
     private var setpoint: Angle = 0.deg
 
-    private val isAtSetpoint = Trigger {
+    private val calibrationAngle =
+        LoggedNetworkNumber("/Tuning/calibrationHoodAngle", 0.0)
+
+    val isAtSetpoint = Trigger {
         motor.inputs.position.isNear(setpoint, SETPOINT_TOLERANCE)
     }
 
@@ -58,14 +60,16 @@ object Hood : SubsystemBase(), SysIdable {
     }
 
     fun setAngle(angle: Angle): Command = runOnce {
-        setpoint = angle.coerceIn(MIN_ANGLE, MAX_ANGLE)
+        setpoint = angle
         motor.setControl(positionRequest.withPosition(setpoint))
     }
 
     fun setAngle(angle: () -> Angle): Command = run {
-        setpoint = angle.invoke().coerceIn(MIN_ANGLE, MAX_ANGLE)
+        setpoint = angle.invoke()
         motor.setControl(positionRequest.withPosition(setpoint))
     }
+
+    fun setCalibrationAngle(): Command = setAngle { calibrationAngle.get().deg }
 
     override fun periodic() {
         motor.updateInputs()

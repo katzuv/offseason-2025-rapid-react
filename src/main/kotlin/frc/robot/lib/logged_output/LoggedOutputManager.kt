@@ -31,7 +31,7 @@ object LoggedOutputManager : SubsystemBase() {
     ): String {
         return if (path.isBlank())
             key.ifBlank { "${declaringClass ?: "<unknown>"}/$name" }
-        else "$path/${key.ifBlank { "/$name" }}"
+        else "$path/${key.ifBlank { name }}"
     }
 
     fun <T> registerField(

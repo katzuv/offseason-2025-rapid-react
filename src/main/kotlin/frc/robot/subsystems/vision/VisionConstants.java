@@ -47,13 +47,12 @@ public class VisionConstants {
 
     // Robot to camera transforms
     // (Not used by Limelight, configure in web UI instead)
-    // TODO: Check this!!!!!!!!!!
     public static Transform3d robotToTurretCamera =
             new Transform3d(
                     Millimeter.of(0.0),
                     Millimeter.of(183.105966196),
                     Millimeter.of(697.57321),
-                    new Rotation3d(Degrees.of(0.0), Degrees.of(15.0), Degrees.of(180)));
+                    new Rotation3d(Degrees.of(0.0), Degrees.of(13.48), Degrees.of(180)));
 
     public static Map<String, Transform3d> OVNameToTransform =
             new HashMap<>() {

@@ -3,6 +3,7 @@ package frc.robot.subsystems.drive
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.controller.ProfiledPIDController
 import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.units.Units.MetersPerSecond
 import edu.wpi.first.units.Units.Seconds
@@ -99,6 +100,21 @@ fun alignToPose(
                 )
         )
         .withName("Drive/AlignToPose")
+
+fun alignToHeading(
+    goalHeading: Rotation2d,
+    tolerance: Pose2d = TOLERANCE,
+    poseSupplier: () -> Pose2d = { drive.pose },
+    atGoalDebounce: Time = Seconds.of(0.1),
+): Command =
+    drive.defer {
+        profiledAlignToPose(
+            goalPose = Pose2d(poseSupplier.invoke().translation, goalHeading),
+            tolerance = tolerance,
+            poseSupplier = poseSupplier,
+            atGoalDebounce = atGoalDebounce,
+        )
+    }
 
 fun profiledAlignToPose(
     goalPose: Pose2d,
