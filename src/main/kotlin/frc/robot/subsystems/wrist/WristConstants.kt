@@ -37,7 +37,7 @@ val MOTOR_CONFIG =
     }
 
 enum class WristAngles(val angle: Angle) {
-    CLOSED(15.5.rot),
-    OPEN(0.rot),
+    CLOSED(0.0.rot),
+    OPEN(15.5.rot),
     DEFAULT(2.4.rot)
 }
