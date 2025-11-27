@@ -18,7 +18,7 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanism2d
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d
 import org.team5987.annotation.LoggedOutput
 
-object Wrist : SubsystemBase() {
+object Wrist : SubsystemBase(), WristAnglesProvider{
     @AutoLogOutput private var mechanism = LoggedMechanism2d(6.0, 4.0)
 
     private var root = mechanism.getRoot("Wrist", 3.0, 2.0)
@@ -69,6 +69,9 @@ object Wrist : SubsystemBase() {
     fun close(): Command = setAngle(WristAngles.CLOSED)
 
     fun default(): Command = setAngle(WristAngles.DEFAULT)
+    override fun setWristAnglesValue(value: WristAngles): Command {
+        TODO("Not yet implemented")
+    }
 
     override fun periodic() {
         motor.updateInputs()
