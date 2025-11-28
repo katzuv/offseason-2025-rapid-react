@@ -3,35 +3,47 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.562677836979454,
-        "y": 1.4750510423824748
+        "x": 6.286919335404508,
+        "y": 4.607804233402062
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.562677836979454,
-        "y": 1.475051042382475
+        "x": 5.515794882169564,
+        "y": 5.480020311861629
       },
       "isLocked": false,
-      "linkedName": "S"
+      "linkedName": "Startgame_position"
     },
     {
       "anchor": {
-        "x": 4.483570990212078,
-        "y": 2.548479276195464
+        "x": 4.471132073936746,
+        "y": 6.765271893533112
       },
       "prevControl": {
-        "x": 3.483570990212078,
-        "y": 2.548479276195464
+        "x": 4.734019521455109,
+        "y": 6.471421382593046
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "RP"
+      "linkedName": "PickUp_GamePiece"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "",
+      "waypointRelativePos": 0.6276715410573679,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "pickup_gamepiece"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -144.29330859939714
+    "rotation": -41.98721249581659
   },
   "reversed": false,
-  "folder": "AC1SRP",
+  "folder": "New Folder",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -135.69027719786507
+    "rotation": -14.381394591090581
   },
   "useDefaultConstraints": true
 }

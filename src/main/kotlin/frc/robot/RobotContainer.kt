@@ -1,7 +1,6 @@
 package frc.robot
 
 import com.pathplanner.lib.auto.AutoBuilder
-import com.pathplanner.lib.auto.NamedCommands
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.RobotController
@@ -10,9 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
-import frc.robot.autonomous.paths.deploy.pathplanner.AC1SRP
-import frc.robot.autonomous.paths.deploy.pathplanner.BRP2
-import frc.robot.autonomous.paths.deploy.pathplanner.CC2C3
+import frc.robot.autonomous.paths.deploy.pathplanner.ExamplePath
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.get
@@ -35,7 +32,6 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 import org.team5987.annotation.LoggedOutput
 
 object RobotContainer {
-
     private val driverController = CommandPS5Controller(0)
     private val switchController = CommandGenericHID(1)
     private val userButton = Trigger { RobotController.getUserButton() }
@@ -46,7 +42,7 @@ object RobotContainer {
         switchController.button(SwitchInput.ShouldShootOneBall.buttonId)
 
     @LoggedOutput(path = COMMAND_NAME_PREFIX)
-    val forceShoot = driverController.triangle()
+    val forceShoot: Trigger = driverController.triangle()
 
     enum class SwitchInput(val buttonId: Int) {
         DisableAutoAlign(0),
@@ -130,11 +126,7 @@ object RobotContainer {
     fun getAutonomousCommand(): Command = autoChooser.get()
 
     private fun registerAutoCommands() {
-        val namedCommands: Map<String, Command> = mapOf()
-
-        NamedCommands.registerCommands(namedCommands)
-
-        // Set up SysId routines
+        // SysIds
         autoChooser.addOption(
             "Drive Wheel Radius Characterization",
             DriveCommands.wheelRadiusCharacterization()
@@ -164,10 +156,6 @@ object RobotContainer {
             "swerveFFCharacterization",
             DriveCommands.feedforwardCharacterization()
         )
-
-        autoChooser.addDefaultOption("BRP2", BRP2())
-        autoChooser.addOption("AC1SRP", AC1SRP())
-        autoChooser.addOption("CC2C3", CC2C3())
         autoChooser.addOption(
             "hoodSysId",
             Hood.sysId()
@@ -179,6 +167,7 @@ object RobotContainer {
                 )
                 .command()
         )
+
         autoChooser.addOption(
             "Turret SysId",
             Turret.sysId()
@@ -186,6 +175,9 @@ object RobotContainer {
                 .withBackwardRoutineConfig(1.volts.per(sec), 2.volts, 2.2.sec)
                 .command()
         )
+
+        // Autos
+        autoChooser.addOption("TestPath", ExamplePath())
     }
 
     fun resetSimulationField() {

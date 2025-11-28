@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.235700977169478,
-        "y": 6.046248827191532
+        "x": 4.461369776832081,
+        "y": 5.642607726496592
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.235700977169478,
-        "y": 6.046248827191532
+        "x": 4.211369776832081,
+        "y": 5.642607726496592
       },
       "isLocked": false,
-      "linkedName": "C2"
+      "linkedName": "Pickup_redGamePiece"
     },
     {
       "anchor": {
-        "x": 7.451966689651325,
-        "y": 7.678526071333774
+        "x": 3.4712100193431157,
+        "y": 6.214415505754089
       },
       "prevControl": {
-        "x": 6.451966689651325,
-        "y": 7.678526071333774
+        "x": 3.7115910062533213,
+        "y": 6.145735223779744
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "C3"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 94.84400037508074
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "CC2C3",
+  "folder": "New Folder",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 146.67371031288474
+    "rotation": -22.380135051959613
   },
   "useDefaultConstraints": true
 }

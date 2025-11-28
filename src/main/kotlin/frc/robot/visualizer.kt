@@ -91,30 +91,30 @@ val rollerTranslation
     get() = getTranslation3d(-0.25, 0.0, 0.0)
 val rollerRotation
     get() = getRotation3d(0.0)
-val rollerPose
+val rollerPose: Pose3d
     get() = wristPose + Transform3d(rollerTranslation, rollerRotation)
 
 val turretTranslation
     get() = getTranslation3d(z = 0.41)
 val turretRotation
     get() = getRotation3d(yaw = Turret.inputs.position)
-val turretPose
+val turretPose: Pose3d
     get() =
         getPose3d(turretTranslation, turretRotation) +
-            Transform3d(getTranslation3d(0.0), getRotation3d(yaw = -90.deg))
+            Transform3d(getTranslation3d(0.0), getRotation3d(yaw = (-90).deg))
 
 val hoodTranslation
     get() = getTranslation3d(z = 0.083, y = 0.151)
 val hoodRotation
     get() = getRotation3d(roll = 50.deg + Hood.inputs.position)
-val hoodPose
+val hoodPose: Pose3d
     get() = turretPose + Transform3d(hoodTranslation, hoodRotation)
 
 val flywheelTranslation
     get() = getTranslation3d(0.0)
 val flywheelRotation
     get() = getRotation3d(pitch = (-10).deg, yaw = 90.deg)
-val flywheelPose
+val flywheelPose: Pose3d
     get() = hoodPose + Transform3d(flywheelTranslation, flywheelRotation)
 
 val subsystemPoseArray = Array(19) { getPose3d() }

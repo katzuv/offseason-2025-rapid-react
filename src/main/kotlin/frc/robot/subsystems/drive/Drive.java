@@ -22,6 +22,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.pathfinding.Pathfinding;
+import com.pathplanner.lib.util.FlippingUtil;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -39,12 +40,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -58,6 +59,7 @@ import frc.robot.subsystems.drive.ModuleIOs.ModuleIO;
 import frc.robot.subsystems.drive.gyroIOs.GyroIO;
 import frc.robot.subsystems.drive.gyroIOs.GyroIOInputsAutoLogged;
 import frc.robot.subsystems.vision.Vision;
+import java.time.LocalDate;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -227,8 +229,23 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                 new PPHolonomicDriveController(
                         new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
                 PP_CONFIG,
-                () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
+                () ->
+                        DriverStation.getAlliance().isPresent()
+                                && DriverStation.getAlliance().get() == DriverStation.Alliance.Red,
                 this);
+
+        FlippingUtil.symmetryType = FlippingUtil.FieldSymmetry.kRotational;
+        FlippingUtil.fieldSizeX = Units.inchesToMeters(324 * 2);
+        FlippingUtil.fieldSizeY = Units.inchesToMeters(162 * 2);
+
+        // TODO: remove this after the kickoff
+        LocalDate kickoffDate = LocalDate.of(2026, 1, 10); // 10 January
+        LocalDate today = LocalDate.now();
+
+        if (today.isAfter(kickoffDate)) {
+            throw new IllegalArgumentException(
+                    "REMOVE THE FIELD OVERRIDE, REMOVE LINES: DRIVE, 239-241");
+        }
 
         Pathfinding.setPathfinder(new LocalADStarAK());
         PathPlannerLogging.setLogActivePathCallback(

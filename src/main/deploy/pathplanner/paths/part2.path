@@ -3,35 +3,47 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.484382800176426,
-        "y": 5.556999224025067
+        "x": 4.471132073936746,
+        "y": 6.765271893533112
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.484382800176426,
-        "y": 5.556999224025067
+        "x": 4.563979743025273,
+        "y": 6.997391066254426
       },
       "isLocked": false,
-      "linkedName": "C"
+      "linkedName": "PickUp_GamePiece"
     },
     {
       "anchor": {
-        "x": 5.235700977169478,
-        "y": 6.046248827191532
+        "x": 4.490656668146077,
+        "y": 5.008058414693342
       },
       "prevControl": {
-        "x": 4.235700977169478,
-        "y": 6.046248827191532
+        "x": 4.451607479727415,
+        "y": 5.3302142191473
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "C2"
+      "linkedName": "throw_gamePiece"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "shoot_gamepiece",
+      "waypointRelativePos": 0.7559055118110345,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "shoot_gamepiece"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 146.67371031288474
+    "rotation": -4.205357001708594
   },
   "reversed": false,
-  "folder": "CC2C3",
+  "folder": "New Folder",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 135.0
+    "rotation": -41.98721249581659
   },
   "useDefaultConstraints": true
 }

@@ -33,7 +33,8 @@ object Wrist : SubsystemBase() {
             MOTOR_PORT,
             momentOfInertia = 0.0025.kg2m,
             gearRatio = GEAR_RATIO,
-            config = MOTOR_CONFIG
+            config = MOTOR_CONFIG,
+            simGains = SIM_CONFIG
         )
 
     @LoggedOutput
@@ -63,7 +64,6 @@ object Wrist : SubsystemBase() {
         setpoint = angle.angle
         motor.setControl(positionRequest.withPosition(angle.angle))
     }
-
     fun open(): Command = setAngle(WristAngles.OPEN)
 
     fun close(): Command = setAngle(WristAngles.CLOSED)
