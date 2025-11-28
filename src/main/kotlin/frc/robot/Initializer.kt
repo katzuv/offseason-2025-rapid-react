@@ -28,9 +28,9 @@ import org.ironmaple.simulation.drivesims.SwerveDriveSimulation
 val driveSimulation: SwerveDriveSimulation? =
     if (CURRENT_MODE == Mode.SIM)
         SwerveDriveSimulation(
-            Drive.mapleSimConfig,
-            Pose2d(3.0, 3.0, Rotation2d())
-        )
+                Drive.mapleSimConfig,
+                Pose2d(3.0, 3.0, Rotation2d())
+            )
             .apply {
                 SimulatedArena.overrideInstance(RapidReactArena())
                 SimulatedArena.getInstance().addDriveTrainSimulation(this)
@@ -39,11 +39,11 @@ val driveSimulation: SwerveDriveSimulation? =
 
 private val driveModuleIOs =
     arrayOf(
-        TunerConstants.FrontLeft,
-        TunerConstants.FrontRight,
-        TunerConstants.BackLeft,
-        TunerConstants.BackRight
-    )
+            TunerConstants.FrontLeft,
+            TunerConstants.FrontRight,
+            TunerConstants.BackLeft,
+            TunerConstants.BackRight
+        )
         .mapIndexed { index, module ->
             when (CURRENT_MODE) {
                 Mode.REAL -> ModuleIOTalonFX(module)
@@ -78,17 +78,17 @@ private val visionIOs =
                 if (it.key == turretOVName) {
                     VisionIOPhotonVision(it.key) {
                         Pose3d(
-                            it.value.translation.rotateAround(
-                                getTranslation3d(z = 441.837.millimeters),
-                                getRotation3d(yaw = Turret.inputs.position)
-                            ),
-                            getRotation3d(
-                                yaw =
-                                it.value.rotation.measureZ -
-                                        Turret.inputs.position,
-                                pitch = it.value.rotation.measureY
+                                it.value.translation.rotateAround(
+                                    getTranslation3d(z = 441.837.millimeters),
+                                    getRotation3d(yaw = Turret.inputs.position)
+                                ),
+                                getRotation3d(
+                                    yaw =
+                                        it.value.rotation.measureZ -
+                                            Turret.inputs.position,
+                                    pitch = it.value.rotation.measureY
+                                )
                             )
-                        )
                             .toTransform()
                     }
                 } else {

@@ -60,11 +60,10 @@ object Wrist : SubsystemBase() {
             }
         )
 
-    fun setAngle(angle: WristAngles): Command =
-        runOnce {
-            setpoint = angle.angle
-            motor.setControl(positionRequest.withPosition(angle.angle))
-        }
+    fun setAngle(angle: WristAngles): Command = runOnce {
+        setpoint = angle.angle
+        motor.setControl(positionRequest.withPosition(angle.angle))
+    }
     fun open(): Command = setAngle(WristAngles.OPEN)
 
     fun close(): Command = setAngle(WristAngles.CLOSED)
