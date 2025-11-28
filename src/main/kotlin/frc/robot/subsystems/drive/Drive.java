@@ -239,7 +239,7 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
         FlippingUtil.fieldSizeY = Units.inchesToMeters(162 * 2);
 
         // TODO: remove this after the kickoff
-        LocalDate kickoffDate = LocalDate.of(2025, 12, 10); // 10 December
+        LocalDate kickoffDate = LocalDate.of(2026, 1, 10); // 10 January
         LocalDate today = LocalDate.now();
 
         if (today.isAfter(kickoffDate)) {

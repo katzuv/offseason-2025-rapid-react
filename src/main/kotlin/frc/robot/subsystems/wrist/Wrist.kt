@@ -61,7 +61,7 @@ object Wrist : SubsystemBase() {
         )
 
     fun setAngle(angle: WristAngles): Command =
-        Wrist.runOnce {
+        runOnce {
             setpoint = angle.angle
             motor.setControl(positionRequest.withPosition(angle.angle))
         }
