@@ -1,4 +1,4 @@
-package org.team5987.annotation.create_command
+package org.team5987.annotation.command_enum
 
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*

@@ -1,4 +1,4 @@
-package org.team5987.annotation.create_command
+package org.team5987.annotation.command_enum
 
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
