@@ -32,7 +32,7 @@ object Wrist : SubsystemBase(), WristAnglesActions {
 }
 ```
 
-## Usage in RobotContainer
+## Command binding
 
 Bind the generated command methods to controller buttons.
 ```kotlin
