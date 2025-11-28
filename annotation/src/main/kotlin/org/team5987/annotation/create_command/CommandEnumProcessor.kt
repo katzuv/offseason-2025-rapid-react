@@ -8,8 +8,6 @@ const val ANNOTATION_PACKAGE = "org.team5987.annotation.create_command.CreateCom
 class CreateCommandProcessor(
     private val env: SymbolProcessorEnvironment
 ) : SymbolProcessor {
-
-    private val logger = env.logger
     private val code = env.codeGenerator
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
@@ -30,11 +28,11 @@ class CreateCommandProcessor(
         val enumName = enumDecl.simpleName.asString()
 
         val entries = enumDecl.declarations
-            .filter { it is KSClassDeclaration || it.classKind == ClassKind.ENUM_ENTRY || it.simpleName.asString().isNotBlank() }
+            .filterIsInstance<KSClassDeclaration>()
+            .filter { it.classKind == ClassKind.ENUM_ENTRY }
             .map { it.simpleName.asString() }
-            .filter { it.isNotEmpty() }
 
-        val fileName = "${enumName}Provider"
+        val fileName = "${enumName}CommandFactory"
         val file = code.createNewFile(
             Dependencies(false),
             pkg,
@@ -44,20 +42,19 @@ class CreateCommandProcessor(
         val classContent = buildString {
             appendLine("package $pkg")
             appendLine()
+            appendLine()
             appendLine("import edu.wpi.first.wpilibj2.command.Command")
             appendLine()
             appendLine("interface $fileName {")
             appendLine()
 
-            // per-entry functions with default implementations
             for (entry in entries) {
                 appendLine("    fun ${entry.lowercase()}(): Command =")
-                appendLine("        set${enumName}Value($enumName.$entry)")
+                appendLine("        setAngle($enumName.$entry)")
                 appendLine()
             }
 
-            // abstract setter
-            appendLine("    fun set${enumName}Value(value: $enumName): Command")
+            appendLine("    fun setAngle(value: $enumName): Command")
             appendLine("}")
         }
 
@@ -65,3 +62,8 @@ class CreateCommandProcessor(
     }
 }
 
+class CommandEnumProcessorProvider : SymbolProcessorProvider {
+    override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
+        return CreateCommandProcessor(environment)
+    }
+}

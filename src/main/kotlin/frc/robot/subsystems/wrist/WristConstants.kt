@@ -8,7 +8,6 @@ import edu.wpi.first.units.measure.Angle
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.rot
 import frc.robot.lib.extensions.volts
-import org.team5987.annotation.create_command.CreateCommand
 
 val SETPOINT_TOLERANCE = 1.deg
 const val MOTOR_PORT = 2
@@ -34,7 +33,6 @@ val MOTOR_CONFIG =
             }
     }
 
-@CreateCommand
 enum class WristAngles(val angle: Angle) {
     CLOSED(0.rot),
     OPEN(15.5.rot),
