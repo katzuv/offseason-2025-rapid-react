@@ -32,11 +32,10 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 import org.team5987.annotation.LoggedOutput
 
 object RobotContainer {
-
     private val driverController = CommandPS5Controller(0)
     private val switchController = CommandGenericHID(1)
     private val userButton = Trigger { RobotController.getUserButton() }
-    private val autoChooser: LoggedDashboardChooser<Command>
+    private val autoChooser: LoggedDashboardChooser<Command>ha
 
     @LoggedOutput(path = COMMAND_NAME_PREFIX)
     val shouldShootOneBall: Trigger =
