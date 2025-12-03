@@ -6,7 +6,6 @@ import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.writeTo
-import java.util.Locale.getDefault
 
 const val ANNOTATION_PACKAGE = "org.team5987.annotation.command_enum.CommandEnum"
 
