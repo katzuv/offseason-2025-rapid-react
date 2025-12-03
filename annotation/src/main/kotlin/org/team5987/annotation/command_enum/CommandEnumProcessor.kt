@@ -13,9 +13,9 @@ const val ANNOTATION_PACKAGE = "org.team5987.annotation.command_enum.CommandEnum
 val snakeRegex = "_[a-zA-Z]".toRegex()
 
 fun String.snakeToCamelCase(): String {
-    return snakeRegex.replace(this) {
+    return snakeRegex.replace(lowercase()) {
         it.value.replace("_","")
-        uppercase(getDefault())
+            .uppercase()
     }
 }
 
