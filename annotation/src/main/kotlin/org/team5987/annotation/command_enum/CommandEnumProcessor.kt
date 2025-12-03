@@ -1,15 +1,23 @@
 package org.team5987.annotation.command_enum
 
 import com.google.devtools.ksp.processing.*
-import com.google.devtools.ksp.symbol.*
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.ClassName
+import com.google.devtools.ksp.symbol.ClassKind
+import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.writeTo
+import java.util.Locale.getDefault
 
 const val ANNOTATION_PACKAGE = "org.team5987.annotation.command_enum.CommandEnum"
+
+val snakeRegex = "_[a-zA-Z]".toRegex()
+
+fun String.snakeToCamelCase(): String {
+    return snakeRegex.replace(this) {
+        it.value.replace("_","")
+        uppercase(getDefault())
+    }
+}
 
 class CreateCommandProcessor(
     env: SymbolProcessorEnvironment
@@ -40,7 +48,7 @@ class CreateCommandProcessor(
 
         // generate all default entry functions
         val entryFunctions = entries.map { entry ->
-            FunSpec.builder(entry.lowercase())
+            FunSpec.builder(entry.snakeToCamelCase())
                 .returns(commandClass)
                 .addStatement("return setAngle(%T.%L)", enumClass, entry)
                 .build()
