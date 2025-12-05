@@ -49,12 +49,12 @@ class CreateCommandProcessor(
         val entryFunctions = entries.map { entry ->
             FunSpec.builder(entry.snakeToCamelCase())
                 .returns(commandClass)
-                .addStatement("return setPosition(%T.%L)", enumClass, entry)
+                .addStatement("return setTarget(%T.%L)", enumClass, entry)
                 .build()
         }
 
-        // abstract setPosition function
-        val setPositionFun = FunSpec.builder("setPosition")
+        // abstract setTarget function
+        val setTargetFun = FunSpec.builder("setTarget")
             .addParameter("value", enumClass)
             .returns(commandClass)
             .addModifiers(KModifier.ABSTRACT)
@@ -63,7 +63,7 @@ class CreateCommandProcessor(
         // the interface
         val interfaceSpec = TypeSpec.interfaceBuilder(fileName)
             .addFunctions(entryFunctions)
-            .addFunction(setPositionFun)
+            .addFunction(setTargetFun)
             .build()
 
         // final file
