@@ -1,10 +1,12 @@
 package frc.robot
 
 import com.pathplanner.lib.auto.AutoBuilder
+import com.pathplanner.lib.path.PathPlannerPath
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj2.command.Command
+import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
 import edu.wpi.first.wpilibj2.command.button.Trigger
@@ -88,6 +90,8 @@ object RobotContainer {
     }
 
     private fun configureButtonBindings() {
+
+        driverController.square().onTrue(Commands.runOnce({AutoBuilder.resetOdom(PathPlannerPath.fromPathFile(autoChooser.sendableChooser.selected).pathPoses[0])}))
         // reset swerve
         driverController.apply {
             options().onTrue(DriveCommands.resetGyro())
