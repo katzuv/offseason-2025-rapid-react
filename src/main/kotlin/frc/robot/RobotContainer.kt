@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
+import frc.robot.autonomous.paths.deploy.pathplanner.AutoTest
+import frc.robot.autonomous.paths.deploy.pathplanner.BackAutoTest
 import frc.robot.autonomous.paths.deploy.pathplanner.ExamplePath
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.enableAutoLogOutputFor
@@ -77,6 +79,7 @@ object RobotContainer {
         driveSimulation?.simulatedDriveTrainPose
 
     private fun configureDefaultCommands() {
+
         drive.defaultCommand =
             DriveCommands.joystickDrive(
                 { -driverController.leftY },
@@ -84,14 +87,16 @@ object RobotContainer {
                 { -driverController.rightX * 0.8 }
             )
 
-        Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
+//        Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
         Hood.defaultCommand = hoodDefaultCommand()
         Wrist.defaultCommand = Wrist.open()
     }
 
     private fun configureButtonBindings() {
+        driverController.povUp().onTrue(Commands.runOnce({AutoTest()}))
+        driverController.povDown().onTrue(Commands.runOnce({BackAutoTest()}))
 
-        driverController.square().onTrue(Commands.runOnce({AutoBuilder.resetOdom(PathPlannerPath.fromPathFile(autoChooser.sendableChooser.selected).pathPoses[0])}))
+   driverController.square().onTrue(Commands.runOnce({AutoBuilder.resetOdom(PathPlannerPath.fromPathFile(autoChooser.sendableChooser.selected).pathPoses[0])}))
         // reset swerve
         driverController.apply {
             options().onTrue(DriveCommands.resetGyro())
@@ -131,6 +136,15 @@ object RobotContainer {
 
     private fun registerAutoCommands() {
         // SysIds
+        autoChooser.addOption(
+            "AutoTest",
+            AutoTest()
+        )
+        autoChooser.addOption(
+            "BackAutoTest",
+            BackAutoTest()
+        )
+
         autoChooser.addOption(
             "Drive Wheel Radius Characterization",
             DriveCommands.wheelRadiusCharacterization()

@@ -227,7 +227,7 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
                 this::getChassisSpeeds,
                 this::runVelocity,
                 new PPHolonomicDriveController(
-                        new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
+                        new PIDConstants(2.7, 0.0, 0.03), new PIDConstants(2.7, 0.0, 0.03)),
                 PP_CONFIG,
                 () ->
                         DriverStation.getAlliance().isPresent()

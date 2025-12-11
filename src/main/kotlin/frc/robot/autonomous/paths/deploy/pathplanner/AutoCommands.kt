@@ -13,3 +13,5 @@ internal fun runPath(name: String): Command {
 }
 
 fun ExamplePath(): Command = PathPlannerAuto("ExamplePath")
+fun AutoTest(): Command= PathPlannerAuto("AutoTest")
+fun BackAutoTest(): Command= PathPlannerAuto("BackAutoTest")
