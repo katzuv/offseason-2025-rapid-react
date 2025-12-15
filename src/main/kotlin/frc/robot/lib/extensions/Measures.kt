@@ -141,8 +141,21 @@ operator fun Voltage.div(time: TimeUnit): Velocity<VoltageUnit> =
 // Factories
 
 // Helper function for conversion
-inline fun <N : Number, R> N.toUnit(converter: (Double) -> R) =
-    converter(toDouble())
+inline fun <N : Number, R> N.toUnit(converter: (Double) -> R): R {
+    val value = toDouble()
+    
+    // Check if the value is a whole number (has zero decimal part)
+    // This prevents redundant decimal notation like 1.0.m instead of 1.m
+    if (value == value.toLong().toDouble() && value.toString().contains('.')) {
+        throw IllegalArgumentException(
+            "Redundant decimal point in integer literal. " +
+            "Use '${value.toLong()}' instead of '$value'. " +
+            "Example: ${value.toLong()}.m instead of ${value}.m"
+        )
+    }
+    
+    return converter(value)
+}
 
 // Distance
 val Number.m: Distance
