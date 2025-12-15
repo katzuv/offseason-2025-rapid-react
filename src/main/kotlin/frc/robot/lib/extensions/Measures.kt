@@ -147,12 +147,13 @@ inline fun <N : Number, R> N.toUnit(converter: (Double) -> R): R {
     // Check if this is a Double with zero decimal part (redundant decimal notation)
     // This prevents writing 1.0.m instead of 1.m
     if (this is Double) {
-        val longValue = value.toLong()
-        if (value == longValue.toDouble()) {
+        // Check if value has zero decimal part (is a whole number)
+        if (value % 1.0 == 0.0 && value.isFinite()) {
+            val intValue = value.toLong()
             throw IllegalArgumentException(
                 "Redundant decimal point in integer literal. " +
-                "Use '$longValue' instead of '$value'. " +
-                "For example: write '${longValue}.m' instead of '${value}.m'"
+                "Use '$intValue' instead of '$value'. " +
+                "For example: write '$intValue.<unit>' instead of '$value.<unit>'"
             )
         }
     }
