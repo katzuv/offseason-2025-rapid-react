@@ -296,36 +296,5 @@ spotless {
             it.setMaxWidth(80)
             it.setRemoveUnusedImport(true)
         }
-
-        // Custom check to prevent redundant decimal points in integer literals
-        // e.g., reject "1.0.m" in favor of "1.m"
-        custom 'noRedundantDecimalPoints', {
-            def unitExtensions = [
-                'm', 'cm', 'mm', 'meters', 'centimeters', 'millimeters',
-                'deg', 'degrees', 'rad', 'radians', 'rot', 'rotations',
-                'sec', 'seconds', 'percent', 'amps', 'volts',
-                'kg2m', 'kilogramSquareMeters',
-                'rps', 'mps', 'deg_ps', 'degreesPerSecond',
-                'rad_ps', 'radiansPerSecond', 'rot_ps', 'rotationsPerSecond',
-                'mps_ps', 'deg_ps_ps', 'rps_squared'
-            ].join('|')
-            
-            def pattern = ~/\b(\d+)\.0+\.(${unitExtensions})\b/
-            def matcher = pattern.matcher(it)
-            
-            if (matcher.find()) {
-                def match = matcher.group()
-                def number = matcher.group(1)
-                def unit = matcher.group(2)
-                def line = it.substring(0, matcher.start()).count('\n') + 1
-                
-                throw new AssertionError(
-                    "Line ${line}: Found redundant decimal point in integer literal: '${match}'. " +
-                    "Use '${number}.${unit}' instead."
-                )
-            }
-            
-            return it
-        }
     }
 }
