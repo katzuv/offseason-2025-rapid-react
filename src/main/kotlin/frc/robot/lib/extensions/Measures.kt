@@ -141,25 +141,8 @@ operator fun Voltage.div(time: TimeUnit): Velocity<VoltageUnit> =
 // Factories
 
 // Helper function for conversion
-inline fun <N : Number, R> N.toUnit(converter: (Double) -> R): R {
-    val value = toDouble()
-    
-    // Check if this is a Double with zero decimal part (redundant decimal notation)
-    // This prevents writing 1.0.m instead of 1.m
-    if (this is Double) {
-        // Check if value has zero decimal part (is a whole number)
-        if (value.rem(1.0) == 0.0 && value.isFinite()) {
-            val intValue = value.toInt()
-            throw IllegalArgumentException(
-                "Redundant decimal point in integer literal. " +
-                "Use '$intValue' instead of '$value'. " +
-                "For example: write '$intValue.<unit>' instead of '$value.<unit>'"
-            )
-        }
-    }
-    
-    return converter(value)
-}
+inline fun <N : Number, R> N.toUnit(converter: (Double) -> R) =
+    converter(toDouble())
 
 // Distance
 val Number.m: Distance
