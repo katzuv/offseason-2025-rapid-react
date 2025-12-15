@@ -16,7 +16,7 @@ import frc.robot.lib.extensions.*
 const val MOTOR_ID = 4
 
 val SLOW_BACK_TIMEOUT = 0.15.sec
-val INTAKE_VOLTAGE = 3.0.volts
+val INTAKE_VOLTAGE = 3.volts
 val SLOW_BACK_VOLTAGE = (-1.2).volts
 val SHOOT_VOLTAGE = 8.volts
 val STATOR_LIMIT = 30.amps

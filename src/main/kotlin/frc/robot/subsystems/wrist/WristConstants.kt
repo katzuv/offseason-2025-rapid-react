@@ -13,7 +13,7 @@ import frc.robot.lib.extensions.volts
 val SETPOINT_TOLERANCE = 1.deg
 const val MOTOR_PORT = 2
 const val GEAR_RATIO = 1 / 69.82
-val RESET_VOLTAGE = 2.0.volts
+val RESET_VOLTAGE = 2.volts
 
 val SIM_CONFIG: Gains = Gains(kP = 0.7, kD = 0.1)
 
@@ -37,7 +37,7 @@ val MOTOR_CONFIG =
     }
 
 enum class WristAngles(val angle: Angle) {
-    CLOSED(0.0.rot),
+    CLOSED(0.rot),
     OPEN(15.5.rot),
     DEFAULT(2.4.rot)
 }

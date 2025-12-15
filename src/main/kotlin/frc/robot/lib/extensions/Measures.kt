@@ -144,14 +144,17 @@ operator fun Voltage.div(time: TimeUnit): Velocity<VoltageUnit> =
 inline fun <N : Number, R> N.toUnit(converter: (Double) -> R): R {
     val value = toDouble()
     
-    // Check if the value is a whole number (has zero decimal part)
-    // This prevents redundant decimal notation like 1.0.m instead of 1.m
-    if (value == value.toLong().toDouble() && value.toString().contains('.')) {
-        throw IllegalArgumentException(
-            "Redundant decimal point in integer literal. " +
-            "Use '${value.toLong()}' instead of '$value'. " +
-            "Example: ${value.toLong()}.m instead of ${value}.m"
-        )
+    // Check if this is a Double with zero decimal part (redundant decimal notation)
+    // This prevents writing 1.0.m instead of 1.m
+    if (this is Double) {
+        val longValue = value.toLong()
+        if (value == longValue.toDouble()) {
+            throw IllegalArgumentException(
+                "Redundant decimal point in integer literal. " +
+                "Use '$longValue' instead of '$value'. " +
+                "For example: write '${longValue}.m' instead of '${value}.m'"
+            )
+        }
     }
     
     return converter(value)
