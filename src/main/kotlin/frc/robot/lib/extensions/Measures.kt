@@ -148,8 +148,8 @@ inline fun <N : Number, R> N.toUnit(converter: (Double) -> R): R {
     // This prevents writing 1.0.m instead of 1.m
     if (this is Double) {
         // Check if value has zero decimal part (is a whole number)
-        if (value % 1.0 == 0.0 && value.isFinite()) {
-            val intValue = value.toLong()
+        if (value.rem(1.0) == 0.0 && value.isFinite()) {
+            val intValue = value.toInt()
             throw IllegalArgumentException(
                 "Redundant decimal point in integer literal. " +
                 "Use '$intValue' instead of '$value'. " +
